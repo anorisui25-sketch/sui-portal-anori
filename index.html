@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<script>window.SUI_API_URL = "https://script.google.com/macros/s/AKfycbwSU9mtZqzgUQNNlHXobc_OZ67aQHrI6w-i128LQgKl2yvOv8UXcGNMZJHnpuVal_fzHA/exec"; window.SUI_PUERTA = { clave: '' };</script>
+
+  <meta charset="utf-8">
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SUI – Portal de formatos</title>
+  <style>
+    :root { --ok:#1b5e20; --okbg:#e8f5e9; --warn:#7a4a00; --warnbg:#fff3d6; --err:#b71c1c; --errbg:#fdecea; --off:#4b5563; --offbg:#eceff1; --info:#0b3d91; --infobg:#e3edff; --bg:#f4f6f8; --card:#fff; --txt:#1f2937; --linea:#d5dbe3; --foco:#ff8f00; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Arial, Helvetica, sans-serif; background:var(--bg); color:var(--txt); font-size:15px; line-height:1.4; }
+    a { color:var(--info); }
+    :focus-visible { outline:3px solid var(--foco); outline-offset:2px; }
+    .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+    .salto { position:absolute; left:-999px; top:0; background:#fff; padding:8px 12px; z-index:50; }
+    .salto:focus { left:8px; top:8px; }
+    header { background:#0b3d91; color:#fff; padding:10px 16px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+    header h1 { font-size:18px; margin:0; flex:1 1 220px; }
+    header a { color:#dbe8ff; font-size:14px; }
+    header .quien { font-size:12px; color:#dbe8ff; }
+    header label { font-size:13px; display:flex; align-items:center; gap:6px; }
+    header select { font-size:15px; padding:6px 8px; border-radius:6px; border:1px solid #fff; }
+    nav.principal { background:#fff; border-bottom:1px solid var(--linea); padding:0 12px; display:flex; flex-wrap:wrap; gap:2px; }
+    nav.principal button { background:none; border:none; padding:10px 12px; font-size:15px; cursor:pointer; border-bottom:4px solid transparent; color:#374151; white-space:nowrap; }
+    nav.principal button[aria-selected="true"] { border-bottom-color:var(--info); color:var(--info); font-weight:bold; }
+    nav.principal .n { background:var(--errbg); color:var(--err); border-radius:10px; padding:0 7px; font-size:12px; margin-left:4px; }
+    main { padding:14px 16px 60px; max-width:1560px; margin:0 auto; }
+    h2 { font-size:19px; margin:4px 0 10px; } h3 { font-size:16px; margin:14px 0 6px; }
+    .btn { padding:9px 14px; border:none; border-radius:8px; background:var(--info); color:#fff; cursor:pointer; font-size:14px; min-height:38px; }
+    .btn.sec { background:#e2e8f0; color:#1f2937; } .btn.ok { background:var(--ok); } .btn.peligro { background:var(--err); } .btn.peq { padding:6px 10px; font-size:13px; min-height:32px; }
+    .btn:disabled { opacity:.5; cursor:default; }
+    input[type=text], input[type=search], input[type=date], input[type=number], select, textarea { font-size:16px; padding:9px 10px; border:1px solid #9aa5b4; border-radius:8px; background:#fff; max-width:100%; }
+    textarea { width:100%; min-height:70px; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:10px; margin:10px 0 14px; }
+    .tarjeta { background:var(--card); border:1px solid var(--linea); border-radius:10px; padding:12px 14px; text-align:left; font:inherit; color:inherit; }
+    button.tarjeta { cursor:pointer; } button.tarjeta:hover { border-color:var(--info); }
+    .tarjeta .n { font-size:28px; font-weight:bold; } .tarjeta .t { font-size:13px; color:#374151; }
+    .pasos { display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:10px; margin:10px 0 14px; counter-reset:paso; }
+    .paso { background:#fff; border:1px solid var(--linea); border-left:6px solid var(--info); border-radius:10px; padding:12px 14px; text-align:left; font:inherit; color:inherit; cursor:pointer; }
+    .paso::before { counter-increment:paso; content:"Paso " counter(paso); font-size:12px; font-weight:bold; color:var(--info); display:block; }
+    .paso b { display:block; margin:2px 0; } .paso .n { font-size:26px; font-weight:bold; }
+    .ahora { background:var(--infobg); border:1px solid #9db8ee; border-radius:10px; padding:12px 14px; margin-bottom:12px; }
+    .nota { font-size:13px; color:#374151; } .peq { font-size:13px; }
+    .barra-filtros { background:#fff; border:1px solid var(--linea); border-radius:10px; padding:10px 12px; margin-bottom:10px; }
+    .fila-busca { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .fila-busca input[type=search] { flex:1 1 280px; }
+    .vistas { display:flex; gap:6px; flex-wrap:wrap; margin:10px 0 4px; }
+    .vista { padding:7px 12px; border-radius:18px; border:1px solid #8896a8; background:#fff; cursor:pointer; font-size:14px; }
+    .vista[aria-pressed="true"] { background:var(--info); color:#fff; border-color:var(--info); }
+    .vista .n { font-weight:bold; margin-left:4px; }
+    details.filtros > summary { cursor:pointer; padding:6px 0; font-weight:bold; }
+    .grupos { display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:10px; margin-top:8px; }
+    fieldset.grupo { border:1px solid var(--linea); border-radius:8px; padding:6px 10px 8px; margin:0; max-height:210px; overflow:auto; }
+    fieldset.grupo legend { font-weight:bold; font-size:13px; padding:0 4px; }
+    fieldset.grupo label { display:flex; gap:6px; align-items:flex-start; padding:2px 0; font-size:14px; }
+    fieldset.grupo input { margin-top:3px; }
+    .activos { display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin:8px 0 2px; min-height:28px; }
+    .etiqueta { background:var(--infobg); border:1px solid #9db8ee; border-radius:14px; padding:3px 6px 3px 10px; font-size:13px; display:inline-flex; gap:6px; align-items:center; }
+    .etiqueta button { border:none; background:none; cursor:pointer; font-size:15px; line-height:1; padding:2px 6px; color:var(--info); }
+    .cuenta { font-weight:bold; margin:6px 0; }
+    .orden { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:6px 0; }
+    table { width:100%; border-collapse:collapse; background:var(--card); border-radius:8px; overflow:hidden; box-shadow:0 1px 2px rgba(0,0,0,.08); }
+    th, td { padding:9px 10px; border-bottom:1px solid #e5eaf0; text-align:left; vertical-align:top; }
+    th { background:#e8eef7; font-size:12px; text-transform:uppercase; letter-spacing:.3px; }
+    tr:hover td { background:#f8fafc; }
+    .ins { display:inline-block; padding:2px 8px; border-radius:10px; font-size:12px; font-weight:bold; margin:1px 3px 1px 0; border:1px solid transparent; white-space:nowrap; }
+    .ins.ok { background:var(--okbg); color:var(--ok); border-color:#a5d6a7; } .ins.warn { background:var(--warnbg); color:var(--warn); border-color:#ffd88a; }
+    .ins.err { background:var(--errbg); color:var(--err); border-color:#f5b5b0; } .ins.off { background:var(--offbg); color:var(--off); border-color:#cfd8dc; } .ins.info { background:var(--infobg); color:var(--info); border-color:#9db8ee; }
+    .sub { font-size:12px; color:#4b5563; overflow-wrap:anywhere; }
+    .acciones { white-space:nowrap; }
+    details.menu { display:inline-block; position:relative; }
+    details.menu > summary { list-style:none; cursor:pointer; display:inline-block; padding:6px 10px; border-radius:8px; background:#e2e8f0; font-size:13px; min-height:32px; }
+    details.menu > summary::-webkit-details-marker { display:none; }
+    .menu-lista { position:absolute; right:0; z-index:20; background:#fff; border:1px solid #8896a8; border-radius:8px; padding:6px; min-width:220px; box-shadow:0 4px 14px rgba(0,0,0,.18); display:flex; flex-direction:column; gap:4px; }
+    .menu-lista button { text-align:left; background:#fff; border:none; padding:8px 10px; font-size:14px; cursor:pointer; border-radius:6px; } .menu-lista button:hover { background:#eef2f7; }
+    .seleccion { background:var(--infobg); border:1px solid #9db8ee; border-radius:8px; padding:8px 12px; margin:8px 0; font-size:14px; }
+    .modal { position:fixed; inset:0; background:rgba(0,0,0,.45); display:none; align-items:center; justify-content:center; padding:14px; z-index:40; }
+    .modal .caja { background:#fff; border-radius:10px; max-width:1100px; width:100%; max-height:90vh; overflow:auto; padding:16px 20px; }
+    .modal h2 { margin:0 0 8px; } .cerrar { float:right; }
+    .form-row { display:grid; grid-template-columns:230px 1fr; gap:8px 12px; align-items:start; margin-bottom:10px; font-size:14px; }
+    .form-row input, .form-row select, .form-row textarea { width:100%; }
+    .aviso { background:var(--warnbg); border-left:5px solid #f9a825; padding:8px 12px; margin:8px 0; font-size:14px; }
+    .aviso.err { background:var(--errbg); border-left-color:var(--err); } .aviso.ok { background:var(--okbg); border-left-color:var(--ok); }
+    dl.ficha dt { font-weight:bold; margin-top:10px; color:var(--info); } dl.ficha dd { margin:2px 0 0; }
+    .cal { display:grid; grid-template-columns:repeat(7, 1fr); gap:6px; }
+    .cal .dia { background:#fff; border:1px solid var(--linea); border-radius:8px; min-height:92px; padding:5px; font-size:12px; }
+    .cal .dia.hoy { outline:3px solid var(--info); } .cal .dia.vacio { background:transparent; border-color:transparent; }
+    .cal .ev { display:block; width:100%; text-align:left; border:1px solid var(--linea); border-left:5px solid var(--off); padding:3px 5px; margin-bottom:3px; background:#fafafa; border-radius:4px; cursor:pointer; font-size:12px; line-height:1.25; }
+    .cal .ev.v { border-left-color:var(--ok); } .cal .ev.r { border-left-color:var(--err); } .cal .ev.a { border-left-color:#f9a825; }
+    .cab7 { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; font-size:12px; text-align:center; margin-bottom:4px; }
+    .cal-cab { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px; } .cal-cab h2 { margin:0; flex:1 1 200px; }
+    ul.falta { margin:4px 0 0 16px; padding:0; font-size:13px; }
+    #estado { position:sticky; bottom:0; background:#fff8e1; border-top:2px solid #f9a825; padding:6px 14px; font-size:14px; min-height:0; z-index:30; }
+    #estado:empty { display:none; }
+    body.ocupado main { pointer-events:none; opacity:.6; }
+    .galeria { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:8px; margin:8px 0; }
+    .galeria figure { margin:0; background:#fff; border:1px solid var(--linea); border-radius:8px; padding:6px; font-size:12px; } .galeria img { width:100%; height:110px; object-fit:cover; border-radius:6px; display:block; background:#eef2f6; cursor:zoom-in; }
+    .galeria .sinprev { height:110px; display:flex; align-items:center; justify-content:center; text-align:center; background:var(--offbg); border-radius:6px; color:var(--off); }
+    .tarjeta.alerta { border-left:5px solid #f9a825; } .tarjeta.sindato { border-left:5px solid #9aa5b1; } .tarjeta .v { font-size:22px; font-weight:bold; overflow-wrap:anywhere; }
+    @media (max-width:860px) {
+      nav.principal button { padding:8px 10px; font-size:14px; }
+      .form-row { grid-template-columns:1fr; }
+      table.resp thead { display:none; }
+      table.resp, table.resp tbody, table.resp tr, table.resp td { display:block; width:100%; }
+      table.resp tr { border:1px solid var(--linea); border-radius:10px; margin-bottom:10px; background:#fff; padding:6px 4px; }
+      table.resp td { border:none; padding:5px 10px; }
+      table.resp td[data-l]::before { content:attr(data-l) ": "; font-weight:bold; font-size:12px; color:#4b5563; display:block; }
+      .cal .dia { min-height:60px; } .cal .ev { font-size:11px; }
+    }
+    .grupo-entrega { background:#fff; border:1px solid var(--linea); border-radius:10px; padding:8px 12px; margin-bottom:10px; }
+    .grupo-entrega > summary { cursor:pointer; font-weight:bold; padding:4px 0; }
+    @media print { header, nav, #estado, .modal, .no-imprimir, .salto, .btn, details.menu { display:none !important; } main > section:not(#sec-inicio) { display:none !important; } #sec-inicio > *:not(#bloqueEntrega) { display:none !important; } body { background:#fff; } .grupo-entrega { break-inside:avoid; } }
+    @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto !important; } }
+  </style>
+</head>
+<body>
+<div id="suiIngreso" style="position:fixed;inset:0;z-index:9999;background:#f4f6f8;display:flex;align-items:center;justify-content:center;padding:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif">
+ <form id="suiForm" style="background:#fff;max-width:380px;width:100%;padding:28px 24px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08)">
+  <h1 style="font-size:20px;margin:0 0 4px;color:#1d2733">Portal SUI – Anorí</h1>
+  <p style="margin:0 0 18px;color:#5b6876;font-size:14px">Ingrese con su usuario y clave.</p>
+  <label for="suiUsuario" style="font-size:13px;color:#33404d">Usuario</label>
+  <input id="suiUsuario" type="text" autocomplete="username" autocapitalize="none" required style="display:block;width:100%;box-sizing:border-box;margin:6px 0 12px;padding:10px 12px;font-size:16px;border:1px solid #c5ced8;border-radius:8px">
+  <label for="suiClave" style="font-size:13px;color:#33404d">Clave</label>
+  <input id="suiClave" type="password" autocomplete="current-password" required style="display:block;width:100%;box-sizing:border-box;margin:6px 0 12px;padding:10px 12px;font-size:16px;border:1px solid #c5ced8;border-radius:8px">
+  <label style="font-size:13px;color:#33404d;display:flex;gap:8px;align-items:center;margin-bottom:16px"><input id="suiRecordar" type="checkbox" checked> Recordar en este equipo</label>
+  <button id="suiEntrar" type="submit" style="width:100%;padding:11px;font-size:15px;border:0;border-radius:8px;background:#1f6feb;color:#fff;cursor:pointer">Entrar</button>
+  <p id="suiMsg" role="alert" style="min-height:20px;margin:12px 0 0;font-size:14px;color:#b42318"></p>
+ </form>
+</div>
+<script>
+(function () {
+  var KEY = 'sui_clave_portal';
+  function leer() { try { return localStorage.getItem(KEY) || sessionStorage.getItem(KEY) || ''; } catch (x) { return ''; } }
+  function guardar(c, recordar) { try { (recordar ? localStorage : sessionStorage).setItem(KEY, c); } catch (x) {} }
+  function borrar() { try { localStorage.removeItem(KEY); sessionStorage.removeItem(KEY); } catch (x) {} }
+  function probar(c, recordar, silencioso) {
+    var msg = document.getElementById('suiMsg'), btn = document.getElementById('suiEntrar');
+    btn.disabled = true; btn.textContent = 'Verificando…'; msg.textContent = '';
+    fetch(window.SUI_API_URL, { method: 'POST', credentials: 'omit', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ clave: c, fn: 'apiUsuarioActual', args: [] }) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (!j.ok) throw new Error(j.error || 'No se pudo entrar');
+        guardar(c, recordar); window.SUI_PUERTA.clave = c;
+        document.getElementById('suiIngreso').remove();
+        var salir = document.createElement('button'); salir.textContent = 'Salir'; salir.type = 'button';
+        salir.style.cssText = 'position:fixed;right:12px;bottom:12px;z-index:9998;padding:6px 12px;border:1px solid #c5ced8;border-radius:8px;background:#fff;cursor:pointer;font-size:13px';
+        salir.onclick = function () { borrar(); location.reload(); }; document.body.appendChild(salir);
+        if (window.SUI_ARRANCAR) window.SUI_ARRANCAR();
+      })
+      .catch(function (e) {
+        btn.disabled = false; btn.textContent = 'Entrar';
+        if (silencioso) { borrar(); return; }
+        msg.textContent = /Failed to fetch|NetworkError/.test(String(e && e.message)) ? 'Sin conexión con el servidor. Revise internet e intente de nuevo.' : String(e && e.message ? e.message : e);
+      });
+  }
+  document.getElementById('suiForm').addEventListener('submit', function (ev) { ev.preventDefault(); var u = document.getElementById('suiUsuario').value.trim(), k = document.getElementById('suiClave').value; var c = u && k ? u + String.fromCharCode(10) + k : ''; if (c) probar(c, document.getElementById('suiRecordar').checked, false); });
+  var guardada = leer(); if (guardada) probar(guardada, true, true); else document.getElementById('suiUsuario').focus();
+})();
+</script>
+
+<a class="salto" href="#contenido">Saltar al contenido</a>
+<header>
+  <h1>SUI · Portal de formatos – Anorí</h1>
+  <label for="gPeriodo">Mes de trabajo <select id="gPeriodo" aria-label="Mes de trabajo"></select></label>
+  <button class="btn sec" id="btnRefrescar" type="button">Actualizar</button>
+  <button class="btn sec" id="btnAyuda" type="button">¿Cómo funciona?</button>
+  <a id="lnkHoja" href="#" target="_blank" rel="noopener">Hoja de cálculo</a>
+  <a id="lnkDrive" href="#" target="_blank" rel="noopener">Carpeta Drive</a>
+  <span class="quien" id="quien"></span>
+</header>
+<nav class="principal" role="tablist" aria-label="Secciones del portal" id="nav">
+  <button role="tab" id="t-inicio" aria-controls="sec-inicio" aria-selected="true" data-sec="inicio">Inicio y tareas</button>
+  <button role="tab" id="t-formatos" aria-controls="sec-formatos" aria-selected="false" data-sec="formatos">Formatos y archivos</button>
+  <button role="tab" id="t-fuentes" aria-controls="sec-fuentes" aria-selected="false" data-sec="fuentes">Fuentes y datos faltantes</button>
+  <button role="tab" id="t-calendario" aria-controls="sec-calendario" aria-selected="false" data-sec="calendario">Calendario</button>
+  <button role="tab" id="t-barrido" aria-controls="sec-barrido" aria-selected="false" data-sec="barrido">Operación de barrido</button>
+  <button role="tab" id="t-historial" aria-controls="sec-historial" aria-selected="false" data-sec="historial">Historial y evidencias</button>
+  <button role="tab" id="t-config" aria-controls="sec-config" aria-selected="false" data-sec="config">Configuración</button>
+</nav>
+<main id="contenido" tabindex="-1">
+
+  <!-- ============================ INICIO Y TAREAS ============================ -->
+  <section id="sec-inicio" role="tabpanel" aria-labelledby="t-inicio">
+    <h2>Qué hay que hacer</h2>
+    <p class="nota" id="iNota">Cargando…</p>
+    <div class="ahora" id="iAhora" hidden></div>
+    <div class="pasos" id="iPasos"></div>
+    <h3>Vistas rápidas del mes</h3>
+    <div class="tarjetas" id="iVistas"></div>
+    <div id="iSinFecha"></div>
+    <h3>Tareas abiertas</h3>
+    <div id="iTareas"><p class="nota">Cargando…</p></div>
+    <div id="bloquePesos" class="no-imprimir">
+      <h3>Formatos de pesos: estado mes a mes</h3>
+      <p class="nota">Los formatos que se construyen con los pesos del relleno (disposición final, residuos generados, continuidad de recolección y barrido, vida útil, factor D…). Un mes “sin generar” es un mes que nadie ha procesado todavía; no es lo mismo que un mes con errores o sin datos.</p>
+      <div class="fila-busca" style="margin-bottom:8px">
+        <label for="pesosAnio">Año</label><select id="pesosAnio" aria-label="Año de los formatos de pesos"></select>
+        <button class="btn sec" id="btnPesosVer" type="button">Ver el estado</button>
+        <button class="btn" id="btnPesosGenerar" type="button" disabled>Generar los meses que faltan</button>
+      </div>
+      <div id="pesosCuerpo" aria-live="polite"></div>
+    </div>
+    <div id="bloqueEntrega">
+      <h3>Lista de entrega por responsable</h3>
+      <p class="nota">Qué le toca entregar a cada persona: lo que ya está listo, lo que falta aprobar o completar, y lo vencido primero. Incluye solo formatos exigibles y sin certificar.</p>
+      <div class="fila-busca no-imprimir" style="margin-bottom:8px">
+        <label><input type="checkbox" id="entSoloListos"> Solo lo que ya se puede entregar</label>
+        <button class="btn sec peq" id="btnEntCsv" type="button">Descargar lista (CSV para Excel)</button>
+        <button class="btn sec peq" id="btnEntCopiar" type="button">Copiar como texto</button>
+        <button class="btn sec peq" id="btnEntImprimir" type="button">Imprimir</button>
+        <button class="btn peq" id="btnResp" type="button">Asignar responsables…</button>
+      </div>
+      <div id="iEntrega"><p class="nota">Cargando…</p></div>
+    </div>
+  </section>
+
+  <!-- ============================ FORMATOS Y ARCHIVOS ============================ -->
+  <section id="sec-formatos" role="tabpanel" aria-labelledby="t-formatos" hidden>
+    <div class="barra-filtros">
+      <div class="fila-busca">
+        <input type="search" id="fTexto" placeholder="Buscar por nombre, código o palabra clave (presión, relleno, PQR…)" aria-label="Buscar formatos">
+        <button class="btn sec" id="btnLimpiar" type="button">Limpiar filtros</button>
+      </div>
+      <div class="vistas" id="fVistas" role="group" aria-label="Vistas rápidas"></div>
+      <details class="filtros" id="fDetalle" open>
+        <summary>Filtros combinables (entre categorías se combinan con “y”; dentro de una categoría, con “o”)</summary>
+        <div class="grupos" id="fGrupos"></div>
+        <div class="fila-busca" style="margin-top:8px">
+          <label>Vence desde <input type="date" id="fDesde"></label>
+          <label>hasta <input type="date" id="fHasta"></label>
+        </div>
+      </details>
+      <div class="activos" id="fActivos" aria-live="polite"></div>
+    </div>
+    <div class="orden">
+      <span class="cuenta" id="fCuenta" role="status"></span>
+      <label>Ordenar por
+        <select id="fOrden"><option value="vencimiento">Vencimiento</option><option value="nombre">Nombre</option><option value="servicio">Servicio</option><option value="estado">Estado (lo que más urge primero)</option></select>
+      </label>
+      <button class="btn sec peq" id="fDir" type="button" aria-label="Cambiar sentido del orden">↑ Ascendente</button>
+    </div>
+    <p class="nota" id="fContadores"></p>
+    <div class="seleccion" id="fSeleccion" hidden></div>
+    <div class="fila-busca" style="margin-bottom:8px">
+      <label><input type="checkbox" id="selTodos"> Seleccionar todos los visibles con archivo</label>
+      <button class="btn ok" id="btnZipSel" type="button">⬇ Descargar seleccionados (ZIP)</button>
+      <button class="btn" id="btnTodo" type="button">↻ Generar todos los automáticos del mes</button>
+    </div>
+    <table class="resp" id="fTabla">
+      <thead><tr><th scope="col"><span class="sr">Elegir</span></th><th scope="col">Formato</th><th scope="col">Periodo reportado</th><th scope="col">Vence</th><th scope="col">Preparación</th><th scope="col">Aprobación</th><th scope="col">Ante el SUI</th><th scope="col">Acción</th></tr></thead>
+      <tbody id="fCuerpo"></tbody>
+    </table>
+    <p class="nota">Preparación, aprobación y estado ante el SUI son cosas distintas: descargar un archivo no cumple la obligación. “Vencido” es una condición adicional: un archivo listo también puede estar vencido. Una hoja de apoyo o el Excel de un formulario web no se cargan como archivo: sirven para revisar o digitar. Verifique los CSV con el validador del SUI antes de cargar; la aplicación no carga ni certifica nada.</p>
+  </section>
+
+  <!-- ============================ FUENTES Y DATOS FALTANTES ============================ -->
+  <section id="sec-fuentes" role="tabpanel" aria-labelledby="t-fuentes" hidden>
+    <h2>Fuentes y datos faltantes</h2>
+    <div class="tarjeta" style="margin-bottom:14px">
+      <h3 style="margin-top:0">Datos fijos de la empresa</h3>
+      <p class="nota">Se digitan una sola vez (identificadores del SUI, báscula, aforos, placas, frecuencias). Al guardar, los formatos que dependen de cada dato se vuelven a generar. Deje en blanco lo que no conozca: un dato vacío deja el formato en borrador, nunca se inventa.</p>
+      <div id="fijosGrupos">Cargando…</div>
+      <p style="margin:10px 0 0"><button class="btn ok" id="btnFijosGenerar" type="button">Guardar y generar formatos afectados</button> <button class="btn sec" id="btnFijosGuardar" type="button">Solo guardar</button> <span class="nota" id="fijosMsg" role="status"></span></p>
+      <div id="fijosResultado"></div>
+    </div>
+    <h3>Qué falta, por formato</h3>
+    <p class="nota">Cada caso explica la causa (fuente inaccesible, pestaña vacía, columnas ausentes, registros de otro periodo, fechas inválidas o datos fijos sin definir) y la acción correctiva. No hace falta generar el formato para saberlo.</p>
+    <div class="fila-busca" style="margin-bottom:8px">
+      <input type="search" id="falTexto" placeholder="Buscar formato o causa…" aria-label="Buscar en datos faltantes">
+      <select id="falServicio" aria-label="Servicio"><option value="">Todos los servicios</option><option>Acueducto</option><option>Alcantarillado</option><option>Aseo</option><option value="Ambos">Comunes AA</option></select>
+      <select id="falCategoria" aria-label="Tipo de problema"><option value="">Todos los problemas</option></select>
+      <button class="btn sec" id="btnFaltante" type="button">Actualizar</button>
+      <button class="btn" id="btnFaltanteProfundo" type="button">Revisar todas las fuentes ahora</button>
+    </div>
+    <p class="nota" id="falCuenta" role="status"></p>
+    <table class="resp"><thead><tr><th scope="col">Formato</th><th scope="col">Qué falta, por qué y cómo se corrige</th></tr></thead><tbody id="faltante"></tbody></table>
+  </section>
+
+  <!-- ============================ CALENDARIO ============================ -->
+  <section id="sec-calendario" role="tabpanel" aria-labelledby="t-calendario" hidden>
+    <div class="cal-cab">
+      <button class="btn sec" id="calPrev" type="button">◀ Mes anterior</button>
+      <h2 id="calTitulo"></h2>
+      <button class="btn sec" id="calNext" type="button">Mes siguiente ▶</button>
+      <select id="calServicio" aria-label="Servicio"><option value="">Todos los servicios</option><option>Acueducto</option><option>Alcantarillado</option><option>Aseo</option><option value="Ambos">Comunes AA</option></select>
+      <label><input type="checkbox" id="calSoloPend" checked> Ocultar lo ya certificado</label>
+    </div>
+    <p class="nota">Cada tarjeta es una fecha máxima de cargue y trae su estado en palabras: <b>[Listo]</b>, <b>[Pendiente]</b>, <b>[Vencido]</b>. Solo aparecen los formatos con una regla de fecha confirmada; los demás están en la lista “Sin fecha confirmada”. Es la misma información de la tabla de Formatos.</p>
+    <div class="cab7" aria-hidden="true"><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div></div>
+    <div class="cal" id="cal"></div>
+    <h3>Lista de vencimientos del mes <span class="nota" id="calCuenta"></span></h3>
+    <table class="resp"><thead><tr><th scope="col">Vence</th><th scope="col">Formato</th><th scope="col">Periodo reportado</th><th scope="col">Cómo se entrega</th><th scope="col">Estado</th><th scope="col"></th></tr></thead><tbody id="calLista"></tbody></table>
+    <h3>Sin fecha confirmada</h3>
+    <p class="nota">No se muestra una fecha estimada cuando la regla está por verificar o es inválida.</p>
+    <div id="calSinFecha"></div>
+  </section>
+
+  <!-- ============================ OPERACIÓN DE BARRIDO ============================ -->
+  <section id="sec-barrido" role="tabpanel" aria-labelledby="t-barrido" hidden>
+    <h2>Operación de barrido</h2>
+    <p class="nota">Seguimiento del barrido y la limpieza urbana con los datos de la app AppSheet “Aseo Operativo Anorí”. Un mes o una microrruta sin registro aparece como <b>sin dato</b>, nunca como cero. Es un seguimiento interno: no es un reporte al SUI.</p>
+    <div class="fila-busca" style="margin-bottom:8px">
+      <label for="bAnio">Año</label><select id="bAnio" aria-label="Año"></select>
+      <label for="bPeriodo">Mes</label><select id="bPeriodo" aria-label="Mes"></select>
+      <label for="bMicro">Microrruta</label><select id="bMicro" aria-label="Microrruta"><option value="">Todas</option></select>
+      <label><input type="checkbox" id="bSinFoto"> Solo registros sin foto</label>
+      <button class="btn sec" id="bActualizar" type="button">Actualizar</button>
+    </div>
+    <div id="bFuente"></div>
+    <div id="bCuerpo" hidden>
+      <div class="tarjetas" id="bKpis"></div>
+      <h3>Peso por microrruta en el mes</h3><div id="bMicros"></div>
+      <h3>Evolución del año (kg)</h3><div id="bMatriz" style="overflow:auto"></div>
+      <h3>Registros <span class="nota" id="bContador"></span></h3><div id="bRegistros"></div>
+      <h3>Fotos de la operación</h3>
+      <p class="nota">Las fotos salen de la columna Foto de la app. Se cargan al pedirlas para que la pantalla no se ponga lenta.</p>
+      <div class="fila-busca" style="margin-bottom:8px">
+        <button class="btn sec" id="bVerFotos" type="button">Ver las fotos del mes</button>
+        <button class="btn sec" id="bZipFotos" type="button">Descargar las fotos del mes (ZIP)</button>
+      </div>
+      <div id="bGaleria" aria-live="polite"></div>
+      <h3>Informe mensual (DOCX)</h3>
+      <p class="nota" id="bInformeNota"></p>
+      <div class="fila-busca" style="margin-bottom:8px">
+        <button class="btn" id="bGenerar" type="button">Generar el informe del mes</button>
+        <button class="btn sec" id="bDescargarInforme" type="button">Descargar el último informe del mes</button>
+        <button class="btn sec" id="bAutomatico" type="button" hidden></button>
+      </div>
+      <div id="bInformes"></div>
+      <h3>Calidad de los datos y alcance</h3><ul id="bAvisos"></ul>
+    </div>
+  </section>
+
+  <!-- ============================ HISTORIAL Y EVIDENCIAS ============================ -->
+  <section id="sec-historial" role="tabpanel" aria-labelledby="t-historial" hidden>
+    <h2>Historial y evidencias</h2>
+    <div class="fila-busca" style="margin-bottom:8px">
+      <label><input type="checkbox" id="hSoloMes"> Solo el mes de trabajo</label>
+      <input type="search" id="hTexto" placeholder="Buscar en el historial…" aria-label="Buscar en el historial">
+      <button class="btn sec" id="btnHistorial" type="button">Actualizar</button>
+    </div>
+    <div id="hCuerpo"><p class="nota">Cargando…</p></div>
+  </section>
+
+  <!-- ============================ CONFIGURACIÓN ============================ -->
+  <section id="sec-config" role="tabpanel" aria-labelledby="t-config" hidden>
+    <h2>Configuración</h2>
+    <div id="cCuerpo"><p class="nota">Cargando…</p></div>
+  </section>
+</main>
+<div id="estado" role="status" aria-live="polite"></div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitulo">
+  <div class="caja"><button class="btn sec peq cerrar" id="mCerrar" type="button">Cerrar (Esc)</button><h2 id="mTitulo" tabindex="-1"></h2><div id="mCuerpo"></div></div>
+</div>
+
+<script id="logica">
+// LOGICA-INICIO
+// Lógica pura del portal (sin DOM): filtros combinables, vistas rápidas, orden, acciones y selección. Se prueba con Node.
+const norm = (s) => String(s === null || s === undefined ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const mesTexto = (ym) => { const m = String(ym).match(/^(\d{4})-(\d{2})$/); return m ? MESES[Number(m[2]) - 1] + ' ' + m[1] : String(ym); };
+const ETQ_SALIDA = { cargue_csv: 'Archivo de cargue masivo (CSV)', hoja_apoyo: 'Hoja de apoyo (Excel, no se carga)', formulario_web: 'Formulario web (Excel para digitar)', documento: 'Documento adjunto (PDF/TIF)', externo: 'Aplicativo externo' };
+const ETQ_SERVICIO = { Ambos: 'Comunes Acueducto y Alcantarillado' };
+const EXIGIBLES = ['aplica', 'por verificar']; // 'antes del seguimiento', 'no aplica' y 'aún no exigible' no generan hallazgos
+const exigible = (f) => EXIGIBLES.indexOf(f.aplicabilidad) >= 0;
+const REVISAR = ['pendiente de aprobación', 'requiere nueva revisión', 'devuelto'];
+const HISTORICO_DIAS = 90;
+const esHistorico = (f) => !!(f.vencidoSinEvidencia && f.diasRestantes < -HISTORICO_DIAS);
+const hecho = (f) => f.estadoSUI === 'certificado' || f.estadoSUI === 'certificado no aplica';
+
+/** Plazo en una palabra: vencido, vence pronto, en plazo, sin fecha confirmada, por evento. */
+function plazoDe(f) {
+  if (f.vencido) return 'vencido';
+  if (f.limiteEstado === 'evento') return 'por evento';
+  if (!f.limiteIso) return 'sin fecha confirmada';
+  if (f.venceProto) return 'vence pronto';
+  return 'en plazo';
+}
+function textoPlazo(f) {
+  if (f.vencido) { const d = -f.diasRestantes; return 'Vencido hace ' + d + (d === 1 ? ' día' : ' días'); }
+  if (f.diasRestantes === null || f.diasRestantes === undefined || !f.limiteIso) return f.limiteTexto || 'Fecha por verificar';
+  if (f.diasRestantes === 0) return 'Vence HOY';
+  return 'Faltan ' + f.diasRestantes + (f.diasRestantes === 1 ? ' día' : ' días');
+}
+
+const FILTROS = [
+  { clave: 'servicio', titulo: 'Servicio', valores: (f) => [f.servicio], etiqueta: (v) => ETQ_SERVICIO[v] || v },
+  { clave: 'periodo', titulo: 'Periodo reportado', valores: (f) => [f.periodoLegible || f.periodo] },
+  { clave: 'vence', titulo: 'Mes de vencimiento', valores: (f) => [f.mesVence ? mesTexto(f.mesVence) : (f.limiteEstado === 'evento' ? 'Por evento' : (f.limiteEstado === 'no vigente' ? 'Aún no exigible' : 'Sin fecha confirmada'))] },
+  { clave: 'tema', titulo: 'Tema', valores: (f) => [f.tema || 'Sin tema'] },
+  { clave: 'salida', titulo: 'Tipo de salida', valores: (f) => [f.tipoSalida], etiqueta: (v) => ETQ_SALIDA[v] || v },
+  { clave: 'preparacion', titulo: 'Preparación', valores: (f) => [f.preparacion] },
+  { clave: 'aprobacion', titulo: 'Aprobación interna', valores: (f) => [f.aprobacion] },
+  { clave: 'sui', titulo: 'Estado ante el SUI', valores: (f) => [f.estadoSUI] },
+  { clave: 'plazo', titulo: 'Plazo', valores: (f) => [plazoDe(f)] },
+  { clave: 'responsable', titulo: 'Responsable', valores: (f) => [f.responsable || 'Sin responsable asignado'] },
+  { clave: 'aplica', titulo: 'Aplicabilidad', valores: (f) => [f.aplicabilidad] }
+];
+
+const VISTAS = [
+  { id: 'vence-pronto', titulo: 'Vence pronto', pred: (f) => exigible(f) && f.venceProto },
+  { id: 'vencidos-sin-evidencia', titulo: 'Vencidos sin evidencia', pred: (f) => exigible(f) && f.vencidoSinEvidencia },
+  { id: 'faltan-datos', titulo: 'Faltan datos', pred: (f) => exigible(f) && (f.preparacion === 'faltan datos' || f.preparacion === 'sin datos en el periodo') },
+  { id: 'por-revisar', titulo: 'Por revisar', pred: (f) => exigible(f) && f.preparacion === 'listo' && REVISAR.indexOf(f.aprobacion) >= 0 },
+  { id: 'aprobados-descargar', titulo: 'Aprobados para descargar', pred: (f) => exigible(f) && f.aprobacion === 'aprobado' && !!f.listoDescarga && f.estadoSUI === 'sin reportar' }
+];
+
+const ESTADO_INICIAL = () => ({ texto: '', sel: { aplica: ['aplica', 'por verificar'] }, desde: '', hasta: '', vista: '', orden: 'vencimiento', dir: 1 });
+
+function palabrasCoinciden(f, texto) {
+  const t = norm(texto); if (!t) return true;
+  const pajar = norm([f.nombre, f.codigo, f.id, f.tema, f.servicio, f.norma, f.informacion, f.fuenteProbable, f.responsable].join(' '));
+  return t.split(' ').every((p) => pajar.indexOf(p) >= 0);
+}
+function pasa(f, e, omitir) {
+  if (!palabrasCoinciden(f, e.texto)) return false;
+  for (let i = 0; i < FILTROS.length; i++) {
+    const d = FILTROS[i]; if (d.clave === omitir) continue;
+    const s = e.sel[d.clave]; if (!s || !s.length) continue;
+    if (!d.valores(f).some((v) => s.indexOf(v) >= 0)) return false;
+  }
+  if (e.desde || e.hasta) { if (!f.limiteIso) return false; if (e.desde && f.limiteIso < e.desde) return false; if (e.hasta && f.limiteIso > e.hasta) return false; }
+  if (e.vista) { const v = VISTAS.filter((x) => x.id === e.vista)[0]; if (v && !v.pred(f)) return false; }
+  return true;
+}
+const aplicarFiltros = (filas, e) => filas.filter((f) => pasa(f, e));
+
+/** Opciones de una categoría con su conteo "facetado": lo que daría marcar esa opción con el resto de filtros activos. */
+function opcionesDe(filas, e, clave) {
+  const d = FILTROS.filter((x) => x.clave === clave)[0]; const cuenta = {};
+  filas.forEach((f) => { if (!pasa(f, e, clave)) return; d.valores(f).forEach((v) => { cuenta[v] = (cuenta[v] || 0) + 1; }); });
+  (e.sel[clave] || []).forEach((v) => { if (!(v in cuenta)) cuenta[v] = 0; });
+  return Object.keys(cuenta).sort((a, b) => clave === 'vence' ? ordenMes(a) - ordenMes(b) : a.localeCompare(b, 'es')).map((v) => ({ valor: v, etiqueta: d.etiqueta ? d.etiqueta(v) : v, n: cuenta[v], marcada: (e.sel[clave] || []).indexOf(v) >= 0 }));
+}
+function ordenMes(txt) { const m = String(txt).match(/^(\w+) (\d{4})$/); if (!m) return 9e9; const i = MESES.indexOf(m[1]); return i < 0 ? 9e9 : Number(m[2]) * 12 + i; }
+
+/** Etiquetas de los filtros activos, para mostrarlas y poder quitarlas una a una. */
+function etiquetasActivas(e) {
+  const out = [];
+  if (e.texto) out.push({ tipo: 'texto', texto: 'Búsqueda: “' + e.texto + '”' });
+  FILTROS.forEach((d) => { const s = e.sel[d.clave]; if (s && s.length) out.push({ tipo: 'sel', clave: d.clave, texto: d.titulo + ': ' + s.map((v) => d.etiqueta ? d.etiqueta(v) : v).join(' o ') }); });
+  if (e.desde || e.hasta) out.push({ tipo: 'fecha', texto: 'Vence ' + (e.desde ? 'desde ' + e.desde : '') + (e.desde && e.hasta ? ' ' : '') + (e.hasta ? 'hasta ' + e.hasta : '') });
+  if (e.vista) out.push({ tipo: 'vista', texto: 'Vista: ' + VISTAS.filter((x) => x.id === e.vista)[0].titulo });
+  return out;
+}
+
+const RANGO_PREP = { 'faltan datos': 0, 'con errores': 1, 'sin datos en el periodo': 2, 'sin generar': 3, 'pendiente': 3, 'manual': 4, 'listo': 5, 'aún no': 6, 'no aplica': 7 };
+function ordenar(filas, criterio, dir) {
+  dir = dir || 1;
+  const venc = (f) => (f.vencido ? 0 : 1);
+  const cmpFecha = (a, b) => (a.limiteIso || '9999-99-99').localeCompare(b.limiteIso || '9999-99-99');
+  const cmps = {
+    vencimiento: (a, b) => venc(a) - venc(b) || cmpFecha(a, b) || a.nombre.localeCompare(b.nombre, 'es'),
+    nombre: (a, b) => a.nombre.localeCompare(b.nombre, 'es'),
+    servicio: (a, b) => a.servicio.localeCompare(b.servicio, 'es') || a.nombre.localeCompare(b.nombre, 'es'),
+    estado: (a, b) => (RANGO_PREP[a.preparacion] === undefined ? 9 : RANGO_PREP[a.preparacion]) - (RANGO_PREP[b.preparacion] === undefined ? 9 : RANGO_PREP[b.preparacion]) || venc(a) - venc(b) || cmpFecha(a, b)
+  };
+  return filas.slice().sort((a, b) => dir * (cmps[criterio] || cmps.vencimiento)(a, b));
+}
+
+/** Insignias con texto e icono (el color nunca es la única señal). */
+function insignias(f) {
+  const prep = { 'listo': ['ok', '✔ Listo'], 'faltan datos': ['warn', '✍ Faltan datos'], 'con errores': ['err', '⚠ Con errores'], 'sin datos en el periodo': ['warn', '∅ Sin datos en el periodo'], 'sin generar': ['off', '… Sin generar'], 'pendiente': ['off', '… Pendiente'], 'manual': ['off', '✎ Se diligencia a mano'], 'no aplica': ['off', '– No aplica'] }[f.preparacion] || ['off', f.preparacion];
+  if (f.preparacion === 'listo' && f.automatico && f.alDia === false) prep[0] = 'warn', prep[1] = '✔ Generado · datos incompletos'; // archivo generado ≠ datos completos
+  const apr = { 'aprobado': ['ok', '✔ Aprobado'], 'pendiente de aprobación': ['info', '👁 Por aprobar'], 'requiere nueva revisión': ['err', '↺ Requiere nueva revisión'], 'devuelto': ['warn', '↩ Devuelto'], 'aún no': ['off', 'Aún no'], 'no registrada': ['warn', '? Sin aprobación registrada'] }[f.aprobacion] || ['off', f.aprobacion];
+  const sui = { 'certificado': ['ok', '✔ Certificado'], 'certificado no aplica': ['ok', '✔ Certificado “no aplica”'], 'cargado': ['info', '↑ Cargado, falta certificar'], 'sin reportar': ['off', 'Sin reportar'] }[f.estadoSUI] || ['off', f.estadoSUI];
+  return { prep: prep, apr: apr, sui: sui, vencido: f.vencido ? ['err', '⏰ ' + textoPlazo(f)] : null };
+}
+
+/** Acción principal según el estado. permisos: lista de permisos del usuario (o vacío = todos). */
+function accionPrincipal(f, permisos) {
+  const puede = (p) => !permisos || !permisos.length || permisos.indexOf(p) >= 0;
+  if (!exigible(f)) return { codigo: 'ficha', etiqueta: 'Ver ficha', clase: 'sec' };
+  if (hecho(f)) return { codigo: 'ficha', etiqueta: 'Ver ficha', clase: 'sec' };
+  if (f.estadoSUI === 'cargado') return puede('evidencia') ? { codigo: 'evidencia', etiqueta: 'Registrar certificación', clase: 'ok' } : { codigo: 'ficha', etiqueta: 'Ver ficha', clase: 'sec' };
+  switch (f.preparacion) {
+    case 'manual': return puede('evidencia') ? { codigo: 'evidencia', etiqueta: 'Registrar evidencia', clase: '' } : { codigo: 'ficha', etiqueta: 'Ver ficha', clase: 'sec' };
+    case 'sin generar': case 'pendiente': return puede('capturar') || puede('revisar') ? { codigo: 'generar', etiqueta: 'Generar', clase: '' } : { codigo: 'ficha', etiqueta: 'Ver ficha', clase: 'sec' };
+    case 'faltan datos': return puede('capturar') ? { codigo: 'completar', etiqueta: 'Completar datos', clase: 'warn' } : { codigo: 'diagnostico', etiqueta: 'Ver qué falta', clase: 'sec' };
+    case 'con errores': return { codigo: 'errores', etiqueta: 'Ver errores', clase: 'peligro' };
+    case 'sin datos en el periodo': return { codigo: 'diagnostico', etiqueta: 'Ver por qué no hay datos', clase: '' };
+    case 'listo':
+      if (REVISAR.indexOf(f.aprobacion) >= 0) return puede('revisar') ? { codigo: 'revisar', etiqueta: 'Revisar y aprobar', clase: '' } : { codigo: 'ficha', etiqueta: 'Ver ficha', clase: 'sec' };
+      if (f.listoDescarga && puede('descargar')) return { codigo: 'descargar', etiqueta: f.botonDescarga || 'Descargar', clase: 'ok' };
+      return { codigo: 'ficha', etiqueta: 'Ver ficha', clase: 'sec' };
+    default: return { codigo: 'ficha', etiqueta: 'Ver ficha', clase: 'sec' };
+  }
+}
+
+/** Acciones secundarias (todo lo demás que se puede hacer con la fila). */
+function accionesSecundarias(f, permisos) {
+  const puede = (p) => !permisos || !permisos.length || permisos.indexOf(p) >= 0;
+  const principal = accionPrincipal(f, permisos).codigo, l = [];
+  const add = (codigo, etiqueta) => { if (codigo !== principal) l.push({ codigo: codigo, etiqueta: etiqueta }); };
+  if (exigible(f)) {
+    if (f.automatico && f.tipo !== 'externo') add('generar', 'Generar de nuevo');
+    if (f.listoDescarga) add('descargar', f.botonDescarga || 'Descargar');
+    if (f.hojaApoyo || f.tipoSalida === 'formulario_web') add('apoyo', 'Ver datos calculados');
+    if (f.errores) add('errores', 'Ver errores (' + f.errores + ')');
+    if (f.automatico) add('diagnostico', 'Ver qué falta en las fuentes');
+    if (f.automatico) add('traza', 'Trazabilidad de la última lectura');
+    if (f.preparacion === 'listo' && REVISAR.indexOf(f.aprobacion) >= 0 && puede('revisar')) add('revisar', 'Revisar y aprobar');
+    if (f.preparacion === 'faltan datos' && puede('capturar')) add('completar', 'Completar datos');
+    if (puede('evidencia') && !hecho(f)) { add('evidencia', 'Registrar evidencia de cargue / certificación'); add('noaplica', 'Declarar “no aplica” (con fundamento y soporte)'); }
+  } else if (f.declaradoNoAplica && puede('evidencia')) add('retirarnoaplica', 'Retirar la declaración de “no aplica”');
+  add('ficha', 'Ficha y norma');
+  return l;
+}
+
+/** Selección masiva: cuántos archivos entran en el ZIP y cuáles quedan excluidos, con el motivo. */
+function resumenSeleccion(filas, ids) {
+  const incluidos = [], excluidos = [];
+  ids.forEach((id) => {
+    const f = filas.filter((x) => x.id === id)[0]; if (!f) return;
+    if (!f.automatico) excluidos.push({ id: id, nombre: f.nombre, motivo: 'se diligencia a mano: no hay archivo' });
+    else if (f.preparacion !== 'listo') excluidos.push({ id: id, nombre: f.nombre, motivo: 'no está listo (' + f.preparacion + ')' });
+    else if (!f.listoDescarga) excluidos.push({ id: id, nombre: f.nombre, motivo: 'sin archivo generado' });
+    else incluidos.push(f);
+  });
+  return { incluidos: incluidos, excluidos: excluidos, noCargables: incluidos.filter((f) => !f.cargable).length };
+}
+
+/** Contadores del TOTAL del mes (no del resultado filtrado). */
+function contadoresMes(filas) {
+  const ex = filas.filter(exigible); const c = {};
+  VISTAS.forEach((v) => { c[v.id] = ex.filter(v.pred).length; });
+  c.total = ex.length; c.listos = ex.filter((f) => f.preparacion === 'listo').length; c.vencidos = ex.filter((f) => f.vencido).length;
+  c.faltanDatos = ex.filter((f) => f.preparacion === 'faltan datos').length; c.sinGenerar = ex.filter((f) => f.preparacion === 'sin generar' || f.preparacion === 'pendiente').length;
+  c.manual = ex.filter((f) => f.preparacion === 'manual').length; c.cargados = ex.filter((f) => f.estadoSUI === 'cargado').length; c.certificados = ex.filter(hecho).length;
+  c.porAprobar = c['por-revisar']; c.paraCargar = c['aprobados-descargar']; c.historicos = ex.filter(esHistorico).length;
+  return c;
+}
+
+/** "Qué hago ahora": lo más urgente que tiene una acción concreta. */
+function siguientesAcciones(filas, permisos, n) {
+  const l = filas.filter((f) => exigible(f) && !hecho(f)).map((f) => ({ f: f, a: accionPrincipal(f, permisos) })).filter((x) => x.a.codigo !== 'ficha');
+  // Lo vencido hace mucho (más de 90 días) casi siempre es histórico sin evidencia: no es lo que toca hacer "ahora"; va al final
+  const cubo = (f) => (f.vencido && f.diasRestantes < -HISTORICO_DIAS ? 2 : (f.vencido ? 0 : 1));
+  l.sort((x, y) => cubo(x.f) - cubo(y.f) || (x.f.limiteIso || '9999').localeCompare(y.f.limiteIso || '9999') || x.f.nombre.localeCompare(y.f.nombre, 'es'));
+  return l.slice(0, n || 5);
+}
+
+// ---- lista de entrega por responsable
+const SIN_RESP = 'Sin responsable asignado';
+const SALIDA_CORTA = { cargue_csv: 'el archivo CSV de cargue', formulario_web: 'el Excel del formulario para digitar', hoja_apoyo: 'la hoja de apoyo', documento: 'el control de documentos', externo: 'la información para el aplicativo externo' };
+/** Qué tiene que pasar con este formato para poder entregarlo, en una frase. */
+function estadoEntrega(f) {
+  if (f.estadoSUI === 'cargado') return { cod: 'certificar', etiqueta: 'Cargado: falta certificar', clase: 'info', accion: 'Confirmar con quien cargó que quedó certificado' };
+  switch (f.preparacion) {
+    case 'listo':
+      if (REVISAR.indexOf(f.aprobacion) >= 0) return { cod: 'aprobar', etiqueta: 'Falta aprobar', clase: 'warn', accion: 'Revisar y aprobar en el portal; luego entregar ' + (SALIDA_CORTA[f.tipoSalida] || 'el archivo') };
+      return f.listoDescarga ? { cod: 'listo', etiqueta: 'Listo para entregar', clase: 'ok', accion: 'Entregar ' + (SALIDA_CORTA[f.tipoSalida] || 'el archivo') } : { cod: 'generar', etiqueta: 'Falta generar', clase: 'off', accion: 'Generar en el portal' };
+    case 'faltan datos': return { cod: 'datos', etiqueta: 'Faltan datos', clase: 'warn', accion: (f.faltantes ? f.faltantes + ' dato(s) por completar: ' : '') + 'completarlos en “Fuentes y datos faltantes”' };
+    case 'con errores': return { cod: 'errores', etiqueta: 'Con errores', clase: 'err', accion: 'Corregir los errores del formato (Más → Ver errores)' };
+    case 'sin datos en el periodo': return { cod: 'sindatos', etiqueta: 'Sin datos en el periodo', clase: 'warn', accion: 'Confirmar si hubo movimientos; si de verdad no aplica, declararlo con fundamento y soporte' };
+    case 'manual': return { cod: 'manual', etiqueta: 'Se diligencia a mano', clase: 'off', accion: 'Reunir la información y diligenciar el formulario' };
+    default: return { cod: 'generar', etiqueta: 'Falta generar', clase: 'off', accion: 'Generar en el portal' };
+  }
+}
+const porUrgencia = (x, y) => (x.f.vencido ? 0 : 1) - (y.f.vencido ? 0 : 1) || (x.f.limiteIso || '9999-99-99').localeCompare(y.f.limiteIso || '9999-99-99') || x.f.nombre.localeCompare(y.f.nombre, 'es');
+/** Agrupa lo pendiente (exigible y sin certificar) por responsable: primero quien tiene más vencido; “sin responsable” al final. */
+function agruparPorResponsable(filas, opciones) {
+  const soloListos = !!(opciones && opciones.soloListos);
+  const items = filas.filter((f) => exigible(f) && !hecho(f)).map((f) => ({ f: f, e: estadoEntrega(f) })).filter((x) => !soloListos || x.e.cod === 'listo');
+  const g = {}; items.forEach((x) => { const r = x.f.responsable || SIN_RESP; (g[r] = g[r] || []).push(x); });
+  return Object.keys(g).map((r) => { const l = g[r].sort(porUrgencia); return { responsable: r, items: l, total: l.length, listos: l.filter((x) => x.e.cod === 'listo').length, vencidos: l.filter((x) => x.f.vencido).length, ids: l.filter((x) => x.e.cod === 'listo').map((x) => x.f.id) }; })
+    .sort((a, b) => (a.responsable === SIN_RESP ? 1 : 0) - (b.responsable === SIN_RESP ? 1 : 0) || b.vencidos - a.vencidos || b.total - a.total || a.responsable.localeCompare(b.responsable, 'es'));
+}
+const csvCelda = (v) => '"' + String(v === null || v === undefined ? '' : v).replace(/"/g, '""') + '"';
+function listaCsv(grupos) {
+  const cab = ['Responsable', 'Formato', 'Código SUI', 'Servicio', 'Periodo reportado', 'Vence', 'Plazo', 'Estado de la entrega', 'Qué hacer', 'Qué se entrega'];
+  const filas = [];
+  grupos.forEach((g) => g.items.forEach((x) => filas.push([g.responsable, x.f.nombre, x.f.codigo, x.f.servicio, x.f.periodoLegible || x.f.periodo, x.f.limite || x.f.limiteTexto, x.f.vencido ? textoPlazo(x.f) : (x.f.limiteIso ? textoPlazo(x.f) : x.f.limiteTexto), x.e.etiqueta, x.e.accion, x.f.tipoSalidaTxt])));
+  return [cab].concat(filas).map((r) => r.map(csvCelda).join(',')).join('\r\n');
+}
+function listaTexto(grupos) {
+  return grupos.map((g) => g.responsable.toUpperCase() + ' (' + g.total + ' formato(s): ' + g.listos + ' listo(s) para entregar' + (g.vencidos ? ', ' + g.vencidos + ' vencido(s)' : '') + ')\n' +
+    g.items.map((x) => '  - ' + x.f.nombre + ' [' + (x.f.periodoLegible || x.f.periodo) + '] vence ' + (x.f.limite || x.f.limiteTexto) + (x.f.vencido ? ' (VENCIDO)' : '') + ' → ' + x.e.etiqueta + ': ' + x.e.accion).join('\n')).join('\n\n');
+}
+
+function guardarEstado(e) { try { if (typeof localStorage !== 'undefined') localStorage.setItem('sui_filtros_v2', JSON.stringify(e)); } catch (x) { /* sin almacenamiento */ } }
+function cargarEstado() { try { if (typeof localStorage !== 'undefined') { const t = localStorage.getItem('sui_filtros_v2'); if (t) { const e = JSON.parse(t); if (e && e.sel) return Object.assign(ESTADO_INICIAL(), e); } } } catch (x) { /* sin almacenamiento */ } return ESTADO_INICIAL(); }
+/** Registros de barrido filtrados: todas las condiciones se combinan con Y. */
+function filtrarBarrido(regs, f) {
+  f = f || {};
+  return (regs || []).filter((r) => (!f.periodo || r.periodo === f.periodo) && (!f.clave || r.clave === f.clave) && (!f.soloSinFoto || !r.tieneFoto));
+}
+/** Valor de un indicador para mostrar: "sin dato" cuando no hay dato (nunca un cero inventado). */
+function valorKpi(k) {
+  if (!k || k.valor === null || k.valor === undefined) return 'sin dato';
+  return (typeof k.valor === 'number' ? String(k.valor).replace('.', ',') : String(k.valor)) + (k.unidad ? ' ' + k.unidad : '');
+}
+function kgTexto(v) { return v === null || v === undefined ? 'sin dato' : String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' kg'; }
+/** Casilla de la matriz de pesos: [clase, símbolo, texto]. El color nunca es la única señal. */
+function celdaPesos(c) {
+  if (c.estado === 'sin generar') return ['off', '…', 'sin generar'];
+  if (c.estado === 'generado' && c.errores === 0 && c.registros > 0) return ['ok', '✔', 'generado · ' + c.registros + ' registros'];
+  if (c.estado === 'formulario listo' && c.errores === 0) return ['ok', '✔', 'hoja de apoyo lista'];
+  if (c.errores > 0 || c.estado === 'con errores') return ['err', '⚠', 'con errores'];
+  if (c.registros === 0) return ['warn', '∅', 'sin datos en el periodo'];
+  return ['warn', '•', c.estado];
+}
+function mesesQueFaltan(matriz) {
+  const out = []; ((matriz && matriz.filas) || []).forEach((f) => f.celdas.forEach((c) => { if (c.estado === 'sin generar') out.push({ id: f.id, nombre: f.nombre, periodo: c.periodo }); }));
+  return out;
+}
+// LOGICA-FIN
+</script>
+
+<script>
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s === null || s === undefined ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  // Desde el portal público cada consulta pasa por apiLlamar (con la clave del enlace); desde la implementación interna, directo.
+  const run = (fn, ...args) => {
+    // Página alojada fuera de Google (GitHub Pages): fetch sin cookies a la API JSON del portal público
+    if (window.SUI_API_URL) return fetch(window.SUI_API_URL, { method: 'POST', credentials: 'omit', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ clave: (window.SUI_PUERTA || {}).clave || '', fn: fn, args: args }) })
+      .then((r) => r.json()).then((j) => { if (!j.ok) throw new Error(j.error || 'Error del servidor'); return j.r; });
+    return new Promise((res, rej) => { const g = google.script.run.withSuccessHandler(res).withFailureHandler((e) => rej(new Error(msgError(e)))); if (window.SUI_PUERTA) g.apiLlamar(window.SUI_PUERTA.clave, fn, args); else g[fn](...args); });
+  };
+  const msgError = (e) => { const m = e && e.message ? String(e.message) : String(e || ''); return m.replace(/^Error:\s*/, '').trim() || 'El servidor no dio detalle del error. Pulse “Actualizar”; si persiste, revise la pestaña Log de la hoja.'; };
+
+  let DATOS = null, E = cargarEstado(), SEC = 'inicio', CAL = { anio: null, mes: null, eventos: [], sinFecha: [] }, FALTA = [], FIJOS = [], HIST = null, CONFIG = null, TAREAS = [], ULTIMO_FOCO = null, BAR = null;
+  const permisos = () => (DATOS && DATOS.usuario && DATOS.usuario.permisos) || [];
+  const puede = (p) => !DATOS || !DATOS.usuario || !DATOS.usuario.permisos || DATOS.usuario.permisos.indexOf(p) >= 0;
+  const periodoSel = () => $('gPeriodo').value || (DATOS && DATOS.periodo) || null;
+
+  function estado(txt) { $('estado').textContent = txt || ''; }
+  function ocupado(b, txt) { document.body.classList.toggle('ocupado', !!b); document.body.setAttribute('aria-busy', b ? 'true' : 'false'); if (txt !== undefined) estado(txt); }
+  function error(e, donde) { ocupado(false); estado((donde ? donde + ': ' : '') + msgError(e)); }
+
+  // ------------------------------------------------------------ modal accesible
+  function abrirModal(titulo, html) {
+    ULTIMO_FOCO = document.activeElement;
+    $('mTitulo').textContent = titulo; $('mCuerpo').innerHTML = html; $('modal').style.display = 'flex'; $('mTitulo').focus();
+  }
+  function cerrarModal() { $('modal').style.display = 'none'; $('mCuerpo').innerHTML = ''; if (ULTIMO_FOCO && ULTIMO_FOCO.focus) { try { ULTIMO_FOCO.focus(); } catch (x) { /* elemento ya no existe */ } } }
+  $('mCerrar').onclick = cerrarModal;
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape' && $('modal').style.display === 'flex') { cerrarModal(); return; }
+    if (ev.key === 'Tab' && $('modal').style.display === 'flex') {
+      const f = [...$('modal').querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter((x) => !x.disabled && x.offsetParent !== null);
+      if (!f.length) return; const a = f[0], z = f[f.length - 1];
+      if (ev.shiftKey && document.activeElement === a) { ev.preventDefault(); z.focus(); } else if (!ev.shiftKey && document.activeElement === z) { ev.preventDefault(); a.focus(); }
+    }
+  });
+  document.addEventListener('click', (ev) => { document.querySelectorAll('details.menu[open]').forEach((d) => { if (!d.contains(ev.target)) d.removeAttribute('open'); }); });
+
+  // ------------------------------------------------------------ secciones (pestañas con teclado)
+  function irA(sec, sinHash) {
+    SEC = sec;
+    document.querySelectorAll('#nav button').forEach((b) => b.setAttribute('aria-selected', b.dataset.sec === sec ? 'true' : 'false'));
+    ['inicio', 'formatos', 'fuentes', 'calendario', 'barrido', 'historial', 'config'].forEach((s) => { $('sec-' + s).hidden = s !== sec; });
+    if (!sinHash) { try { history.replaceState(null, '', '#' + sec); } catch (x) { /* sin historial */ } }
+    if (sec === 'calendario' && CAL.anio === null) { const h = new Date(); cargarCalendario(h.getFullYear(), h.getMonth() + 1); }
+    if (sec === 'fuentes') { cargarFijos(); if (!FALTA.length) cargarFaltante(false); }
+    if (sec === 'barrido' && !BAR) cargarBarrido();
+    if (sec === 'historial') cargarHistorial();
+    if (sec === 'config') cargarConfig();
+  }
+  document.querySelectorAll('#nav button').forEach((b) => { b.onclick = () => irA(b.dataset.sec); });
+  $('nav').addEventListener('keydown', (ev) => {
+    const bs = [...document.querySelectorAll('#nav button')]; const i = bs.indexOf(document.activeElement); if (i < 0) return;
+    let j = null; if (ev.key === 'ArrowRight') j = (i + 1) % bs.length; else if (ev.key === 'ArrowLeft') j = (i - 1 + bs.length) % bs.length; else if (ev.key === 'Home') j = 0; else if (ev.key === 'End') j = bs.length - 1;
+    if (j !== null) { ev.preventDefault(); bs[j].focus(); irA(bs[j].dataset.sec); }
+  });
+
+  // ------------------------------------------------------------ carga de datos
+  async function cargar(periodo) {
+    ocupado(true, 'Cargando…');
+    try {
+      DATOS = await run('apiEstado', periodo || $('gPeriodo').value || null);
+      try { TAREAS = await run('apiTareas', null); } catch (x) { TAREAS = []; }
+      pintarEncabezado(); pintarInicio(); pintarFormatos();
+      if (SEC === 'calendario') cargarCalendario(CAL.anio, CAL.mes);
+      ocupado(false, 'Actualizado ' + new Date().toLocaleTimeString());
+    } catch (e) { error(e, 'No se pudo cargar el estado'); $('iNota').textContent = 'No se pudo cargar: ' + msgError(e); }
+  }
+  function pintarEncabezado() {
+    const d = DATOS; $('lnkHoja').href = d.hojaUrl; $('lnkDrive').href = d.carpetaUrl || '#';
+    const sel = $('gPeriodo'); if (!sel.options.length) d.periodos.forEach((p) => { const o = document.createElement('option'); o.value = p; o.textContent = mesTexto(p); sel.appendChild(o); });
+    sel.value = d.periodo; $('quien').textContent = (d.usuario && d.usuario.correo ? d.usuario.correo : '') + (d.usuario && d.usuario.roles && d.usuario.roles.length ? ' · ' + d.usuario.roles.join(', ') : '') + ' · v' + (d.version || '');
+  }
+
+  // ------------------------------------------------------------ INICIO
+  function pintarInicio() {
+    const c = contadoresMes(DATOS.filas), r = DATOS.resumen;
+    $('iNota').textContent = 'Mes de trabajo: ' + mesTexto(DATOS.periodo) + '. Seguimiento desde el ' + (DATOS.seguimientoDesde || '1-jul-2026') + ' (lo anterior no genera vencidos ni faltantes' + (r.antesSeguimiento ? '; ' + r.antesSeguimiento + ' formatos de este mes quedan “antes del seguimiento”' : '') + '). ' + r.nota;
+    const sig = siguientesAcciones(DATOS.filas, permisos(), 5);
+    const ah = $('iAhora');
+    if (sig.length) {
+      ah.hidden = false;
+      ah.innerHTML = '<b>Qué hago ahora</b><ol style="margin:6px 0 0 18px;padding:0">' + sig.map((x, i) => `<li>${esc(x.f.nombre)} <span class="sub">(${esc(x.f.periodoLegible)} · ${esc(textoPlazo(x.f))})</span> – <button class="btn peq ${x.a.clase}" data-act="${x.a.codigo}" data-id="${esc(x.f.id)}" data-per="${esc(x.f.periodo)}" type="button">${esc(x.a.etiqueta)}</button></li>`).join('') + '</ol>';
+    } else { ah.hidden = false; ah.innerHTML = '<b>No hay acciones pendientes en este mes.</b> <span class="nota">Revise los datos faltantes o cambie el mes de trabajo.</span>'; }
+    $('iPasos').innerHTML = [
+      ['Completa los datos', c['faltan-datos'], 'formatos con datos por completar', 'faltan-datos'],
+      ['Revisa y aprueba', c.porAprobar, 'listos esperando aprobación', 'por-revisar'],
+      ['Descarga y carga en el SUI', c.paraCargar, 'aprobados, listos para cargar', 'aprobados-descargar'],
+      ['Registra la evidencia', c.cargados, 'cargados que faltan por certificar', 'cargados']
+    ].map((p) => `<button class="paso" type="button" data-vista="${p[3]}"><b>${p[0]}</b><span class="n">${p[1]}</span> <span class="nota">${p[2]}</span></button>`).join('');
+    $('iVistas').innerHTML = VISTAS.map((v) => `<button class="tarjeta" type="button" data-vista="${v.id}"><div class="n">${c[v.id]}</div><div class="t">${esc(v.titulo)}</div></button>`).join('') +
+      `<div class="tarjeta"><div class="n">${c.listos} / ${c.total}</div><div class="t">Listos del total del mes</div></div><div class="tarjeta"><div class="n">${c.certificados}</div><div class="t">Certificados ante el SUI</div></div>`;
+    $('iSinFecha').innerHTML = (c.historicos ? `<div class="aviso">${c.historicos} formato(s) llevan más de ${HISTORICO_DIAS} días vencidos sin evidencia. Casi siempre son cargues anteriores a esta aplicación: confírmelos en la vista “Vencidos sin evidencia” y registre la evidencia (o declare “no aplica” con fundamento y soporte). No se mezclan con “Qué hago ahora”.</div>` : '') + (r.sinFecha ? `<div class="aviso">${r.sinFecha} formato(s) de este mes no tienen una fecha de vencimiento confirmada (regla por verificar): no se les asigna una fecha estimada. Véalos en Calendario → Sin fecha confirmada.</div>` : '');
+    pintarEntrega();
+    $('iTareas').innerHTML = TAREAS.length ? '<table class="resp"><thead><tr><th scope="col">Tarea</th><th scope="col">Formato</th><th scope="col">Periodo</th><th scope="col">Vence</th></tr></thead><tbody>' + TAREAS.slice(0, 40).map((t) => `<tr><td data-l="Tarea">${esc(t.descripcion)}${t.periodo && DATOS && DATOS.periodo && String(t.periodo) < String(DATOS.periodo) ? ' <span class="ins off">pendiente de un periodo anterior</span>' : ''}</td><td data-l="Formato">${esc(nombreDe(t.formato))}</td><td data-l="Periodo">${esc(t.periodo)}</td><td data-l="Vence">${esc(t.vence || '–')}</td></tr>`).join('') + '</tbody></table>' : '<p class="nota">No hay tareas abiertas.</p>';
+  }
+  // ---- lista de entrega por responsable
+  function pintarEntrega() {
+    const gr = agruparPorResponsable(DATOS.filas, { soloListos: $('entSoloListos').checked });
+    if (!gr.length) { $('iEntrega').innerHTML = '<p class="nota">No hay formatos pendientes de entrega con este criterio.</p>'; return; }
+    const sinResp = gr.filter((g) => g.responsable === SIN_RESP)[0];
+    $('iEntrega').innerHTML = (sinResp ? `<div class="aviso no-imprimir">${sinResp.total} formato(s) no tienen responsable. Use “Asignar responsables…” para ponerlo por servicio, por tema o por formato; mientras tanto aparecen en “${SIN_RESP}”.</div>` : '') +
+      gr.map((g, k) => `<details class="grupo-entrega" ${k < 3 || g.vencidos ? 'open' : ''}><summary>${esc(g.responsable)} — ${g.total} formato(s) · ${g.listos} listo(s) para entregar${g.vencidos ? ' · <span class="ins err">⏰ ' + g.vencidos + ' vencido(s)</span>' : ''}</summary>
+        ${g.ids.length ? `<p class="no-imprimir"><button class="btn ok peq" type="button" data-zip-ent="${k}">⬇ Descargar los ${g.ids.length} archivo(s) listos (ZIP)</button></p>` : ''}
+        <table class="resp"><thead><tr><th scope="col">Formato</th><th scope="col">Periodo</th><th scope="col">Vence</th><th scope="col">Estado</th><th scope="col">Qué hacer</th></tr></thead><tbody>` +
+        g.items.map((x) => `<tr><td data-l="Formato"><b>${esc(x.f.nombre)}</b><div class="sub">${esc(x.f.servicio === 'Ambos' ? 'Comunes AA' : x.f.servicio)} · ${esc(x.f.codigo || x.f.id)}</div></td><td data-l="Periodo">${esc(x.f.periodoLegible || x.f.periodo)}</td><td data-l="Vence">${x.f.limite ? '<b>' + esc(x.f.limite) + '</b>' : esc(x.f.limiteTexto)}${x.f.vencido ? '<div><span class="ins err">⏰ ' + esc(textoPlazo(x.f)) + '</span></div>' : ''}</td><td data-l="Estado"><span class="ins ${x.e.clase}">${esc(x.e.etiqueta)}</span></td><td data-l="Qué hacer">${esc(x.e.accion)}</td></tr>`).join('') + '</tbody></table></details>').join('');
+    window.ENT_GRUPOS = gr;
+  }
+  $('entSoloListos').onchange = () => { if (DATOS) pintarEntrega(); };
+  $('iEntrega').addEventListener('click', async (ev) => {
+    const b = ev.target.closest('[data-zip-ent]'); if (!b) return; const g = window.ENT_GRUPOS[Number(b.dataset.zipEnt)];
+    ocupado(true, 'Armando el ZIP de ' + g.responsable + '…');
+    try { bajar(await run('apiDescargarZipIds', g.ids, periodoSel())); ocupado(false, 'ZIP descargado (' + g.ids.length + ' archivo(s) para ' + g.responsable + ').'); await cargar(); } catch (e) { error(e, 'No se pudo armar el ZIP'); }
+  });
+  $('btnEntCsv').onclick = () => { const gr = agruparPorResponsable(DATOS.filas, { soloListos: $('entSoloListos').checked }); const blob = new Blob(['\ufeff' + listaCsv(gr)], { type: 'text/csv;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'Lista_entrega_' + periodoSel() + '.csv'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000); estado('Lista descargada (' + gr.reduce((n, g) => n + g.total, 0) + ' formatos).'); };
+  $('btnEntCopiar').onclick = async () => { const t = listaTexto(agruparPorResponsable(DATOS.filas, { soloListos: $('entSoloListos').checked })); try { await navigator.clipboard.writeText(t); estado('Lista copiada: péguela en un correo o mensaje.'); } catch (e) { abrirModal('Lista para copiar', '<textarea style="min-height:50vh" readonly aria-label="Lista">' + esc(t) + '</textarea>'); } };
+  $('btnEntImprimir').onclick = () => { irA('inicio'); window.print(); };
+  $('btnResp').onclick = async () => {
+    if (!puede('administrar')) { estado('Solo un administrador puede asignar responsables.'); return; }
+    abrirModal('Asignar responsables', '<p>Cargando…</p>');
+    let reglas = []; try { reglas = await run('apiResponsables'); } catch (e) { $('mCuerpo').innerHTML = '<div class="aviso err">No se pudieron leer los responsables: ' + esc(msgError(e)) + '</div>'; return; }
+    const servicios = [...new Set(DATOS.filas.map((f) => f.servicio))].sort(), temas = [...new Set(DATOS.filas.map((f) => f.tema).filter(String))].sort(), esteMes = DATOS.filas;
+    const norma = (s) => norm(s);
+    const buscar = (tipo, valor) => reglas.filter((r) => { const m = r.clave.match(/^(FORMATO|TEMA|SERVICIO):(.+)$/); return m && m[1] === tipo && (tipo === 'FORMATO' ? m[2] === valor : norma(m[2]) === norma(valor)); })[0] || {};
+    const fila = (tipo, valor, etiqueta) => { const r = buscar(tipo, valor); return `<tr><td>${esc(etiqueta)}</td><td><input data-clave="${esc(tipo + ':' + valor)}" data-c="responsable" value="${esc(r.responsable || '')}" aria-label="Responsable de ${esc(etiqueta)}" style="width:210px"></td><td><input data-clave="${esc(tipo + ':' + valor)}" data-c="contacto" value="${esc(r.contacto || '')}" aria-label="Contacto de ${esc(etiqueta)}" placeholder="correo o teléfono (opcional)" style="width:210px"></td></tr>`; };
+    const porFormato = reglas.filter((r) => /^FORMATO:/.test(r.clave)).map((r) => r.clave.slice(8));
+    $('mCuerpo').innerHTML = `<p class="nota">El responsable de un formato es, en este orden: el asignado al formato, el de su tema, el de su servicio. Deje el campo vacío para quitar una asignación. Estos nombres son datos personales: se guardan solo en la hoja de la empresa.</p>
+      <h3>Por servicio</h3><table><thead><tr><th scope="col">Servicio</th><th scope="col">Responsable</th><th scope="col">Contacto</th></tr></thead><tbody>${servicios.map((s) => fila('SERVICIO', s, s === 'Ambos' ? 'Comunes Acueducto y Alcantarillado' : s)).join('')}</tbody></table>
+      <h3>Por tema (tiene prioridad sobre el servicio)</h3><table><thead><tr><th scope="col">Tema</th><th scope="col">Responsable</th><th scope="col">Contacto</th></tr></thead><tbody>${temas.map((s) => fila('TEMA', s, s)).join('')}</tbody></table>
+      <h3>Por formato (tiene prioridad sobre el tema)</h3><table><thead><tr><th scope="col">Formato</th><th scope="col">Responsable</th><th scope="col">Contacto</th></tr></thead><tbody id="respFormatos">${porFormato.map((id) => fila('FORMATO', id, nombreDe(id))).join('')}</tbody></table>
+      <div class="fila-busca" style="margin:8px 0"><input id="respNuevoFormato" list="respLista" placeholder="Buscar un formato para asignarle una persona" aria-label="Formato para asignar" style="width:340px"><datalist id="respLista">${esteMes.map((f) => `<option value="${esc(f.id)}">${esc(f.nombre)}</option>`).join('')}</datalist><button class="btn sec peq" id="respAgregar" type="button">Agregar formato</button></div>
+      <p><button class="btn ok" id="respGuardar" type="button">Guardar responsables</button> <span class="nota" id="respMsg" role="status"></span></p>`;
+    const inicial = {}; $('mCuerpo').querySelectorAll('input[data-clave]').forEach((x) => { inicial[x.dataset.clave + '|' + x.dataset.c] = x.value; });
+    $('respAgregar').onclick = () => { const id = $('respNuevoFormato').value.trim(); const f = DATOS.filas.filter((x) => x.id === id)[0]; if (!f) { $('respMsg').textContent = 'Elija un formato de la lista (escriba su ID o nombre).'; return; } if ($('mCuerpo').querySelector(`input[data-clave="FORMATO:${id}"]`)) { $('respMsg').textContent = 'Ese formato ya está en la tabla.'; return; } $('respFormatos').insertAdjacentHTML('beforeend', fila('FORMATO', id, f.nombre)); $('respNuevoFormato').value = ''; };
+    $('respGuardar').onclick = async () => {
+      const claves = {}; $('mCuerpo').querySelectorAll('input[data-clave]').forEach((x) => { const k = x.dataset.clave; claves[k] = claves[k] || { clave: k, responsable: '', contacto: '', cambio: false }; claves[k][x.dataset.c] = x.value.trim(); if (x.value !== (inicial[k + '|' + x.dataset.c] === undefined ? '' : inicial[k + '|' + x.dataset.c])) claves[k].cambio = true; });
+      const cambios = Object.keys(claves).map((k) => claves[k]).filter((c) => c.cambio).map((c) => ({ clave: c.clave, responsable: c.responsable, contacto: c.contacto }));
+      if (!cambios.length) { $('respMsg').textContent = 'No hay cambios.'; return; }
+      $('respMsg').textContent = 'Guardando…';
+      try { const r = await run('apiGuardarResponsables', cambios); cerrarModal(); estado('Responsables guardados (' + r.guardados + ' asignados, ' + r.borrados + ' quitados).'); await cargar(); } catch (e) { $('respMsg').textContent = 'No se pudo guardar: ' + msgError(e); }
+    };
+  };
+  const nombreDe = (id) => { const f = DATOS && DATOS.filas.filter((x) => x.id === id)[0]; return f ? f.nombre : id; };
+
+  // ------------------------------------------------------------ FORMATOS: filtros, orden, tabla
+  function aplicarVista(id) {
+    if (id === 'cargados') { E = ESTADO_INICIAL(); E.sel = { aplica: ['aplica', 'por verificar'], sui: ['cargado'] }; }
+    else E.vista = E.vista === id ? '' : id;
+    guardarEstado(E); irA('formatos'); pintarFormatos();
+  }
+  function pintarFormatos(foco) {
+    if (!DATOS) return;
+    const y = window.scrollY;
+    $('fTexto').value = E.texto; $('fDesde').value = E.desde; $('fHasta').value = E.hasta; $('fOrden').value = E.orden; $('fDir').textContent = E.dir === 1 ? '↑ Ascendente' : '↓ Descendente';
+    const c = contadoresMes(DATOS.filas);
+    $('fVistas').innerHTML = VISTAS.map((v) => `<button type="button" class="vista" aria-pressed="${E.vista === v.id}" data-vista="${v.id}">${esc(v.titulo)}<span class="n">${c[v.id]}</span></button>`).join('');
+    $('fGrupos').innerHTML = FILTROS.map((d) => {
+      const ops = opcionesDe(DATOS.filas, E, d.clave);
+      return `<fieldset class="grupo" data-k="${d.clave}"><legend>${esc(d.titulo)}</legend>` + ops.map((o) => `<label><input type="checkbox" data-filtro="${d.clave}" value="${esc(o.valor)}" ${o.marcada ? 'checked' : ''}> <span>${esc(o.etiqueta)} <span class="sub">(${o.n})</span></span></label>`).join('') + '</fieldset>';
+    }).join('');
+    const act = etiquetasActivas(E);
+    $('fActivos').innerHTML = act.length ? act.map((t, i) => `<span class="etiqueta">${esc(t.texto)}<button type="button" data-quitar="${i}" aria-label="Quitar filtro ${esc(t.texto)}">×</button></span>`).join('') : '<span class="nota">Sin filtros: se muestran todos los formatos del mes.</span>';
+    const visibles = ordenar(aplicarFiltros(DATOS.filas, E), E.orden, E.dir);
+    $('fCuenta').textContent = visibles.length + ' de ' + DATOS.filas.length + ' formatos coinciden con los filtros';
+    $('fContadores').textContent = 'Resultado filtrado: ' + visibles.length + '. Total del mes (formatos exigibles, sin filtrar): ' + c.total + ' · listos ' + c.listos + ' · vencidos ' + c.vencidos + '. Los conteos entre paréntesis de cada filtro son lo que quedaría al marcarlo. Las categorías se superponen: un formato puede estar listo y vencido a la vez.';
+    $('fCuerpo').innerHTML = visibles.map((f) => filaTabla(f)).join('') || '<tr><td colspan="8">Ningún formato coincide con estos filtros. Pruebe “Limpiar filtros”.</td></tr>';
+    actualizarSeleccion();
+    window.scrollTo(0, y);
+    if (foco) { const el = [...document.querySelectorAll('#fGrupos input')].filter((x) => x.dataset.filtro === foco.k && x.value === foco.v)[0]; if (el) el.focus(); }
+  }
+  function filaTabla(f) {
+    const i = insignias(f), a = accionPrincipal(f, permisos()), sec = accionesSecundarias(f, permisos());
+    const dis = f.listoDescarga && exigible(f) ? '' : 'disabled title="Sin archivo descargable"';
+    return `<tr>
+      <td data-l="Elegir"><input type="checkbox" class="sel" value="${esc(f.id)}" aria-label="Elegir ${esc(f.nombre)}" ${dis}></td>
+      <td data-l="Formato"><b>${esc(f.nombre)}</b><div class="sub">${esc(f.servicio === 'Ambos' ? 'Comunes AA' : f.servicio)} · ${esc(f.codigo || f.id)} · ${esc(f.tema)} · ${esc(f.periodicidad)}${f.tipoObligacion !== 'periódica' ? ' · ' + esc(f.tipoObligacion) : ''}</div>
+        <div class="sub">${esc(f.tipoSalidaTxt)}${f.automatico ? '' : ' · <b>se diligencia a mano</b>'}</div>
+        ${f.aplicabilidad !== 'aplica' ? `<div class="sub"><span class="ins ${f.aplicabilidad === 'por verificar' ? 'warn' : 'off'}">${esc(f.aplicabilidad)}</span> ${esc(f.aplicabilidadFundamento)}</div>` : ''}
+        <div class="sub">${esc(f.mensaje || '')}</div></td>
+      <td data-l="Periodo reportado">${esc(f.periodoLegible || f.periodo)}${f.primeraPresentacion ? `<div class="sub">Primera presentación: ${esc(f.primeraPresentacion)}</div>` : ''}</td>
+      <td data-l="Vence">${f.limite ? '<b>' + esc(f.limite) + '</b>' : esc(f.limiteTexto)}<div class="sub">${f.vencido ? '' : esc(textoPlazo(f))}</div>${i.vencido ? `<span class="ins err">${esc(i.vencido[1])}</span>` : ''}</td>
+      <td data-l="Preparación"><span class="ins ${i.prep[0]}">${esc(i.prep[1])}</span>${f.preparacion === 'listo' ? `<div class="sub">${f.registros} registros evaluados${f.errores ? ' · ' + f.errores + ' errores' : ''}</div>` : (f.registros === 0 && f.automatico ? '<div class="sub">0 registros evaluados: no hay validación que mostrar</div>' : '')}${f.datosHasta ? `<div class="sub">Datos hasta ${esc(f.datosHasta)} ${f.alDia ? '(al día)' : '(incompleto)'}</div>` : ''}</td>
+      <td data-l="Aprobación"><span class="ins ${i.apr[0]}">${esc(i.apr[1])}</span></td>
+      <td data-l="Ante el SUI"><span class="ins ${i.sui[0]}">${esc(i.sui[1])}</span>${f.radicado ? `<div class="sub">${esc(f.radicado)}</div>` : ''}${f.descargado && f.estadoSUI === 'sin reportar' ? '<div class="sub">Descargado, pero no reportado: descargar no cumple la obligación</div>' : ''}</td>
+      <td data-l="Acción" class="acciones"><button class="btn peq ${a.clase === 'warn' ? '' : a.clase}" ${a.clase === 'warn' ? 'style="background:#7a4a00"' : ''} data-act="${a.codigo}" data-id="${esc(f.id)}" data-per="${esc(f.periodo)}" type="button">${esc(a.etiqueta)}</button>
+        <details class="menu"><summary aria-label="Más acciones para ${esc(f.nombre)}">Más ▾</summary><div class="menu-lista">${sec.map((s) => `<button type="button" data-act="${s.codigo}" data-id="${esc(f.id)}" data-per="${esc(f.periodo)}">${esc(s.etiqueta)}</button>`).join('')}</div></details></td>
+    </tr>`;
+  }
+  function actualizarSeleccion() {
+    const ids = [...document.querySelectorAll('.sel:checked')].map((x) => x.value);
+    const box = $('fSeleccion');
+    if (!ids.length) { box.hidden = true; return; }
+    const r = resumenSeleccion(DATOS.filas, ids);
+    box.hidden = false;
+    box.innerHTML = `<b>${ids.length} seleccionado(s)</b>: el ZIP incluye <b>${r.incluidos.length}</b> archivo(s)${r.noCargables ? ` (${r.noCargables} son hojas de apoyo o formularios para digitar: no se cargan como archivo)` : ''}.` +
+      (r.excluidos.length ? `<details><summary>${r.excluidos.length} excluido(s)</summary><ul>${r.excluidos.map((x) => `<li>${esc(x.nombre)}: ${esc(x.motivo)}</li>`).join('')}</ul></details>` : '');
+  }
+
+  // eventos de filtros (delegación)
+  $('fGrupos').addEventListener('change', (ev) => {
+    const t = ev.target; if (!t.dataset.filtro) return;
+    const k = t.dataset.filtro; const l = new Set(E.sel[k] || []); if (t.checked) l.add(t.value); else l.delete(t.value);
+    E.sel[k] = [...l]; if (!E.sel[k].length) delete E.sel[k]; guardarEstado(E); pintarFormatos({ k: k, v: t.value });
+  });
+  $('fActivos').addEventListener('click', (ev) => {
+    const b = ev.target.closest('[data-quitar]'); if (!b) return; const t = etiquetasActivas(E)[Number(b.dataset.quitar)];
+    if (t.tipo === 'texto') E.texto = ''; else if (t.tipo === 'sel') delete E.sel[t.clave]; else if (t.tipo === 'fecha') { E.desde = ''; E.hasta = ''; } else if (t.tipo === 'vista') E.vista = '';
+    guardarEstado(E); pintarFormatos();
+  });
+  $('fVistas').addEventListener('click', (ev) => { const b = ev.target.closest('[data-vista]'); if (b) { E.vista = E.vista === b.dataset.vista ? '' : b.dataset.vista; guardarEstado(E); pintarFormatos(); } });
+  $('fTexto').oninput = () => { E.texto = $('fTexto').value; guardarEstado(E); pintarFormatos(); };
+  $('fDesde').onchange = () => { E.desde = $('fDesde').value; guardarEstado(E); pintarFormatos(); };
+  $('fHasta').onchange = () => { E.hasta = $('fHasta').value; guardarEstado(E); pintarFormatos(); };
+  $('fOrden').onchange = () => { E.orden = $('fOrden').value; guardarEstado(E); pintarFormatos(); };
+  $('fDir').onclick = () => { E.dir = -E.dir; guardarEstado(E); pintarFormatos(); };
+  $('btnLimpiar').onclick = () => { E = ESTADO_INICIAL(); E.sel = {}; guardarEstado(E); pintarFormatos(); estado('Filtros limpiados: se ven todos los formatos del mes, incluidos los que no aplican.'); };
+  $('selTodos').onchange = (ev) => { document.querySelectorAll('.sel:not(:disabled)').forEach((x) => { x.checked = ev.target.checked; }); actualizarSeleccion(); };
+  $('fCuerpo').addEventListener('change', (ev) => { if (ev.target.classList.contains('sel')) actualizarSeleccion(); });
+
+  // vistas rápidas desde Inicio
+  document.addEventListener('click', (ev) => {
+    const v = ev.target.closest('[data-vista]'); if (v && !$('fVistas').contains(v)) { aplicarVista(v.dataset.vista); return; }
+    const b = ev.target.closest('[data-act]'); if (b) { const d = b.closest('details.menu'); if (d) d.removeAttribute('open'); accion(b.dataset.act, b.dataset.id, b.dataset.per); }
+  });
+
+  // ------------------------------------------------------------ acciones por formato
+  const fila = (id, per) => (DATOS && DATOS.filas.filter((x) => x.id === id && (!per || x.periodo === per))[0]) || (CAL.eventos || []).filter((x) => x.id === id && (!per || x.periodo === per))[0];
+  async function accion(cod, id, per) {
+    try {
+      switch (cod) {
+        case 'generar': return regenerar(id);
+        case 'descargar': return descargar(id, per);
+        case 'completar': return completarDatos(id, per);
+        case 'errores': return verErrores(id, per);
+        case 'diagnostico': return verDiagnostico(id, per);
+        case 'traza': return verTraza(id, per);
+        case 'apoyo': return verApoyo(id);
+        case 'revisar': return revisar(id, per);
+        case 'evidencia': return evidencia(id, per);
+        case 'noaplica': return declararNoAplica(id, per);
+        case 'retirarnoaplica': if (confirm('¿Retirar la declaración de “no aplica”? El formato volverá a ser exigible.')) { await run('apiRetirarNoAplicable', id, per); await cargar(); } return;
+        case 'ficha': return verFicha(id);
+        default: return;
+      }
+    } catch (e) { error(e, 'No se pudo completar la acción'); }
+  }
+  async function regenerar(id) {
+    ocupado(true, 'Generando ' + (id === '*' ? 'todos los automáticos' : id) + '… (puede tardar)');
+    try { const r = await run('apiProcesar', id, periodoSel()); ocupado(false, (r.resumen || []).map((x) => x.formato + ': ' + x.estado).slice(0, 8).join(' · ')); await cargar(); CAL.anio = null; }
+    catch (e) { error(e, 'No se pudo generar'); }
+  }
+  function bajar(a) {
+    const bytes = atob(a.base64); const arr = new Uint8Array(bytes.length); for (let i = 0; i < bytes.length; i++) arr[i] = bytes.charCodeAt(i);
+    const url = URL.createObjectURL(new Blob([arr], { type: a.mime })); const l = document.createElement('a'); l.href = url; l.download = a.nombre; document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000);
+  }
+  async function descargar(id, per) {
+    const f = fila(id, per);
+    if (f && f.tipoSalida && f.tipoSalida !== 'cargue_csv' && !confirm('Este archivo es: ' + (f.tipoSalidaTxt || 'una hoja de apoyo') + '.\nNO es un archivo de cargue masivo del SUI; sirve para revisar o digitar. ¿Descargar de todas formas?')) return;
+    ocupado(true, 'Preparando descarga…');
+    try { bajar(await run('apiDescargar', id, per)); ocupado(false, 'Descargado. Recuerde: descargar no cumple la obligación; falta cargar, certificar y registrar la evidencia.'); await cargar(); }
+    catch (e) { error(e, 'No se pudo descargar'); }
+  }
+  $('btnZipSel').onclick = async () => {
+    const ids = [...document.querySelectorAll('.sel:checked')].map((x) => x.value); if (!ids.length) { estado('Elija al menos un formato con archivo descargable.'); return; }
+    const r = resumenSeleccion(DATOS.filas, ids); if (!r.incluidos.length) { estado('Ninguno de los elegidos tiene archivo descargable (' + r.excluidos.length + ' excluidos).'); return; }
+    if (r.excluidos.length && !confirm('Se descargarán ' + r.incluidos.length + ' archivos.\nQuedan excluidos ' + r.excluidos.length + ':\n- ' + r.excluidos.map((x) => x.nombre + ' (' + x.motivo + ')').slice(0, 12).join('\n- ') + '\n¿Continuar?')) return;
+    ocupado(true, 'Armando ZIP de ' + r.incluidos.length + ' archivos…');
+    try { bajar(await run('apiDescargarZipIds', r.incluidos.map((f) => f.id), periodoSel())); ocupado(false, 'ZIP descargado (' + r.incluidos.length + ' archivos' + (r.noCargables ? '; ' + r.noCargables + ' no se cargan como archivo' : '') + ').'); await cargar(); }
+    catch (e) { error(e, 'No se pudo armar el ZIP'); }
+  };
+  $('btnTodo').onclick = () => { if (confirm('¿Generar todos los formatos automáticos de ' + mesTexto(periodoSel()) + '? Puede tardar varios minutos.')) regenerar('*'); };
+  $('btnRefrescar').onclick = () => cargar();
+  $('btnAyuda').onclick = () => abrirModal('¿Cómo funciona el portal?', `
+    <p>La aplicación <b>lee las hojas de la empresa</b> (APLICACIÓN y San_Antonio), <b>calcula y arma los archivos</b> de cada formato y le dice a cada persona <b>qué le falta</b>. <b>No carga ni certifica nada en el SUI</b>: esa parte la hace quien tiene acceso a la página de la Superintendencia.</p>
+    <h3>El recorrido de cada formato</h3>
+    <ol>
+      <li><b>Completar los datos.</b> En “Fuentes y datos faltantes” se ve qué falta y por qué; los datos que no cambian se escriben una sola vez en “Datos fijos de la empresa”.</li>
+      <li><b>Generar.</b> Solo, cada día a las 5:00, o con el botón “Generar”.</li>
+      <li><b>Revisar y aprobar.</b> Una persona con permiso revisa y aprueba el archivo (decisión interna).</li>
+      <li><b>Entregar.</b> En “Inicio y tareas → Lista de entrega por responsable” se ve qué entrega cada persona; se descarga el archivo o el ZIP del grupo.</li>
+      <li><b>Cargar y certificar</b> (fuera de la aplicación, en el SUI). Si quien carga pasa el radicado, se puede dejar constancia con “Registrar evidencia”.</li>
+    </ol>
+    <h3>Los estados son cosas distintas</h3>
+    <dl class="ficha"><dt>Preparación</dt><dd>Si el archivo está listo, le faltan datos, tiene errores, no tiene datos del periodo o se diligencia a mano.</dd>
+    <dt>Aprobación</dt><dd>Si ya lo revisó y aprobó una persona de la empresa.</dd>
+    <dt>Ante el SUI</dt><dd>Sin reportar, cargado o certificado. Descargar un archivo no cumple la obligación.</dd>
+    <dt>Vencido</dt><dd>Es una condición adicional: un archivo listo también puede estar vencido si pasó la fecha.</dd>
+    <dt>Antes del seguimiento</dt><dd>Obligaciones que vencieron antes del ${esc((DATOS && DATOS.seguimientoDesde) || '1-jul-2026')}: la aplicación empezó a operar después y no las cuenta como pendientes.</dd></dl>
+    <h3>Dónde está cada cosa</h3>
+    <ul><li><b>Operación de barrido</b>: peso por microrruta, fotos y el informe mensual en DOCX (se genera solo el día 3). “Sin dato” no es cero.</li><li><b>Inicio y tareas</b>: qué hacer ahora, vistas rápidas y lista de entrega por responsable.</li><li><b>Formatos y archivos</b>: todos los formatos, con filtros, búsqueda y descargas.</li><li><b>Fuentes y datos faltantes</b>: datos fijos y diagnóstico de las hojas.</li><li><b>Calendario</b>: vencimientos del mes (solo con fecha confirmada).</li><li><b>Historial y evidencias</b>: lo que se registró y se descargó.</li><li><b>Configuración</b>: tareas programadas, valores predeterminados y reglas por verificar.</li></ul>
+    <p class="nota">Nunca se llena un dato con un valor inventado: si falta algo, el formato queda en borrador y el portal dice qué falta.</p>`);
+  $('gPeriodo').onchange = () => { CAL.anio = null; FALTA = []; HIST = null; cargar($('gPeriodo').value); };
+
+  async function verErrores(id, per) {
+    const errs = await run('apiErrores', id, per);
+    abrirModal('Errores – ' + nombreDe(id) + ' (' + per + ')', errs.length ? '<table class="resp"><thead><tr><th scope="col">Dónde</th><th scope="col">Campo</th><th scope="col">Qué pasa</th><th scope="col">Qué hacer</th></tr></thead><tbody>' + errs.slice(0, 300).map((e) => `<tr><td data-l="Dónde">${esc(e.fila)}</td><td data-l="Campo">${esc(e.campo)}</td><td data-l="Qué pasa"><span class="nota">${esc(e.tipo)}</span> ${esc(e.detalle)}</td><td data-l="Qué hacer"><b>${esc(e.queHacer || '')}</b></td></tr>`).join('') + '</tbody></table>' + (errs.length > 300 ? `<p class="nota">Se muestran 300 de ${errs.length}.</p>` : '') : '<p>Sin errores registrados. Si el formato tiene 0 registros, “0 errores” no significa que se haya validado algo.</p>');
+  }
+  async function verApoyo(id) {
+    const a = await run('apiApoyo', id);
+    abrirModal(a ? a.titulo : 'Datos calculados', !a ? '<p>Aún no se ha generado. Use “Generar”.</p>' :
+      `<p class="nota">${esc(a.periodo)}<br>${esc(a.instrucciones)}<br>${esc(a.generado)} · <a href="${esc(a.url)}" target="_blank" rel="noopener">Abrir en la hoja</a>${a.urlSUI ? ' · <a href="' + esc(a.urlSUI) + '" target="_blank" rel="noopener"><b>Formulario con la disposición oficial del SUI</b></a>' : ''}</p>
+       <div style="overflow:auto"><table><thead><tr>${a.encabezados.map((h) => '<th scope="col">' + esc(h) + '</th>').join('')}</tr></thead><tbody>${a.filas.map((f) => '<tr>' + f.map((v) => '<td>' + esc(v) + '</td>').join('') + '</tr>').join('')}</tbody></table></div>`);
+  }
+  async function verDiagnostico(id, per) {
+    abrirModal('Qué falta en las fuentes – ' + nombreDe(id), '<p>Revisando las fuentes sin generar el formato…</p>');
+    const d = await run('apiDiagnosticoFormato', id, per);
+    $('mCuerpo').innerHTML = `<p class="nota">Periodo ${esc(d.periodo)}. ${esc(d.resumen)}</p>` +
+      (d.items.length ? d.items.map((x) => `<div class="aviso"><b>${esc(x.titulo)}</b><br>${esc(x.explicacion)}<br><b>Qué hacer:</b> ${esc(x.accion)}${x.fuente ? '<br><span class="sub">Fuente: ' + esc(x.fuente) + '</span>' : ''}</div>`).join('') : '<div class="aviso ok">Las fuentes tienen datos para este periodo. Si el formato sigue en borrador, abra “Ver errores”.</div>') +
+      (d.fuentes.length ? '<h3>Pestañas revisadas</h3><table class="resp"><thead><tr><th scope="col">Pestaña</th><th scope="col">Filas</th><th scope="col">En el periodo</th><th scope="col">Última fecha</th><th scope="col">Resultado</th></tr></thead><tbody>' + d.fuentes.map((s) => `<tr><td data-l="Pestaña">${esc(s.alias)}:${esc(s.pestana)}</td><td data-l="Filas">${s.filas}</td><td data-l="En el periodo">${s.enPeriodo === null ? '–' : s.enPeriodo}</td><td data-l="Última fecha">${esc(s.ultimaFecha || '–')}</td><td data-l="Resultado">${esc(s.estado === 'ok' ? '✔ correcta' : s.estado.replace(/_/g, ' '))}</td></tr>`).join('') + '</tbody></table>' : '');
+  }
+  async function verTraza(id, per) {
+    const t = await run('apiTrazabilidad', id, per);
+    abrirModal('Trazabilidad – ' + nombreDe(id), !t ? '<p>Aún no hay una lectura registrada para este periodo. Genere el formato.</p>' : `<dl class="ficha"><dt>Última lectura</dt><dd>${esc(t.ultimaLectura)}</dd><dt>Fuentes leídas</dt><dd>${esc(t.fuentes || '–')}</dd><dt>Columnas usadas</dt><dd>${esc(t.columnas || '–')}</dd><dt>Campo que fija el periodo</dt><dd>${esc(t.campoPeriodo || '–')}</dd><dt>Filtros</dt><dd>${esc(t.filtros)}</dd><dt>Reglas</dt><dd>${esc(t.reglas)}</dd>
+      <dt>Registros</dt><dd>${esc(t.leidas)} leídos · ${esc(t.enPeriodo === '' ? '?' : t.enPeriodo)} en el periodo · ${esc(t.incluidas)} incluidos · ${esc(t.rechazadas === '' ? '?' : t.rechazadas)} rechazados por filtros o reglas</dd><dt>Errores</dt><dd>${t.bloqueantes} bloqueantes (${t.faltantes} datos faltantes, ${t.otros} otros) · ${t.avisos} avisos</dd>
+      <dt>Versiones</dt><dd>Archivo v${esc(t.version || '–')} · reglas de la aplicación ${esc(t.reglasVersion)} · huella de las fuentes ${esc(t.huella)}</dd><dt>Tipo de salida</dt><dd>${esc(t.salida)}</dd></dl>`);
+  }
+  async function verFicha(id) {
+    const f = await run('apiFicha', id); const v = f.verificacion || {};
+    let html = `<dl class="ficha"><dt>Qué es</dt><dd>${esc(f.servicio)} · ${esc(f.topico)} · ${esc(f.tipoSalidaTxt || f.tipo)} · ${esc(f.periodicidad)}${f.codigo ? ' · código SUI ' + esc(f.codigo) : ''}</dd>
+      <dt>Fecha máxima de cargue</dt><dd>${esc(f.fechaLimite)}${f.primeraPresentacion ? '<br>Primera presentación: ' + esc(f.primeraPresentacion) : ''}${f.vigenteDesde ? '<br>Exigible desde ' + esc(f.vigenteDesde) : ''}</dd>
+      <dt>Norma</dt><dd>${esc(f.norma)}<br><span class="ins ${v.estado === 'verificado' ? 'ok' : (v.estado === 'por verificar' ? 'warn' : 'info')}">${esc(v.estado || '')}</span> ${v.fuente ? 'Fuente: ' + esc(v.fuente) : ''}${v.enlace ? ' · <a href="' + esc(v.enlace) + '" target="_blank" rel="noopener">enlace</a>' : ''} · consulta ${esc(v.consulta || '')} · vigencia: ${esc(v.vigencia || '')}${v.pendiente ? '<br>Por verificar: ' + esc(v.pendiente) : ''}</dd>
+      <dt>¿Aplica?</dt><dd>${esc(f.aplica)} ${esc(f.razonAplica ? '– ' + f.razonAplica : '')}</dd><dt>Qué información contiene</dt><dd>${esc(f.informacion)}</dd><dt>De dónde sale el dato</dt><dd>${esc(f.fuenteProbable)}</dd>
+      <dt>¿Se genera solo?</dt><dd>${f.automatico ? 'Sí, desde las hojas fuente' : 'No: se digita o se carga a mano (ver “Fuentes y datos faltantes”)'}</dd></dl>`;
+    if (f.campos.length) html += '<h3>Campos del archivo SUI</h3><div style="overflow:auto"><table><thead><tr><th scope="col">#</th><th scope="col">Campo</th><th scope="col">Tipo</th><th scope="col">Oblig.</th><th scope="col">De dónde se toma</th><th scope="col">Códigos / nota</th></tr></thead><tbody>' + f.campos.map((c) => `<tr><td>${c.n}</td><td>${esc(c.nombre)}</td><td>${esc(c.tipo)}</td><td>${esc(c.obligatorio)}</td><td>${esc(c.origen)}</td><td class="sub">${esc(c.dominio)}${c.nota ? ' · ' + esc(c.nota) : ''}</td></tr>`).join('') + '</tbody></table></div>';
+    abrirModal(f.nombre, html);
+  }
+
+  // ---- completar datos (captura de lo realmente faltante)
+  let PEND = [];
+  async function completarDatos(id, per) {
+    abrirModal('Completar datos', '<p>Cargando campos pendientes…</p>');
+    const d = await run('apiCamposPendientes', id, per);
+    if (!d.pendientes.length) {
+      const dg = d.diagnostico;
+      $('mCuerpo').innerHTML = `<p>No hay campos sueltos por completar en ${esc(d.formato)}.</p>` + (dg && dg.items && dg.items.length ? '<p><b>Pero el formato no está completo:</b></p>' + dg.items.map((x) => `<div class="aviso"><b>${esc(x.titulo)}</b><br>${esc(x.explicacion)}<br><b>Qué hacer:</b> ${esc(x.accion)}</div>`).join('') : '<p class="nota">Pulse “Generar” para actualizar la lista.</p>');
+      return;
+    }
+    PEND = d.pendientes;
+    const filas = d.pendientes.map((p, i) => {
+      const op = p.valoresPermitidos.length ? `<select id="cap_${i}"><option value="">— seleccione —</option>${p.valoresPermitidos.map((v) => `<option value="${esc(v)}" ${String(p.valorActual) === v ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select>` : `<input id="cap_${i}" type="${p.tipo === 'entero' || p.tipo === 'decimal' ? 'number' : 'text'}" value="${esc(p.valorActual)}" ${p.longitud ? 'maxlength="' + p.longitud + '"' : ''}>`;
+      const que = p.alcance === 'parametro' ? 'Dato fijo de la empresa <b>' + esc(p.referencia) + '</b>' : p.alcance === 'sector' ? 'NUSH del sector <b>' + esc(p.referencia) + '</b>' : p.alcance === 'equivalencia' ? 'Código SUI para <b>“' + esc(p.referencia) + '”</b>' : 'Fila ' + esc(p.fila) + ' de la fuente';
+      return `<div class="form-row"><div><label for="cap_${i}"><b>${esc(p.campo)}</b></label>${p.obligatorio ? ' <span class="ins err">obligatorio</span>' : ''}<div class="sub">${esc(p.tipo)}${p.longitud ? ' · máx ' + p.longitud : ''}${p.dominio ? ' · códigos ' + esc(p.dominio) : ''}<br>${que}<br>Soporte: ${esc(p.soporteRequerido)} · Vence: ${esc(p.vence)}</div></div><div>${op}<div class="sub">${esc(p.explicacion)}</div><input id="sop_${i}" placeholder="URL del soporte (opcional)" aria-label="Soporte" style="margin-top:4px"></div></div>`;
+    }).join('');
+    $('mCuerpo').innerHTML = `<p class="nota">Solo se piden los campos que impiden generar el reporte. Usuario: ${esc(d.usuario.correo || '(sin identificar)')}. Queda registrado quién, cuándo y con qué soporte.</p>${filas}<div class="form-row"><div><label for="cap_motivo">Motivo (solo si corrige un reporte aprobado)</label></div><div><input id="cap_motivo"></div></div><p><button class="btn sec" id="capBorrador" type="button">Guardar borrador</button> <button class="btn ok" id="capEnviar" type="button">Enviar y regenerar</button></p>`;
+    $('capBorrador').onclick = () => guardarCaptura(id, per, false); $('capEnviar').onclick = () => guardarCaptura(id, per, true);
+  }
+  async function guardarCaptura(id, per, enviar) {
+    const caps = PEND.map((p, i) => ({ campo: p.campo, alcance: p.alcance, referencia: p.referencia, fila: p.fila, valor: $('cap_' + i).value, soporte: $('sop_' + i).value, motivo: $('cap_motivo').value })).filter((c) => c.valor !== '');
+    if (!caps.length) { estado('No ingresó ningún valor.'); return; }
+    ocupado(true, enviar ? 'Enviando y regenerando…' : 'Guardando borrador…');
+    try { const r = await run('apiGuardarCaptura', id, per, caps, enviar); cerrarModal(); ocupado(false, r.estado + (r.resultado ? ' → ' + r.resultado.estado + ', ' + r.resultado.errores + ' errores' : '')); await cargar(); }
+    catch (e) { error(e, 'No se pudo guardar'); }
+  }
+
+  // ---- revisión y aprobación
+  async function revisar(id, per) {
+    abrirModal('Revisión', '<p>Cargando…</p>');
+    const r = await run('apiResumenRevision', id, per); const e = r.estado;
+    const bloquea = r.bloqueantes || (r.exigirAlDia && !r.alDia);
+    let html = `<dl class="ficha"><dt>Qué se revisa</dt><dd>${esc(r.periodoLegible)} · ${esc(e.registros)} registros evaluados · datos hasta ${esc(e.datosHasta || '–')} ${r.alDia ? '(al día)' : '(incompleto)'} · versión v${esc(e.version)}</dd><dt>Errores</dt><dd>${r.bloqueantes} bloqueantes · ${r.totalErrores - r.bloqueantes} avisos${r.predeterminados ? ' · <span class="ins warn">' + r.predeterminados + ' valores predeterminados</span> (campos que la fuente no traía y se llenaron con la regla por defecto: confirme su procedencia en Configuración)' : ''}</dd>${r.flujo && r.flujo.motivo ? '<dt>Nota del flujo</dt><dd>' + esc(r.flujo.motivo) + '</dd>' : ''}<dt>Versiones</dt><dd>${r.versiones.map((v) => 'v' + v.version + ' (' + esc(v.fecha) + ') <a href="' + esc(v.url) + '" target="_blank" rel="noopener">abrir</a>').join(' · ') || '–'}</dd></dl>`;
+    if (r.encabezados.length) html += `<h3>Vista previa (primeras ${r.vistaPrevia.length} filas)</h3><div style="overflow:auto;max-height:260px"><table><thead><tr>${r.encabezados.map((h) => '<th scope="col">' + esc(h) + '</th>').join('')}</tr></thead><tbody>${r.vistaPrevia.map((f) => '<tr>' + f.map((v) => '<td>' + esc(v) + '</td>').join('') + '</tr>').join('')}</tbody></table></div>`;
+    if (r.errores.length) html += `<h3>Errores</h3><div style="overflow:auto;max-height:200px"><table><tbody>${r.errores.slice(0, 50).map((x) => `<tr><td>${esc(x.fila)}</td><td>${esc(x.campo)}</td><td>${esc(x.tipo)}</td><td>${esc(x.detalle)}</td></tr>`).join('')}</tbody></table></div>`;
+    const incompleto = !r.alDia;
+    if (incompleto) html += `<div class="aviso"><b>Datos incompletos.</b> Las fuentes llegan hasta ${esc(e.datosHasta || 'una fecha desconocida')} y el periodo termina después. El archivo se generó, pero puede faltar información de los últimos días: no es lo mismo “archivo generado” que “datos completos”.${r.exigirAlDia ? ' La aprobación está bloqueada por el parámetro EXIGIR_DATOS_AL_DIA.' : '<label style="display:block;margin-top:6px"><input type="checkbox" id="rev_conf"> Confirmo que revisé la vista previa y acepto aprobar con datos incompletos.</label>'}</div>`;
+    html += `<div class="form-row" style="margin-top:12px"><div><label for="rev_motivo">Observación / motivo</label></div><div><input id="rev_motivo" placeholder="Obligatorio para devolver"></div></div><p>${puede('aprobar') ? `<button class="btn ok" id="btnAprobar" type="button" ${bloquea ? 'disabled title="Hay errores bloqueantes o datos incompletos"' : ''}>✔ Aprobar</button> ` : '<span class="ins warn">Su rol no puede aprobar</span> '}<button class="btn sec" id="btnDevolver" type="button">↩ Devolver con motivo</button></p><p class="nota">Aprobar es una decisión interna: no equivale a cargar ni a certificar en el SUI.</p>`;
+    $('mTitulo').textContent = 'Revisar y aprobar · ' + r.formato; $('mCuerpo').innerHTML = html;
+    if ($('btnAprobar') && incompleto && $('rev_conf') && !bloquea) { $('btnAprobar').disabled = true; $('btnAprobar').title = 'Confirme que acepta aprobar con datos incompletos'; $('rev_conf').onchange = () => { $('btnAprobar').disabled = !$('rev_conf').checked; }; }
+    if ($('btnAprobar')) $('btnAprobar').onclick = async () => { try { await run('apiAprobar', id, per, $('rev_motivo').value); cerrarModal(); estado('Aprobado.'); await cargar(); } catch (x) { error(x, 'No se pudo aprobar'); } };
+    $('btnDevolver').onclick = async () => { const m = $('rev_motivo').value; if (!m) { estado('Indique el motivo de la devolución.'); return; } try { await run('apiDevolver', id, per, m); cerrarModal(); estado('Devuelto.'); await cargar(); } catch (x) { error(x, 'No se pudo devolver'); } };
+  }
+
+  // ---- evidencia y "no aplica"
+  function evidencia(id, per) {
+    abrirModal('Evidencia de cargue / certificación en el SUI', `<p class="nota">Registre lo que efectivamente hizo en el SUI. Descargar el archivo no cierra la obligación.</p>
+      <div class="form-row"><div><label for="ev_tipo">Tipo</label></div><div><select id="ev_tipo"><option value="cargado">Cargado en el SUI (pendiente certificar)</option><option value="certificado">Certificado en el SUI</option></select></div></div>
+      <div class="form-row"><div><label for="ev_rad">Radicado / número de certificación</label></div><div><input id="ev_rad"></div></div>
+      <div class="form-row"><div><label for="ev_sop">Soporte (URL en Drive del PDF o captura)</label></div><div><input id="ev_sop" placeholder="https://drive.google.com/…"></div></div>
+      <div class="form-row"><div><label for="ev_obs">Observación</label></div><div><input id="ev_obs"></div></div>
+      <p><button class="btn ok" id="evGuardar" type="button">Registrar evidencia</button></p>`);
+    $('evGuardar').onclick = async () => { try { await run('apiRegistrarEvidencia', id, per, $('ev_tipo').value, $('ev_rad').value, $('ev_sop').value, $('ev_obs').value); cerrarModal(); estado('Evidencia registrada.'); await cargar(); CAL.anio = null; } catch (e) { error(e, 'No se pudo registrar'); } };
+  }
+  function declararNoAplica(id, per) {
+    abrirModal('Declarar “no aplica”', `<div class="aviso err"><b>“Sin registros” no es “no aplica”.</b> Declararlo exige el fundamento (norma y hecho verificado del periodo) y el soporte. Queda en la auditoría y se puede retirar.</div>
+      <div class="form-row"><div><label for="na_fun">Fundamento (mínimo 30 caracteres)</label></div><div><textarea id="na_fun" placeholder="Ej.: En septiembre de 2026 no se trasladaron recursos de aprovechamiento; la cuenta no registra recaudo (Res. 237705, num. 20)."></textarea></div></div>
+      <div class="form-row"><div><label for="na_sop">Soporte (URL en Drive)</label></div><div><input id="na_sop" placeholder="https://drive.google.com/…"></div></div>
+      <p><button class="btn peligro" id="naGuardar" type="button">Declarar “no aplica”</button></p>`);
+    $('naGuardar').onclick = async () => { try { await run('apiDeclararNoAplicable', id, per, $('na_fun').value, $('na_sop').value); cerrarModal(); estado('Declaración registrada.'); await cargar(); CAL.anio = null; } catch (e) { error(e, 'No se pudo declarar'); } };
+  }
+
+  // ------------------------------------------------------------ FUENTES Y DATOS FALTANTES
+  async function cargarFijos() {
+    try {
+      FIJOS = await run('apiDatosFijos');
+      const grupos = {}; FIJOS.forEach((d, i) => { (grupos[d.categoria || 'Otros'] = grupos[d.categoria || 'Otros'] || []).push([d, i]); });
+      $('fijosGrupos').innerHTML = Object.keys(grupos).map((g) => `<details ${g === 'Infraestructura y registros del SUI' || g === 'Mediciones y datos del año' ? 'open' : ''}><summary><b>${esc(g)}</b> <span class="sub">(${grupos[g].filter((x) => !x[0].valor).length} sin valor)</span></summary><table class="resp"><thead><tr><th scope="col">Dato</th><th scope="col">Valor actual</th><th scope="col">Nuevo valor</th><th scope="col">Formatos que lo usan</th></tr></thead><tbody>` +
+        grupos[g].map(([d, i]) => `<tr><td data-l="Dato"><b>${esc(d.clave)}</b><div class="sub">${esc(d.ayuda)}</div></td><td data-l="Valor actual">${d.valor ? '<span class="ins ok">' + esc(d.valor) + '</span>' : '<span class="ins warn">sin valor</span>'}</td><td data-l="Nuevo valor">${d.opciones ? `<select id="fijo_${i}" data-clave="${esc(d.clave)}" aria-label="${esc(d.clave)}"><option value="">— sin cambio —</option>${d.opciones.map((o) => `<option value="${esc(o[0])}">${esc(o[1])}</option>`).join('')}</select>` : `<input id="fijo_${i}" data-clave="${esc(d.clave)}" aria-label="${esc(d.clave)}" placeholder="${d.valor ? 'cambiar…' : 'escribir…'}" style="width:180px">`}</td><td data-l="Formatos" class="sub">${d.formatos.map(esc).join(', ') || '—'}</td></tr>`).join('') + '</tbody></table></details>').join('');
+    } catch (e) { $('fijosGrupos').innerHTML = '<div class="aviso err">No se pudieron cargar los datos fijos: ' + esc(msgError(e)) + ' <button class="btn peq" type="button" id="reFijos">Reintentar</button></div>'; if ($('reFijos')) $('reFijos').onclick = cargarFijos; }
+  }
+  async function guardarFijos(regenerar) {
+    const valores = {}; document.querySelectorAll('#fijosGrupos [data-clave]').forEach((x) => { if (x.value.trim() !== '') valores[x.dataset.clave] = x.value.trim(); });
+    if (!Object.keys(valores).length) { $('fijosMsg').textContent = 'Escriba al menos un valor nuevo.'; return; }
+    ocupado(true, regenerar ? 'Guardando y generando… (puede tardar un par de minutos)' : 'Guardando…'); $('fijosResultado').innerHTML = '';
+    try {
+      const r = await run('apiGuardarDatosFijos', valores, periodoSel(), !!regenerar);
+      $('fijosMsg').textContent = r.mensaje;
+      if (r.regenerados && r.regenerados.length) $('fijosResultado').innerHTML = '<ul class="falta">' + r.regenerados.map((x) => `<li><b>${esc(x.id)}</b>: ${esc(x.estado)}${x.errores ? ' · ' + x.errores + ' observación(es)' : ''}${x.mensaje ? ' <span class="sub">' + esc(String(x.mensaje).substring(0, 160)) + '</span>' : ''}</li>`).join('') + (r.pendientes && r.pendientes.length ? `<li>Quedaron para la próxima generación: ${r.pendientes.map(esc).join(', ')}</li>` : '') + '</ul>';
+      ocupado(false, 'Datos fijos guardados.'); await cargarFijos(); await cargar(); CAL.anio = null; FALTA = []; cargarFaltante(false);
+    } catch (e) { $('fijosMsg').textContent = 'Error: ' + msgError(e); error(e, 'No se pudieron guardar los datos'); }
+  }
+  $('btnFijosGenerar').onclick = () => guardarFijos(true); $('btnFijosGuardar').onclick = () => guardarFijos(false);
+
+  const CAT_ETQ = { fuente_no_configurada: 'Fuente no configurada', fuente_inaccesible: 'Fuente inaccesible', pestana_inexistente: 'Pestaña inexistente', lectura_fallida: 'Lectura fallida', hoja_vacia: 'Hoja vacía', columnas_ausentes: 'Columnas ausentes', fechas_invalidas: 'Fechas inválidas', sin_registros_periodo: 'Sin registros del periodo', parametros_faltantes: 'Datos fijos sin definir', manual: 'Se diligencia a mano', obligatorio: 'Dato obligatorio vacío', mapeo: 'Regla de Mapeo / equivalencia', parametro: 'Dato fijo sin definir', sector: 'Sector sin NUSH', periodo: 'Sin fila del periodo', cobertura: 'Faltan documentos', longitud: 'Longitud excedida', duplicado: 'Registros duplicados', fuente: 'Fuente', condicional: 'Dato condicional' };
+  async function cargarFaltante(profundo) {
+    $('faltante').innerHTML = '<tr><td colspan="2">Revisando las fuentes…</td></tr>'; $('falCuenta').textContent = '';
+    try { FALTA = await run('apiInformacionFaltante', periodoSel(), !!profundo); pintarFaltante(); }
+    catch (e) { $('faltante').innerHTML = '<tr><td colspan="2"><div class="aviso err"><b>No se pudo revisar lo que falta.</b><br>' + esc(msgError(e)) + '<br><button class="btn peq" type="button" id="reFalta">Reintentar</button></div></td></tr>'; $('reFalta').onclick = () => cargarFaltante(profundo); }
+  }
+  function pintarFaltante() {
+    const cats = [...new Set(FALTA.flatMap((x) => x.faltantes.map((z) => z.categoria)))].sort();
+    const sel = $('falCategoria'); const actual = sel.value; sel.innerHTML = '<option value="">Todos los problemas</option>' + cats.map((c) => `<option value="${esc(c)}">${esc(CAT_ETQ[c] || c)}</option>`).join(''); sel.value = cats.indexOf(actual) >= 0 ? actual : '';
+    const fs = $('falServicio').value, ft = norm($('falTexto').value), fc = sel.value;
+    const l = FALTA.map((x) => Object.assign({}, x, { faltantes: x.faltantes.filter((z) => (!fc || z.categoria === fc) && (!ft || norm(x.nombre + ' ' + x.codigo + ' ' + z.campo + ' ' + z.motivo).indexOf(ft) >= 0)) })).filter((x) => x.faltantes.length && (!fs || x.servicio === fs));
+    $('falCuenta').textContent = l.length + ' formato(s) con algo por resolver, de ' + FALTA.length + ' con faltantes en ' + mesTexto(periodoSel()) + '.';
+    $('faltante').innerHTML = l.map((x) => `<tr><td data-l="Formato"><b>${esc(x.nombre)}</b><div class="sub">${esc(x.servicio)} · ${esc(x.codigo || x.id)} · periodo ${esc(x.periodoLegible || x.periodo)}${x.responsable ? ' · responsable: ' + esc(x.responsable) : ''}</div></td><td data-l="Qué falta"><ul class="falta">${x.faltantes.map((z) => `<li><span class="ins warn">${esc(CAT_ETQ[z.categoria] || z.categoria || '')}</span> <b>${esc(z.campo)}</b>${z.filas > 1 ? ' (' + z.filas + ' filas)' : ''}: ${esc(z.motivo)}<div class="sub">Qué hacer: ${esc(z.como)}${z.fuente ? ' · Fuente: ' + esc(z.fuente) : ''}</div></li>`).join('')}</ul></td></tr>`).join('') || '<tr><td colspan="2">No falta información con estos filtros.</td></tr>';
+  }
+  $('btnFaltante').onclick = () => cargarFaltante(false); $('btnFaltanteProfundo').onclick = () => cargarFaltante(true);
+  $('falServicio').onchange = pintarFaltante; $('falCategoria').onchange = pintarFaltante; $('falTexto').oninput = pintarFaltante;
+
+  // ------------------------------------------------------------ CALENDARIO
+  async function cargarCalendario(anio, mes) {
+    $('calTitulo').textContent = 'Cargando…';
+    try { CAL = await run('apiCalendario', anio, mes); pintarCalendario(); } catch (e) { $('calTitulo').textContent = 'No se pudo cargar el calendario: ' + msgError(e); }
+  }
+  const claseEv = (e) => (e.vencido ? 'r' : (e.estadoSUI === 'certificado' || e.estadoSUI === 'certificado no aplica' ? 'v' : (e.preparacion === 'listo' ? 'a' : '')));
+  const textoEv = (e) => (e.vencido ? '[Vencido] ' : (e.estadoSUI === 'certificado' || e.estadoSUI === 'certificado no aplica' ? '[Certificado] ' : (e.estadoSUI === 'cargado' ? '[Cargado] ' : (e.preparacion === 'listo' ? '[Listo] ' : '[Pendiente] '))));
+  function pintarCalendario() {
+    const { anio, mes, eventos } = CAL; $('calTitulo').textContent = 'Vencimientos de ' + MESES[mes - 1] + ' de ' + anio;
+    const fs = $('calServicio').value, ocultar = $('calSoloPend').checked;
+    const evs = eventos.filter((e) => (!fs || e.servicio === fs) && !(ocultar && (e.estadoSUI === 'certificado' || e.estadoSUI === 'certificado no aplica')));
+    evs.forEach((e) => { e._i = eventos.indexOf(e); });
+    const primero = new Date(anio, mes - 1, 1), dias = new Date(anio, mes, 0).getDate(), offset = (primero.getDay() + 6) % 7, porDia = {};
+    evs.forEach((e) => { (porDia[e.dia] = porDia[e.dia] || []).push(e); });
+    const hoy = new Date(); let html = '';
+    for (let i = 0; i < offset; i++) html += '<div class="dia vacio"></div>';
+    for (let d = 1; d <= dias; d++) {
+      const esHoy = hoy.getFullYear() === anio && hoy.getMonth() + 1 === mes && hoy.getDate() === d; const lista = porDia[d] || [];
+      html += `<div class="dia${esHoy ? ' hoy' : ''}"><div><b>${d}</b>${esHoy ? ' <span class="sub">hoy</span>' : ''}${lista.length ? ' <span class="ins info">' + lista.length + '</span>' : ''}</div>` + lista.slice(0, 4).map((e) => `<button type="button" class="ev ${claseEv(e)}" data-ev="${e._i}" title="${esc(e.nombre)}">${esc(textoEv(e))}${esc(e.servicio.substring(0, 3))} · ${esc(e.nombre.length > 26 ? e.nombre.substring(0, 24) + '…' : e.nombre)}</button>`).join('') + (lista.length > 4 ? `<div class="sub">+${lista.length - 4} más (ver lista)</div>` : '') + '</div>';
+    }
+    $('cal').innerHTML = html; $('calCuenta').textContent = '(' + evs.length + ' de ' + eventos.length + ' del mes)';
+    $('calLista').innerHTML = evs.map((e) => `<tr><td data-l="Vence"><b>${esc(e.fecha)}</b></td><td data-l="Formato"><b>${esc(e.nombre)}</b><div class="sub">${esc(e.servicio)} · ${esc(e.codigo || e.id)}</div></td><td data-l="Periodo">${esc(e.periodoLegible || e.periodo)}</td><td data-l="Entrega">${esc(e.tipoSalidaTxt || e.tipo)}${e.automatico ? '' : ' · a mano'}</td><td data-l="Estado">${esc(textoEv(e))}<span class="sub">${esc(e.preparacion || '')} · ${esc(e.aprobacion || '')} · ${esc(e.estadoSUI || '')}</span></td><td><button class="btn sec peq" type="button" data-ev="${e._i}">Ver tarea</button></td></tr>`).join('') || '<tr><td colspan="6">Sin vencimientos este mes con los filtros actuales.</td></tr>';
+    $('calSinFecha').innerHTML = (CAL.sinFecha || []).length ? '<ul class="falta">' + CAL.sinFecha.map((x) => `<li><b>${esc(x.nombre)}</b> <span class="sub">(${esc(x.servicio)} · ${esc(x.periodo)})</span>: ${esc(String(x.motivo).substring(0, 220))}</li>`).join('') + '</ul>' : '<p class="nota">Todos los formatos con periodicidad tienen fecha confirmada.</p>';
+  }
+  $('cal').addEventListener('click', (ev) => { const b = ev.target.closest('[data-ev]'); if (b) verTarea(Number(b.dataset.ev)); });
+  $('calLista').addEventListener('click', (ev) => { const b = ev.target.closest('[data-ev]'); if (b) verTarea(Number(b.dataset.ev)); });
+  function verTarea(i) {
+    const e = CAL.eventos[i]; if (!e) return;
+    const f = fila(e.id, e.periodo) || e; const a = accionPrincipal(Object.assign({}, f, { automatico: e.automatico, exigible: true }), permisos());
+    abrirModal(e.nombre, `<dl class="ficha"><dt>Qué se reporta</dt><dd>La información de <b>${esc(e.periodoLegible || e.periodo)}</b> del servicio de ${esc(e.servicio)}.</dd><dt>Fecha máxima de cargue</dt><dd><b>${esc(e.fecha)}</b> ${e.vencido ? '<span class="ins err">vencido</span>' : ''}</dd>
+      <dt>Estado</dt><dd>Preparación: ${esc(e.preparacion)} · Aprobación: ${esc(e.aprobacion)} · Ante el SUI: ${esc(e.estadoSUI)}</dd><dt>Cómo se entrega</dt><dd>${esc(e.tipoSalidaTxt || e.tipo)}</dd><dt>Qué hay que hacer</dt><dd>${esc(e.siguientePaso || '')}</dd><dt>Qué información contiene</dt><dd>${esc(e.informacion || 'Ver ficha')}</dd></dl>
+      <p><button class="btn ${a.clase}" type="button" data-act="${a.codigo}" data-id="${esc(e.id)}" data-per="${esc(e.periodo)}">${esc(a.etiqueta)}</button> <button class="btn sec" type="button" data-act="ficha" data-id="${esc(e.id)}" data-per="${esc(e.periodo)}">Ficha completa</button></p>`);
+  }
+  $('calPrev').onclick = () => { let m = CAL.mes - 1, a = CAL.anio; if (m < 1) { m = 12; a--; } cargarCalendario(a, m); };
+  $('calNext').onclick = () => { let m = CAL.mes + 1, a = CAL.anio; if (m > 12) { m = 1; a++; } cargarCalendario(a, m); };
+  $('calServicio').onchange = pintarCalendario; $('calSoloPend').onchange = pintarCalendario;
+
+  // ------------------------------------------------------------ HISTORIAL Y EVIDENCIAS
+  async function cargarHistorial() {
+    $('hCuerpo').innerHTML = '<p class="nota">Cargando…</p>';
+    try { HIST = await run('apiHistorial', $('hSoloMes').checked ? periodoSel() : null); pintarHistorial(); }
+    catch (e) { $('hCuerpo').innerHTML = '<div class="aviso err">No se pudo cargar el historial: ' + esc(msgError(e)) + ' <button class="btn peq" type="button" id="reHist">Reintentar</button></div>'; $('reHist').onclick = cargarHistorial; }
+  }
+  function pintarHistorial() {
+    const t = norm($('hTexto').value); const ok = (o) => !t || norm(JSON.stringify(o)).indexOf(t) >= 0;
+    const tabla = (titulo, cab, filas, vacio) => `<h3>${titulo} <span class="nota">(${filas.length})</span></h3>` + (filas.length ? `<table class="resp"><thead><tr>${cab.map((c) => '<th scope="col">' + c + '</th>').join('')}</tr></thead><tbody>${filas.map((r) => '<tr>' + r.map((v, i) => `<td data-l="${esc(cab[i])}">${v}</td>`).join('') + '</tr>').join('')}</tbody></table>` : `<p class="nota">${vacio}</p>`);
+    $('hCuerpo').innerHTML =
+      tabla('Evidencias de cargue y certificación', ['Formato', 'Periodo', 'Tipo', 'Fecha', 'Radicado / certificado', 'Usuario', 'Soporte'], HIST.evidencias.filter(ok).map((c) => [esc(nombreDe(c.formato)), esc(c.periodo), esc(c.tipo), esc(c.fecha), esc(c.radicado || '–'), esc(c.usuario), c.soporte ? `<a href="${esc(c.soporte)}" target="_blank" rel="noopener">abrir</a>` : '–']), 'Todavía no se ha registrado ninguna evidencia.') +
+      tabla('Declaraciones de “no aplica”', ['Formato', 'Periodo', 'Fundamento', 'Soporte', 'Declarado por', 'Fecha'], HIST.noAplica.filter(ok).map((n) => [esc(nombreDe(n.formato)), esc(n.periodo), esc(n.fundamento), n.soporte ? `<a href="${esc(n.soporte)}" target="_blank" rel="noopener">abrir</a>` : '–', esc(n.por), esc(n.fecha)]), 'No hay declaraciones de “no aplica”.') +
+      tabla('Descargas registradas', ['Fecha', 'Usuario', 'Formato', 'Periodo', 'Versión', 'Archivo'], HIST.descargas.filter(ok).map((d) => [esc(d.fecha), esc(d.usuario), esc(nombreDe(d.formato)), esc(d.periodo), esc(d.version), esc(d.archivo)]), 'No hay descargas registradas. Una descarga no es evidencia de cargue.') +
+      tabla('Ejecuciones recientes', ['Fecha', 'Nivel', 'Proceso', 'Formato', 'Periodo', 'Mensaje'], HIST.ejecuciones.filter(ok).map((x) => [esc(x.fecha), esc(x.nivel), esc(x.proceso), esc(x.formato), esc(x.periodo), esc(x.mensaje)]), 'Sin ejecuciones recientes.') +
+      tabla('Auditoría (cambios hechos por personas)', ['Fecha', 'Usuario', 'Acción', 'Registro', 'Motivo'], HIST.auditoria.filter(ok).map((a) => [esc(a.fecha), esc(a.usuario), esc(a.accion), esc(a.registro), esc(a.motivo)]), 'Sin registros de auditoría.');
+  }
+  $('btnHistorial').onclick = cargarHistorial; $('hSoloMes').onchange = cargarHistorial; $('hTexto').oninput = () => { if (HIST) pintarHistorial(); };
+
+  // ------------------------------------------------------------ CONFIGURACIÓN
+  async function cargarConfig() {
+    try { CONFIG = await run('apiConfiguracion'); pintarConfig(); }
+    catch (e) { $('cCuerpo').innerHTML = '<div class="aviso err">No se pudo cargar la configuración: ' + esc(msgError(e)) + ' <button class="btn peq" type="button" id="reConf">Reintentar</button></div>'; $('reConf').onclick = cargarConfig; }
+  }
+  function pintarConfig() {
+    const c = CONFIG; const cats = {}; c.parametros.forEach((p) => { (cats[p.categoria] = cats[p.categoria] || []).push(p); });
+    $('cCuerpo').innerHTML = `<p class="nota">Versión de la aplicación ${esc(c.version)}. ${esc(c.perfil.nota)} Rango de calidad: <b>${esc(c.perfil.rangoCalidad)}</b> · Título del anexo: <b>${esc(c.perfil.tituloAnexo)}</b>. Aplicabilidad de los ${Object.keys(c.aplicabilidad).reduce((a, k) => a + c.aplicabilidad[k], 0)} formatos: ${Object.keys(c.aplicabilidad).map((k) => esc(k) + ' ' + c.aplicabilidad[k]).join(' · ')}.</p>
+      <h3>Tareas programadas</h3><p>${c.triggers.map((t) => `<span class="ins ${t.activo ? 'ok' : 'warn'}">${t.activo ? '✔' : '✖'} ${esc(t.nombre)}</span>`).join(' ')}</p><p class="nota">Si falta alguna, ejecute “5. Crear / renovar triggers” del menú SUI en la hoja.</p>
+      <h3>Valores predeterminados: de dónde salen</h3><p class="nota">Son valores que la aplicación usa cuando la fuente no trae el dato. Cada uso queda marcado como “valor predeterminado” en la revisión. Ninguno se aplica en silencio.</p>
+      <div style="overflow:auto"><table><thead><tr><th scope="col">Dato</th><th scope="col">Valor</th><th scope="col">Se usa en</th><th scope="col">Procedencia</th><th scope="col">Alcance</th><th scope="col">Vigencia</th><th scope="col">Estado</th></tr></thead><tbody>${c.predeterminados.map((p) => `<tr><td><b>${esc(p.clave)}</b></td><td>${esc(p.valor || '–')}</td><td>${esc(p.usadoEn)}</td><td>${esc(p.procedencia)}</td><td>${esc(p.alcance)}</td><td>${esc(p.vigencia)}</td><td><span class="ins ${p.estado.indexOf('confirmado') === 0 ? 'ok' : 'warn'}">${esc(p.estado)}</span></td></tr>`).join('')}</tbody></table></div>
+      <h3>Reglas de fecha sin confirmar</h3><p class="nota">${c.reglasFecha.length} formato(s) no muestran fecha de vencimiento porque su regla está por verificar o es inválida. No se les asigna una fecha estimada.</p>
+      <details><summary>Ver la lista</summary><ul class="falta">${c.reglasFecha.map((r) => `<li><b>${esc(r.nombre)}</b> (${esc(r.servicio)} · ${esc(r.periodicidad)}): ${esc(r.estado)} – ${esc(String(r.detalle).substring(0, 200))}</li>`).join('')}</ul></details>
+      <h3>Parámetros por categoría (solo lectura)</h3><p class="nota">Para cambiarlos use “Fuentes y datos faltantes → Datos fijos de la empresa” o la pestaña Parámetros de la hoja. Se separan datos permanentes del prestador, infraestructura y mediciones del año.</p>
+      ${Object.keys(cats).map((k) => `<details><summary><b>${esc(k)}</b> (${cats[k].length})</summary><table class="resp"><thead><tr><th scope="col">Clave</th><th scope="col">Valor</th><th scope="col">Descripción</th></tr></thead><tbody>${cats[k].map((p) => `<tr><td data-l="Clave">${esc(p.clave)}</td><td data-l="Valor">${p.valor ? esc(p.valor) : '<span class="ins warn">vacío</span>'}</td><td data-l="Descripción" class="sub">${esc(p.descripcion)}</td></tr>`).join('')}</tbody></table></details>`).join('')}`;
+  }
+
+  // ------------------------------------------------------------ operación de barrido
+  const MESES_B = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  const perTexto = (p) => { const m = String(p || '').match(/^(\d{4})-(\d{2})$/); return m ? MESES_B[Number(m[2]) - 1] + ' de ' + m[1] : String(p || ''); };
+  async function cargarBarrido(anio, periodo) {
+    ocupado(true, 'Cargando la operación de barrido…');
+    try { BAR = await run('apiBarrido', anio || null, periodo || null); pintarBarrido(); ocupado(false, ''); }
+    catch (e) { error(e, 'No se pudo cargar la operación de barrido'); }
+  }
+  function pintarBarrido() {
+    const b = BAR; if (!b) return;
+    if (!b.ok) {
+      $('bCuerpo').hidden = true;
+      $('bFuente').innerHTML = `<div class="aviso err"><b>No se pudo leer la hoja de la app.</b> ${esc(b.error.mensaje)}<br>${esc(b.error.accion || '')}</div>`;
+      return;
+    }
+    $('bFuente').innerHTML = ''; $('bCuerpo').hidden = false;
+    const m = b.modelo;
+    $('bAnio').innerHTML = b.aniosPosibles.map((a) => `<option value="${a}" ${a === b.anio ? 'selected' : ''}>${a}</option>`).join('');
+    const pers = b.periodos.filter((p) => p.indexOf(b.anio + '-') === 0); if (pers.indexOf(b.periodo) < 0) pers.unshift(b.periodo);
+    $('bPeriodo').innerHTML = pers.map((p) => `<option value="${p}" ${p === b.periodo ? 'selected' : ''}>${esc(perTexto(p))}</option>`).join('');
+    const micro = $('bMicro').value; $('bMicro').innerHTML = '<option value="">Todas</option>' + m.microrutas.map((x) => `<option value="${esc(x.clave)}" ${x.clave === micro ? 'selected' : ''}>${esc(x.nombre)}</option>`).join('');
+    $('bKpis').innerHTML = m.kpis.map((k) => `<div class="tarjeta ${k.estado === 'alerta' ? 'alerta' : (k.estado === 'sin dato' ? 'sindato' : '')}"><div class="v">${esc(valorKpi(k))}</div><div class="t"><b>${esc(k.etiqueta)}</b></div><div class="nota">${k.estado === 'alerta' ? '⚠ ' : ''}${esc(k.detalle)}</div></div>`).join('');
+    $('bMicros').innerHTML = `<table class="resp"><thead><tr><th scope="col">Microrruta</th><th scope="col">Frecuencia programada</th><th scope="col">Jornadas programadas</th><th scope="col">Peso del mes</th><th scope="col">% del mes</th><th scope="col">Variación vs mes anterior</th><th scope="col">Con foto</th></tr></thead><tbody>${m.microrutas.map((x) => `<tr><td data-l="Microrruta"><b>${esc(x.nombre)}</b></td><td data-l="Frecuencia">${x.frecuenciaSemanal === null ? 'sin dato' : x.frecuenciaSemanal + ' veces/semana'}</td><td data-l="Jornadas programadas">${x.jornadasProgramadas === null ? 'sin dato' : x.jornadasProgramadas}</td><td data-l="Peso del mes">${kgTexto(x.kg)}</td><td data-l="% del mes">${x.pct === null ? '–' : String(x.pct).replace('.', ',') + ' %'}</td><td data-l="Variación">${x.variacionPct === null ? '–' : (x.variacionPct > 0 ? '+' : '') + String(x.variacionPct).replace('.', ',') + ' %'}</td><td data-l="Con foto">${x.registros ? x.conFoto + ' de ' + x.registros : 'sin registro'}</td></tr>`).join('')}</tbody></table>`;
+    const filasM = m.matriz.filter((f) => f.registros > 0 || f.mes <= m.mes);
+    $('bMatriz').innerHTML = `<table><thead><tr><th scope="col">Mes</th>${m.microrutas.map((x) => `<th scope="col">${esc(x.nombre)}</th>`).join('')}<th scope="col">Total</th></tr></thead><tbody>${filasM.map((f) => `<tr${f.periodo === b.periodo ? ' style="background:#eef6ff"' : ''}><th scope="row">${esc(f.nombre)}</th>${m.microrutas.map((x) => `<td>${kgTexto(f.porMr[x.clave])}</td>`).join('')}<td><b>${kgTexto(f.totalKg)}</b></td></tr>`).join('')}</tbody></table>`;
+    pintarRegistrosBarrido();
+    $('bGaleria').innerHTML = ''; $('bVerFotos').textContent = 'Ver las fotos del mes';
+    const ult = (b.informes || []).filter((i) => i.periodo === b.periodo)[0];
+    $('bInformeNota').textContent = ult ? `Último informe de ${perTexto(b.periodo)}: versión ${ult.version}, generado el ${ult.generado} (${ult.origen}), con ${ult.registros} registro(s) y ${ult.fotos} foto(s).` : `Todavía no hay informe de ${perTexto(b.periodo)}. El informe resume los indicadores, el peso por microrruta, la evolución del año, las fotos y las limitaciones de los datos.`;
+    $('bGenerar').disabled = !b.permisos.generar; $('bGenerar').title = b.permisos.generar ? '' : 'Su rol no puede generar informes';
+    $('bDescargarInforme').disabled = !ult || !b.permisos.descargar; $('bZipFotos').disabled = !b.permisos.descargar; $('bZipFotos').title = b.permisos.descargar ? '' : 'Su rol no puede descargar';
+    const au = $('bAutomatico'); au.hidden = !b.permisos.administrar; au.textContent = b.informeAutomatico ? 'Informe automático del día 3: ACTIVO (desactivar)' : 'Activar el informe automático del día 3 de cada mes';
+    $('bInformes').innerHTML = (b.informes || []).length ? `<table class="resp"><thead><tr><th scope="col">Periodo</th><th scope="col">Versión</th><th scope="col">Generado</th><th scope="col">Origen</th><th scope="col">Registros</th><th scope="col">Fotos</th><th scope="col">Acción</th></tr></thead><tbody>${b.informes.slice(0, 24).map((i) => `<tr><td data-l="Periodo">${esc(perTexto(i.periodo))}</td><td data-l="Versión">v${i.version}</td><td data-l="Generado">${esc(i.generado)}</td><td data-l="Origen">${esc(i.origen)}</td><td data-l="Registros">${i.registros}</td><td data-l="Fotos">${i.fotos}</td><td data-l="Acción"><button class="btn sec peq" type="button" data-bact="informe" data-per="${esc(i.periodo)}" data-ver="${i.version}"${b.permisos.descargar ? '' : ' disabled'}>Descargar</button></td></tr>`).join('')}</tbody></table>` : '';
+    $('bAvisos').innerHTML = b.avisos.concat(b.jornadasActivas ? [] : ['La hoja solo guarda el peso mensual por microrruta. Sin el registro de cada jornada (pestaña Actividades_Barrido: fecha, microrruta, km, peso y foto) no se pueden afirmar cumplimiento de rutas, cobertura ni productividad.']).map((a) => `<li>${esc(a)}</li>`).join('') || '<li>Sin observaciones.</li>';
+  }
+  function pintarRegistrosBarrido() {
+    const b = BAR; if (!b || !b.ok) return;
+    const f = { periodo: b.periodo, clave: $('bMicro').value, soloSinFoto: $('bSinFoto').checked };
+    const delMes = filtrarBarrido(b.registros, { periodo: b.periodo }); const lista = filtrarBarrido(b.registros, f);
+    $('bContador').textContent = `Mostrando ${lista.length} de ${delMes.length} registros de ${perTexto(b.periodo)} (${b.registros.length} en total en la hoja)`;
+    $('bRegistros').innerHTML = lista.length ? `<table class="resp"><thead><tr><th scope="col">Registro</th><th scope="col">Microrruta</th><th scope="col">Peso</th><th scope="col">Foto</th></tr></thead><tbody>${lista.map((r) => `<tr><td data-l="Registro">${esc(r.id)}</td><td data-l="Microrruta">${esc(r.microruta)}</td><td data-l="Peso">${kgTexto(r.kg)}</td><td data-l="Foto">${r.tieneFoto ? `<button class="btn sec peq" type="button" data-bact="foto" data-tipo="${esc(r.tipo)}" data-id="${esc(r.id)}">Ver foto</button>` : '<span class="ins off">sin foto</span>'}</td></tr>`).join('')}</tbody></table>` : '<p class="nota">Ningún registro cumple los filtros elegidos. Quite algún filtro o cambie el mes.</p>';
+  }
+  async function verFotoBarrido(tipo, id) {
+    ocupado(true, 'Abriendo la foto…');
+    try { const f = await run('apiBarridoFoto', tipo, id); ocupado(false, ''); abrirModal('Foto ' + id, `<p><img alt="Foto del registro ${esc(id)}" style="max-width:100%;max-height:70vh" src="data:${esc(f.mime)};base64,${f.base64}"></p><p><button class="btn sec" type="button" data-bact="bajarfoto" data-tipo="${esc(tipo)}" data-id="${esc(id)}">Descargar esta foto</button></p>`); }
+    catch (e) { error(e, 'No se pudo abrir la foto'); }
+  }
+  let GAL_DESDE = 0;
+  async function cargarGaleriaBarrido(desde) {
+    ocupado(true, 'Cargando las fotos…');
+    try {
+      const r = await run('apiBarridoGaleria', BAR.periodo, desde || 0, $('bMicro').value || ''); GAL_DESDE = (desde || 0) + r.items.length;
+      const html = r.items.map((i) => `<figure>${i.miniatura ? `<img src="${esc(i.miniatura)}" alt="${esc(i.titulo)}" data-bact="foto" data-tipo="${esc(i.tipo)}" data-id="${esc(i.id)}" tabindex="0">` : `<div class="sinprev">Foto ${esc(i.estado)}</div>`}<figcaption><b>${esc(i.titulo)}</b><br>${esc(i.detalle || '')}</figcaption></figure>`).join('');
+      if (!desde) $('bGaleria').innerHTML = r.total ? `<p class="nota">${r.total} foto(s) en ${perTexto(BAR.periodo)}.</p><div class="galeria" id="bGal"></div><div id="bMas"></div>` : '<p class="nota">No hay fotos registradas en este mes: la columna Foto de la hoja está vacía.</p>';
+      if ($('bGal')) $('bGal').insertAdjacentHTML('beforeend', html);
+      if ($('bMas')) $('bMas').innerHTML = GAL_DESDE < r.total ? `<button class="btn sec" type="button" data-bact="masfotos">Ver más fotos (${r.total - GAL_DESDE} restantes)</button>` : '';
+      $('bVerFotos').textContent = 'Recargar las fotos del mes'; ocupado(false, '');
+    } catch (e) { error(e, 'No se pudieron cargar las fotos'); }
+  }
+  $('sec-barrido').addEventListener('click', async (ev) => {
+    const t = ev.target.closest('[data-bact]'); if (!t) return;
+    const a = t.dataset.bact;
+    if (a === 'foto') verFotoBarrido(t.dataset.tipo, t.dataset.id);
+    else if (a === 'masfotos') cargarGaleriaBarrido(GAL_DESDE);
+    else if (a === 'informe') { try { ocupado(true, 'Preparando el informe…'); bajar(await run('apiDescargarInformeBarrido', t.dataset.per, Number(t.dataset.ver))); ocupado(false, 'Informe descargado.'); } catch (e) { error(e, 'No se pudo descargar el informe'); } }
+  });
+  $('mCuerpo').addEventListener('click', async (ev) => {
+    const t = ev.target.closest('[data-bact="bajarfoto"]'); if (!t) return;
+    try { const f = await run('apiBarridoFoto', t.dataset.tipo, t.dataset.id); bajar({ nombre: 'foto_' + t.dataset.id + '.' + (f.mime.split('/')[1] || 'jpg'), mime: f.mime, base64: f.base64 }); } catch (e) { error(e, 'No se pudo descargar la foto'); }
+  });
+  $('sec-barrido').addEventListener('keydown', (ev) => { if (ev.key === 'Enter' && ev.target.matches && ev.target.matches('img[data-bact="foto"]')) ev.target.click(); });
+  $('bAnio').onchange = () => cargarBarrido($('bAnio').value, null);
+  $('bPeriodo').onchange = () => cargarBarrido($('bAnio').value, $('bPeriodo').value);
+  $('bMicro').onchange = pintarRegistrosBarrido; $('bSinFoto').onchange = pintarRegistrosBarrido;
+  $('bActualizar').onclick = () => cargarBarrido($('bAnio').value, $('bPeriodo').value);
+  $('bVerFotos').onclick = () => cargarGaleriaBarrido(0);
+  $('bZipFotos').onclick = async () => { try { ocupado(true, 'Armando el ZIP de fotos…'); const z = await run('apiBarridoFotosZip', BAR.periodo, $('bMicro').value || ''); bajar(z); ocupado(false, `ZIP descargado: ${z.incluidas} foto(s) incluida(s)${z.omitidas ? ', ' + z.omitidas + ' omitida(s) (el índice lo explica)' : ''}.`); } catch (e) { error(e, 'No se pudo armar el ZIP de fotos'); } };
+  $('bGenerar').onclick = async () => { try { ocupado(true, 'Generando el informe…'); const r = await run('apiGenerarInformeBarrido', BAR.periodo); await cargarBarrido(BAR.anio, BAR.periodo); estado(r.mensaje); } catch (e) { error(e, 'No se pudo generar el informe'); } };
+  $('bDescargarInforme').onclick = async () => { try { ocupado(true, 'Preparando el informe…'); bajar(await run('apiDescargarInformeBarrido', BAR.periodo, 0)); ocupado(false, 'Informe descargado.'); } catch (e) { error(e, 'No se pudo descargar el informe'); } };
+  $('bAutomatico').onclick = async () => { try { const r = await run('apiActivarInformeBarrido', !BAR.informeAutomatico); await cargarBarrido(BAR.anio, BAR.periodo); estado(r.activo ? 'Informe automático activado: se genera el día 3 de cada mes a las 7:00.' : 'Informe automático desactivado.'); } catch (e) { error(e, 'No se pudo cambiar el informe automático'); } };
+
+  // ------------------------------------------------------------ formatos de pesos
+  let PESOS = null;
+  const abrevMes = (p) => ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'][Number(String(p).slice(5, 7)) - 1] || p;
+  function pintarPesos() {
+    const m = PESOS; if (!m) return;
+    if (!m.filas.length) { $('pesosCuerpo').innerHTML = '<p class="nota">No hay formatos de pesos con periodos esperados en ' + esc(m.anio) + '.</p>'; $('btnPesosGenerar').disabled = true; return; }
+    const faltan = mesesQueFaltan(m);
+    $('pesosCuerpo').innerHTML = `<p class="nota"><b>${faltan.length}</b> periodo(s) sin generar. Pase el cursor o toque una casilla para ver el detalle.</p><div style="overflow:auto"><table><thead><tr><th scope="col">Formato</th>${[1,2,3,4,5,6,7,8,9,10,11,12].map((n) => `<th scope="col">${abrevMes(m.anio + '-' + ('0' + n).slice(-2))}</th>`).join('')}</tr></thead><tbody>${m.filas.map((f) => {
+      const porMes = {}; f.celdas.forEach((c) => { porMes[Number(c.periodo.slice(5, 7)) || 0] = c; });
+      const unica = f.celdas.length === 1 && f.periodicidad !== 'mensual' ? f.celdas[0] : null;
+      return `<tr><th scope="row">${esc(f.nombre)}<div class="sub nota">${esc(f.codigo || f.id)} · ${esc(f.periodicidad)}</div></th>` + (unica ? `<td colspan="12">${(() => { const x = celdaPesos(unica); return `<span class="ins ${x[0]}" title="${esc(unica.mensaje)}">${x[1]} ${esc(unica.periodo)}: ${esc(x[2])}</span>`; })()}</td>` : [1,2,3,4,5,6,7,8,9,10,11,12].map((n) => { const c = porMes[n]; if (!c) return '<td></td>'; const x = celdaPesos(c); return `<td><span class="ins ${x[0]}" title="${esc(x[2] + ' — ' + c.mensaje)}" tabindex="0" aria-label="${esc(f.nombre + ' ' + c.periodo + ': ' + x[2])}">${x[1]}</span></td>`; }).join('')) + '</tr>';
+    }).join('')}</tbody></table></div><p class="nota">✔ generado o listo · ⚠ con errores (borrador) · ∅ sin datos en el periodo · … sin generar</p>`;
+    $('btnPesosGenerar').disabled = !faltan.length || !(puede('capturar') || puede('revisar')); $('btnPesosGenerar').title = (puede('capturar') || puede('revisar')) ? '' : 'Su rol no puede generar';
+    $('btnPesosGenerar').textContent = faltan.length ? `Generar los ${faltan.length} periodos que faltan` : 'No falta ningún periodo por generar';
+  }
+  async function cargarPesos() {
+    ocupado(true, 'Leyendo el estado de los formatos de pesos…');
+    try { PESOS = await run('apiMatrizPesos', $('pesosAnio').value || null); pintarPesos(); ocupado(false, ''); } catch (e) { error(e, 'No se pudo leer el estado de los formatos de pesos'); }
+  }
+  $('btnPesosVer').onclick = cargarPesos;
+  $('btnPesosGenerar').onclick = async () => {
+    const lista = mesesQueFaltan(PESOS); if (!lista.length) return;
+    if (!confirm('Se van a generar ' + lista.length + ' periodo(s) de formatos de pesos, uno por uno. Los archivos quedan con versión en Drive y no se carga nada al SUI. ¿Continuar?')) return;
+    let hechos = 0, fallidos = [];
+    for (const it of lista) {
+      estado('Generando ' + (hechos + fallidos.length + 1) + ' de ' + lista.length + ': ' + it.nombre + ' ' + it.periodo + '…'); ocupado(true);
+      try { await run('apiProcesar', it.id, it.periodo); hechos++; } catch (e) { fallidos.push(it.nombre + ' ' + it.periodo + ': ' + msgError(e)); }
+    }
+    await cargarPesos(); await cargar();
+    estado(hechos + ' periodo(s) generado(s)' + (fallidos.length ? '; fallaron ' + fallidos.length + ': ' + fallidos.slice(0, 2).join(' | ') : '') + '. Revise los que quedaron con errores o sin datos.');
+  };
+  (function () { const a = new Date().getFullYear(); $('pesosAnio').innerHTML = [a, a - 1].map((x) => `<option value="${x}">${x}</option>`).join(''); })();
+
+  // ------------------------------------------------------------ arranque
+  try { const h = (location.hash || '').replace('#', ''); if (['inicio', 'formatos', 'fuentes', 'calendario', 'barrido', 'historial', 'config'].indexOf(h) >= 0) SEC = h; } catch (x) { /* sin hash */ }
+  // En el portal público se arranca solo después de escribir la clave de acceso (pantalla de ingreso del portal)
+  const arrancar = () => { irA(SEC, true); cargar(); };
+  if (window.SUI_PUERTA && !window.SUI_PUERTA.clave) window.SUI_ARRANCAR = arrancar; else arrancar();
+})();
+</script>
+</body>
+</html>

@@ -175,6 +175,7 @@
   <button role="tab" id="t-inicio" aria-controls="sec-inicio" aria-selected="true" data-sec="inicio">Inicio y tareas</button>
   <button role="tab" id="t-formatos" aria-controls="sec-formatos" aria-selected="false" data-sec="formatos">Formatos y archivos</button>
   <button role="tab" id="t-fuentes" aria-controls="sec-fuentes" aria-selected="false" data-sec="fuentes">Fuentes y datos faltantes</button>
+  <button role="tab" id="t-pqr" aria-controls="sec-pqr" aria-selected="false" data-sec="pqr">Preparar reporte PQR</button>
   <button role="tab" id="t-calendario" aria-controls="sec-calendario" aria-selected="false" data-sec="calendario">Calendario</button>
   <button role="tab" id="t-barrido" aria-controls="sec-barrido" aria-selected="false" data-sec="barrido">Operación de barrido</button>
   <button role="tab" id="t-historial" aria-controls="sec-historial" aria-selected="false" data-sec="historial">Historial y evidencias</button>
@@ -208,7 +209,8 @@
       <p class="nota">Qué le toca entregar a cada persona: lo que ya está listo, lo que falta aprobar o completar, y lo vencido primero. Incluye solo formatos exigibles y sin certificar.</p>
       <div class="fila-busca no-imprimir" style="margin-bottom:8px">
         <label><input type="checkbox" id="entSoloListos"> Solo lo que ya se puede entregar</label>
-        <button class="btn sec peq" id="btnEntCsv" type="button">Descargar lista (CSV para Excel)</button>
+        <button class="btn sec peq" id="btnEntCsv" type="button">Descargar lista en CSV</button>
+        <button class="btn sec peq" id="btnEntXlsx" type="button">Descargar lista en Excel</button>
         <button class="btn sec peq" id="btnEntCopiar" type="button">Copiar como texto</button>
         <button class="btn sec peq" id="btnEntImprimir" type="button">Imprimir</button>
         <button class="btn peq" id="btnResp" type="button">Asignar responsables…</button>
@@ -246,6 +248,7 @@
     <div class="seleccion" id="fSeleccion" hidden></div>
     <div class="fila-busca" style="margin-bottom:8px">
       <label><input type="checkbox" id="selTodos"> Seleccionar todos los visibles con archivo</label>
+      <label>Formato <select id="zipFormato" aria-label="Formato de los archivos del ZIP"><option value="">Como se generaron</option><option value="csv">CSV</option><option value="xlsx">Excel</option><option value="ambos">CSV y Excel</option></select></label>
       <button class="btn ok" id="btnZipSel" type="button">⬇ Descargar seleccionados (ZIP)</button>
       <button class="btn" id="btnTodo" type="button">↻ Generar todos los automáticos del mes</button>
     </div>
@@ -254,6 +257,20 @@
       <tbody id="fCuerpo"></tbody>
     </table>
     <p class="nota">Preparación, aprobación y estado ante el SUI son cosas distintas: descargar un archivo no cumple la obligación. “Vencido” es una condición adicional: un archivo listo también puede estar vencido. Una hoja de apoyo o el Excel de un formulario web no se cargan como archivo: sirven para revisar o digitar. Verifique los CSV con el validador del SUI antes de cargar; la aplicación no carga ni certifica nada.</p>
+  </section>
+
+  <!-- ============================ PREPARAR REPORTE PQR ============================ -->
+  <section id="sec-pqr" role="tabpanel" aria-labelledby="t-pqr" hidden>
+    <h2>Preparar reporte PQR</h2>
+    <p class="nota">El reporte de peticiones, quejas y recursos se presenta en un archivo por servicio (Res. SSPD 20151300054575, Anexo A). Aquí se ve, antes de generar, qué casos entran al reporte, cuáles se excluyen y por qué, y qué falta. Preparar no genera ni modifica archivos.</p>
+    <div class="fila-busca no-imprimir" style="margin-bottom:8px">
+      <label for="pqServicio">Servicio</label>
+      <select id="pqServicio" aria-label="Servicio del reporte PQR"><option value="Acueducto">Acueducto</option><option value="Alcantarillado">Alcantarillado</option><option value="Aseo">Aseo</option></select>
+      <label for="pqPeriodo">Periodo</label>
+      <select id="pqPeriodo" aria-label="Periodo del reporte PQR"></select>
+      <button class="btn" id="pqPreparar" type="button">Preparar</button>
+    </div>
+    <div id="pqCuerpo" aria-live="polite"><p class="nota">Elija el servicio y el periodo y pulse “Preparar”.</p></div>
   </section>
 
   <!-- ============================ FUENTES Y DATOS FALTANTES ============================ -->
@@ -497,8 +514,9 @@ function accionesSecundarias(f, permisos) {
   const principal = accionPrincipal(f, permisos).codigo, l = [];
   const add = (codigo, etiqueta) => { if (codigo !== principal) l.push({ codigo: codigo, etiqueta: etiqueta }); };
   if (exigible(f)) {
-    if (f.automatico && f.tipo !== 'externo') add('generar', 'Generar de nuevo');
-    if (f.listoDescarga) add('descargar', f.botonDescarga || 'Descargar');
+    if (f.automatico && f.tipo !== 'externo' && (puede('capturar') || puede('revisar'))) add('generar', 'Generar de nuevo');
+    if (puede('descargar') && f.listoDescarga) { add('descargar-csv', 'Descargar en CSV'); add('descargar-xlsx', 'Descargar en Excel'); }
+    else if (puede('descargar') && f.tieneArchivo) { add('descargar-csv', 'Descargar borrador en CSV'); add('descargar-xlsx', 'Descargar borrador en Excel'); }
     if (f.hojaApoyo || f.tipoSalida === 'formulario_web') add('apoyo', 'Ver datos calculados');
     if (f.errores) add('errores', 'Ver errores (' + f.errores + ')');
     if (f.automatico) add('diagnostico', 'Ver qué falta en las fuentes');
@@ -571,11 +589,15 @@ function agruparPorResponsable(filas, opciones) {
     .sort((a, b) => (a.responsable === SIN_RESP ? 1 : 0) - (b.responsable === SIN_RESP ? 1 : 0) || b.vencidos - a.vencidos || b.total - a.total || a.responsable.localeCompare(b.responsable, 'es'));
 }
 const csvCelda = (v) => '"' + String(v === null || v === undefined ? '' : v).replace(/"/g, '""') + '"';
-function listaCsv(grupos) {
+function listaTabla(grupos) {
   const cab = ['Responsable', 'Formato', 'Código SUI', 'Servicio', 'Periodo reportado', 'Vence', 'Plazo', 'Estado de la entrega', 'Qué hacer', 'Qué se entrega'];
   const filas = [];
   grupos.forEach((g) => g.items.forEach((x) => filas.push([g.responsable, x.f.nombre, x.f.codigo, x.f.servicio, x.f.periodoLegible || x.f.periodo, x.f.limite || x.f.limiteTexto, x.f.vencido ? textoPlazo(x.f) : (x.f.limiteIso ? textoPlazo(x.f) : x.f.limiteTexto), x.e.etiqueta, x.e.accion, x.f.tipoSalidaTxt])));
-  return [cab].concat(filas).map((r) => r.map(csvCelda).join(',')).join('\r\n');
+  return { cab: cab, filas: filas };
+}
+function listaCsv(grupos) {
+  const t = listaTabla(grupos);
+  return [t.cab].concat(t.filas).map((r) => r.map(csvCelda).join(',')).join('\r\n');
 }
 function listaTexto(grupos) {
   return grupos.map((g) => g.responsable.toUpperCase() + ' (' + g.total + ' formato(s): ' + g.listos + ' listo(s) para entregar' + (g.vencidos ? ', ' + g.vencidos + ' vencido(s)' : '') + ')\n' +
@@ -655,13 +677,14 @@ function mesesQueFaltan(matriz) {
   function irA(sec, sinHash) {
     SEC = sec;
     document.querySelectorAll('#nav button').forEach((b) => b.setAttribute('aria-selected', b.dataset.sec === sec ? 'true' : 'false'));
-    ['inicio', 'formatos', 'fuentes', 'calendario', 'barrido', 'historial', 'config'].forEach((s) => { $('sec-' + s).hidden = s !== sec; });
+    ['inicio', 'formatos', 'fuentes', 'pqr', 'calendario', 'barrido', 'historial', 'config'].forEach((s) => { $('sec-' + s).hidden = s !== sec; });
     if (!sinHash) { try { history.replaceState(null, '', '#' + sec); } catch (x) { /* sin historial */ } }
     if (sec === 'calendario' && CAL.anio === null) { const h = new Date(); cargarCalendario(h.getFullYear(), h.getMonth() + 1); }
     if (sec === 'fuentes') { cargarFijos(); if (!FALTA.length) cargarFaltante(false); }
     if (sec === 'barrido' && !BAR) cargarBarrido();
     if (sec === 'historial') cargarHistorial();
     if (sec === 'config') cargarConfig();
+    if (sec === 'pqr') iniciarPQR();
   }
   document.querySelectorAll('#nav button').forEach((b) => { b.onclick = () => irA(b.dataset.sec); });
   $('nav').addEventListener('keydown', (ev) => {
@@ -725,9 +748,14 @@ function mesesQueFaltan(matriz) {
   $('iEntrega').addEventListener('click', async (ev) => {
     const b = ev.target.closest('[data-zip-ent]'); if (!b) return; const g = window.ENT_GRUPOS[Number(b.dataset.zipEnt)];
     ocupado(true, 'Armando el ZIP de ' + g.responsable + '…');
-    try { bajar(await run('apiDescargarZipIds', g.ids, periodoSel())); ocupado(false, 'ZIP descargado (' + g.ids.length + ' archivo(s) para ' + g.responsable + ').'); await cargar(); } catch (e) { error(e, 'No se pudo armar el ZIP'); }
+    try { bajar(await run('apiDescargarZipIds', g.ids, periodoSel(), $('zipFormato').value)); ocupado(false, 'ZIP descargado (' + g.ids.length + ' archivo(s) para ' + g.responsable + ').'); await cargar(); } catch (e) { error(e, 'No se pudo armar el ZIP'); }
   });
   $('btnEntCsv').onclick = () => { const gr = agruparPorResponsable(DATOS.filas, { soloListos: $('entSoloListos').checked }); const blob = new Blob(['\ufeff' + listaCsv(gr)], { type: 'text/csv;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'Lista_entrega_' + periodoSel() + '.csv'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000); estado('Lista descargada (' + gr.reduce((n, g) => n + g.total, 0) + ' formatos).'); };
+  $('btnEntXlsx').onclick = async () => {
+    const t = listaTabla(agruparPorResponsable(DATOS.filas, { soloListos: $('entSoloListos').checked }));
+    ocupado(true, 'Preparando la lista en Excel…');
+    try { bajar(await run('apiTablaXlsx', 'Lista_entrega_' + periodoSel(), t.cab, t.filas)); ocupado(false, 'Lista descargada en Excel (' + t.filas.length + ' formatos).'); } catch (e) { error(e, 'No se pudo armar el Excel'); }
+  };
   $('btnEntCopiar').onclick = async () => { const t = listaTexto(agruparPorResponsable(DATOS.filas, { soloListos: $('entSoloListos').checked })); try { await navigator.clipboard.writeText(t); estado('Lista copiada: péguela en un correo o mensaje.'); } catch (e) { abrirModal('Lista para copiar', '<textarea style="min-height:50vh" readonly aria-label="Lista">' + esc(t) + '</textarea>'); } };
   $('btnEntImprimir').onclick = () => { irA('inicio'); window.print(); };
   $('btnResp').onclick = async () => {
@@ -844,12 +872,14 @@ function mesesQueFaltan(matriz) {
     try {
       switch (cod) {
         case 'generar': return regenerar(id);
-        case 'descargar': return descargar(id, per);
+        case 'descargar': if (/^REC_/.test(id)) { const sv = { REC_ACU: 'Acueducto', REC_ALC: 'Alcantarillado', REC_ASE: 'Aseo' }[id]; if (sv) { irA('pqr'); $('pqServicio').value = sv; if (per) $('pqPeriodo').value = per; return prepararPQR(); } } return descargar(id, per);
+        case 'descargar-csv': return descargarComo(id, per, 'csv');
+        case 'descargar-xlsx': return descargarComo(id, per, 'xlsx');
         case 'completar': return completarDatos(id, per);
         case 'errores': return verErrores(id, per);
         case 'diagnostico': return verDiagnostico(id, per);
         case 'traza': return verTraza(id, per);
-        case 'apoyo': return verApoyo(id);
+        case 'apoyo': return verApoyo(id, per);
         case 'revisar': return revisar(id, per);
         case 'evidencia': return evidencia(id, per);
         case 'noaplica': return declararNoAplica(id, per);
@@ -868,11 +898,21 @@ function mesesQueFaltan(matriz) {
     const bytes = atob(a.base64); const arr = new Uint8Array(bytes.length); for (let i = 0; i < bytes.length; i++) arr[i] = bytes.charCodeAt(i);
     const url = URL.createObjectURL(new Blob([arr], { type: a.mime })); const l = document.createElement('a'); l.href = url; l.download = a.nombre; document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000);
   }
-  async function descargar(id, per) {
-    const f = fila(id, per);
-    if (f && f.tipoSalida && f.tipoSalida !== 'cargue_csv' && !confirm('Este archivo es: ' + (f.tipoSalidaTxt || 'una hoja de apoyo') + '.\nNO es un archivo de cargue masivo del SUI; sirve para revisar o digitar. ¿Descargar de todas formas?')) return;
-    ocupado(true, 'Preparando descarga…');
-    try { bajar(await run('apiDescargar', id, per)); ocupado(false, 'Descargado. Recuerde: descargar no cumple la obligación; falta cargar, certificar y registrar la evidencia.'); await cargar(); }
+  function descargar(id, per) {
+    const f = fila(id, per) || {};
+    const cargue = f.tipoSalida === 'cargue_csv';
+    abrirModal('Descargar · ' + (f.nombre || id), `<p class="nota">${esc(f.periodoLegible || per || '')}${f.registros ? ' · ' + esc(f.registros) + ' registros' : ''}</p>
+      <div class="tarjetas" style="grid-template-columns:repeat(auto-fit, minmax(200px, 1fr))">
+        <button class="tarjeta" type="button" id="dlCsv"><div class="v">⬇ CSV</div><div class="t">${cargue ? 'Archivo para cargar al SUI (cargue masivo)' : 'La misma tabla en CSV, para abrir en Excel u otros programas'}</div></button>
+        <button class="tarjeta" type="button" id="dlXlsx"><div class="v">⬇ Excel</div><div class="t">${cargue ? 'Copia en Excel para revisar. Al SUI se carga el CSV' : 'Hoja de apoyo para digitar en el SUI'}</div></button>
+      </div>
+      <p class="nota">Si la versión no está aprobada, el nombre del archivo empieza por BORRADOR_. Una hoja de apoyo empieza por APOYO_ y no es el formato oficial validado.</p>`);
+    $('dlCsv').onclick = () => { cerrarModal(); descargarComo(id, per, 'csv'); };
+    $('dlXlsx').onclick = () => { cerrarModal(); descargarComo(id, per, 'xlsx'); };
+  }
+  async function descargarComo(id, per, formato) {
+    ocupado(true, 'Preparando el archivo en ' + (formato === 'xlsx' ? 'Excel' : 'CSV') + '…');
+    try { const d = await run('apiDescargarComo', id, per, formato); bajar(d); ocupado(false, (d.clase ? d.clase + '. ' : '') + 'Descargado. Recuerde: descargar no cumple la obligación; falta cargar, certificar y registrar la evidencia.'); await cargar(); }
     catch (e) { error(e, 'No se pudo descargar'); }
   }
   $('btnZipSel').onclick = async () => {
@@ -880,7 +920,7 @@ function mesesQueFaltan(matriz) {
     const r = resumenSeleccion(DATOS.filas, ids); if (!r.incluidos.length) { estado('Ninguno de los elegidos tiene archivo descargable (' + r.excluidos.length + ' excluidos).'); return; }
     if (r.excluidos.length && !confirm('Se descargarán ' + r.incluidos.length + ' archivos.\nQuedan excluidos ' + r.excluidos.length + ':\n- ' + r.excluidos.map((x) => x.nombre + ' (' + x.motivo + ')').slice(0, 12).join('\n- ') + '\n¿Continuar?')) return;
     ocupado(true, 'Armando ZIP de ' + r.incluidos.length + ' archivos…');
-    try { bajar(await run('apiDescargarZipIds', r.incluidos.map((f) => f.id), periodoSel())); ocupado(false, 'ZIP descargado (' + r.incluidos.length + ' archivos' + (r.noCargables ? '; ' + r.noCargables + ' no se cargan como archivo' : '') + ').'); await cargar(); }
+    try { bajar(await run('apiDescargarZipIds', r.incluidos.map((f) => f.id), periodoSel(), $('zipFormato').value)); ocupado(false, 'ZIP descargado (' + r.incluidos.length + ' formatos' + (r.noCargables ? '; ' + r.noCargables + ' no se cargan como archivo' : '') + ').'); await cargar(); }
     catch (e) { error(e, 'No se pudo armar el ZIP'); }
   };
   $('btnTodo').onclick = () => { if (confirm('¿Generar todos los formatos automáticos de ' + mesTexto(periodoSel()) + '? Puede tardar varios minutos.')) regenerar('*'); };
@@ -910,10 +950,10 @@ function mesesQueFaltan(matriz) {
     const errs = await run('apiErrores', id, per);
     abrirModal('Errores – ' + nombreDe(id) + ' (' + per + ')', errs.length ? '<table class="resp"><thead><tr><th scope="col">Dónde</th><th scope="col">Campo</th><th scope="col">Qué pasa</th><th scope="col">Qué hacer</th></tr></thead><tbody>' + errs.slice(0, 300).map((e) => `<tr><td data-l="Dónde">${esc(e.fila)}</td><td data-l="Campo">${esc(e.campo)}</td><td data-l="Qué pasa"><span class="nota">${esc(e.tipo)}</span> ${esc(e.detalle)}</td><td data-l="Qué hacer"><b>${esc(e.queHacer || '')}</b></td></tr>`).join('') + '</tbody></table>' + (errs.length > 300 ? `<p class="nota">Se muestran 300 de ${errs.length}.</p>` : '') : '<p>Sin errores registrados. Si el formato tiene 0 registros, “0 errores” no significa que se haya validado algo.</p>');
   }
-  async function verApoyo(id) {
-    const a = await run('apiApoyo', id);
-    abrirModal(a ? a.titulo : 'Datos calculados', !a ? '<p>Aún no se ha generado. Use “Generar”.</p>' :
-      `<p class="nota">${esc(a.periodo)}<br>${esc(a.instrucciones)}<br>${esc(a.generado)} · <a href="${esc(a.url)}" target="_blank" rel="noopener">Abrir en la hoja</a>${a.urlSUI ? ' · <a href="' + esc(a.urlSUI) + '" target="_blank" rel="noopener"><b>Formulario con la disposición oficial del SUI</b></a>' : ''}</p>
+  async function verApoyo(id, per) {
+    const a = await run('apiApoyo', id, per);
+    abrirModal(a ? a.titulo : 'Datos calculados', !a ? '<p>No hay apoyo generado para el periodo ' + esc(per || '') + '. Use “Generar” para ese periodo.</p>' :
+      `${a.advertencia ? '<div class="aviso">' + esc(a.advertencia) + '</div>' : ''}<p class="nota">${esc(a.periodo)}${a.origen ? ' · ' + esc(a.origen) : ''}<br>${esc(a.instrucciones)}<br>${esc(a.generado)}${a.url ? ' · <a href="' + esc(a.url) + '" target="_blank" rel="noopener">Abrir en la hoja</a>' : ''}${a.urlSUI ? ' · <a href="' + esc(a.urlSUI) + '" target="_blank" rel="noopener"><b>Formulario con la disposición oficial del SUI</b></a>' : ''}</p>
        <div style="overflow:auto"><table><thead><tr>${a.encabezados.map((h) => '<th scope="col">' + esc(h) + '</th>').join('')}</tr></thead><tbody>${a.filas.map((f) => '<tr>' + f.map((v) => '<td>' + esc(v) + '</td>').join('') + '</tr>').join('')}</tbody></table></div>`);
   }
   async function verDiagnostico(id, per) {
@@ -1001,6 +1041,110 @@ function mesesQueFaltan(matriz) {
       <p><button class="btn peligro" id="naGuardar" type="button">Declarar “no aplica”</button></p>`);
     $('naGuardar').onclick = async () => { try { await run('apiDeclararNoAplicable', id, per, $('na_fun').value, $('na_sop').value); cerrarModal(); estado('Declaración registrada.'); await cargar(); CAL.anio = null; } catch (e) { error(e, 'No se pudo declarar'); } };
   }
+
+  // ------------------------------------------------------------ PREPARAR REPORTE PQR
+  // Tres acciones distintas: el archivo para cargar al SUI (solo versión vigente aprobada), el listado de revisión
+  // (no se carga al SUI) y los pendientes que impiden preparar el archivo.
+  let PQR = null;
+  function iniciarPQR() {
+    const sel = $('pqPeriodo');
+    if (!sel.options.length) [...$('gPeriodo').options].forEach((o) => { const x = document.createElement('option'); x.value = o.value; x.textContent = o.textContent; sel.appendChild(x); });
+    if (!PQR && periodoSel()) sel.value = periodoSel();
+  }
+  async function prepararPQR() {
+    const serv = $('pqServicio').value, per = $('pqPeriodo').value || periodoSel();
+    ocupado(true, 'Revisando los casos de PQR de ' + serv + '…');
+    try { PQR = await run('apiPrepararPQR', serv, per); pintarPQR(); ocupado(false, PQR.titulo + ': ' + PQR.resumen.incluidos + ' caso(s) incluido(s), ' + PQR.resumen.bloqueantes + ' pendiente(s).'); }
+    catch (e) { error(e, 'No se pudo preparar el reporte PQR'); }
+  }
+  const tablaCasosPQR = (lista, conEstado) => '<div style="overflow:auto;max-height:420px"><table class="resp"><thead><tr><th scope="col">Radicado</th><th scope="col">Fecha</th><th scope="col">Tipo</th><th scope="col">Clasificación</th><th scope="col">Servicio en PQRS</th><th scope="col">Motivo</th>' + (conEstado ? '<th scope="col">Estado</th>' : '') + '</tr></thead><tbody>' +
+    lista.map((c) => `<tr><td data-l="Radicado">${esc(c.radicado)}<div class="sub">${esc(c.ref)}</div></td><td data-l="Fecha">${esc(c.fecha)}</td><td data-l="Tipo">${esc(c.tipo)}</td><td data-l="Clasificación">${esc(c.clasificacion)}</td><td data-l="Servicio">${esc(c.servicio || '—')}</td><td data-l="Motivo">${esc(c.motivo)}</td>` +
+      (conEstado ? `<td data-l="Estado">${c.listo ? '<span class="ins ok">listo</span>' : '<span class="ins warn">falta: ' + esc(c.pendientes.join(', ')) + '</span>'}</td>` : '') + '</tr>').join('') + '</tbody></table></div>';
+  function pintarPQR() {
+    const d = PQR; if (!d) return;
+    const r = d.resumen, a = d.archivo;
+    const incl = d.casos.filter((c) => c.decision === 'incluido'), excl = d.casos.filter((c) => c.decision === 'excluido'), bloq = d.casos.filter((c) => c.decision === 'bloqueado');
+    const versionTxt = !a || !a.existe ? 'sin archivo generado' : 'versión v' + a.version + (a.aprobado ? ' aprobada' : ' sin aprobar') + (a.vigente ? '' : ' · no coincide con la fuente actual');
+    const porCampo = {}; d.pendientes.forEach((p) => { const k = p.campo; (porCampo[k] = porCampo[k] || { campo: k, n: 0, filas: {}, queHacer: p.queHacer }).n++; porCampo[k].filas[String(p.fila).replace(/\.\d+$/, '')] = 1; });
+    const grupos = Object.keys(porCampo).map((k) => porCampo[k]).sort((x, y) => y.n - x.n);
+    const puedeGenerar = puede('capturar') || puede('revisar');
+    let pasoSiguiente = '';
+    if (!d.puedeDescargarCargue) {
+      if (r.bloqueantes) pasoSiguiente = '<button class="btn sec peq" type="button" id="pqIrPend">Ver los pendientes</button>';
+      else if (r.registros && (!a || !a.existe || !a.vigente)) pasoSiguiente = `<button class="btn peq" type="button" id="pqGenerar" ${puedeGenerar ? '' : 'disabled title="Su rol no puede generar"'}>Generar ${esc(d.id)} ${esc(d.periodo)}</button>`;
+      else if (!a.aprobado) pasoSiguiente = `<button class="btn peq" type="button" data-act="revisar" data-id="${esc(d.id)}" data-per="${esc(d.periodo)}">Revisar y aprobar</button>`;
+    }
+    let html = `<h3 style="margin-bottom:2px">${esc(d.titulo)}</h3><p class="nota" style="margin-top:0">${esc(r.registros)} registro(s) para el archivo · ${esc(versionTxt)}${a && a.existe && a.generado ? ' · generado ' + esc(a.generado) : ''}</p>`;
+    html += `<div class="tarjetas">
+      <div class="tarjeta"><div class="n">${r.incluidos}</div><div class="t">casos incluidos en el reporte</div></div>
+      <div class="tarjeta"><div class="n">${r.listos}</div><div class="t">incluidos y completos</div></div>
+      <div class="tarjeta${r.incluidos - r.listos ? ' alerta' : ''}"><div class="n">${r.incluidos - r.listos}</div><div class="t">incluidos con datos pendientes</div></div>
+      <div class="tarjeta${r.bloqueados ? ' alerta' : ''}"><div class="n">${r.bloqueados}</div><div class="t">por revisar antes de decidir si entran</div></div>
+      <div class="tarjeta sindato"><div class="n">${r.excluidos}</div><div class="t">excluidos (no son reclamación, queja ni recurso)</div></div>
+      <div class="tarjeta sindato"><div class="n">${r.otroServicio}</div><div class="t">registros de otro servicio (no se listan)</div></div>
+    </div>`;
+    if (d.sinCasos) html += `<div class="aviso"><b>Sin casos reportables verificados.</b> ${esc(d.sinCasos)}<br><button class="btn sec peq" type="button" data-act="noaplica" data-id="${esc(d.id)}" data-per="${esc(d.periodo)}" style="margin-top:6px">Declarar “no aplica”…</button></div>`;
+    html += `<div class="tarjetas" style="grid-template-columns:repeat(auto-fit, minmax(240px, 1fr))">
+      <div class="tarjeta"><b>1. Archivo para cargar al SUI</b><p class="sub">Solo la versión vigente aprobada, sin pendientes.</p>
+        <button class="btn ok" type="button" id="pqCargue" ${d.puedeDescargarCargue && puede('descargar') ? '' : 'disabled'}>⬇ Descargar archivo para cargar al SUI (CSV)</button>
+        <button class="btn sec peq" type="button" id="pqCargueXlsx" ${d.puedeDescargarCargue && puede('descargar') ? '' : 'disabled'} style="margin-top:6px">Copia en Excel para revisar</button>
+        ${d.puedeDescargarCargue ? (puede('descargar') ? '' : '<p class="sub">Su rol no puede descargar.</p>') : '<p class="sub"><b>No disponible:</b> ' + esc(d.motivoNoDescarga) + '</p>' + (pasoSiguiente ? '<p>' + pasoSiguiente + '</p>' : '')}</div>
+      <div class="tarjeta"><b>2. Listado de revisión</b><p class="sub">Casos incluidos, excluidos y por revisar con su motivo, y los datos pendientes. <b>Este archivo no se carga al SUI.</b></p>
+        <button class="btn sec" type="button" id="pqRevision">Listado de revisión en CSV</button> <button class="btn sec" type="button" id="pqRevisionXlsx">Listado de revisión en Excel</button></div>
+      <div class="tarjeta"><b>3. Resolver pendientes</b><p class="sub">${r.bloqueantes ? r.bloqueantes + ' dato(s) pendiente(s) en ' + grupos.length + ' campo(s). Se corrigen en la hoja PQRS o en “Completar datos”.' : 'No hay datos pendientes.'}</p>
+        ${r.bloqueantes ? `<button class="btn sec" type="button" id="pqVerPend">Ver qué falta</button> <button class="btn sec" type="button" data-act="completar" data-id="${esc(d.id)}" data-per="${esc(d.periodo)}">Completar datos…</button>` : ''}</div>
+    </div>`;
+    if (d.regla) html += `<p class="nota"><b>Regla de selección:</b> ${esc(d.regla)}</p>`;
+    if (d.avisos.length) html += `<details><summary>Avisos de la selección (${d.avisos.length})</summary>${d.avisos.map((x) => '<div class="aviso">' + esc(typeof x === 'string' ? x : (x.detalle || JSON.stringify(x))) + '</div>').join('')}</details>`;
+    if (grupos.length) html += `<h3 id="pqPendientes" tabindex="-1">Qué falta para preparar el archivo</h3><table class="resp"><thead><tr><th scope="col">Campo</th><th scope="col">Casos</th><th scope="col">Qué hacer</th></tr></thead><tbody>${grupos.map((g) => `<tr><td data-l="Campo"><b>${esc(g.campo)}</b></td><td data-l="Casos">${Object.keys(g.filas).length}</td><td data-l="Qué hacer">${esc(g.queHacer)}</td></tr>`).join('')}</tbody></table>
+      <details><summary>Detalle por caso (${d.pendientes.length})</summary><div style="overflow:auto;max-height:420px"><table class="resp"><thead><tr><th scope="col">Fila</th><th scope="col">Radicado</th><th scope="col">Campo</th><th scope="col">Qué pasa</th></tr></thead><tbody>${d.pendientes.slice(0, 400).map((p) => `<tr><td data-l="Fila">${esc(p.fila)}</td><td data-l="Radicado">${esc(p.radicado)}</td><td data-l="Campo">${esc(p.campo)}</td><td data-l="Qué pasa"><span class="nota">${esc(p.tipo)}</span> ${esc(p.detalle)}</td></tr>`).join('')}</tbody></table></div>${d.pendientes.length > 400 ? '<p class="nota">Se muestran 400 de ' + d.pendientes.length + '; el listado de revisión los trae todos.</p>' : ''}</details>`;
+    html += `<details ${bloq.length ? 'open' : ''}><summary><b>Por revisar antes de decidir si entran (${bloq.length})</b></summary>${bloq.length ? tablaCasosPQR(bloq, false) : '<p class="nota">Ninguno.</p>'}</details>`;
+    html += `<details><summary><b>Incluidos (${incl.length})</b></summary>${incl.length ? tablaCasosPQR(incl, true) : '<p class="nota">Ninguno.</p>'}</details>`;
+    html += `<details><summary><b>Excluidos (${excl.length})</b></summary>${excl.length ? tablaCasosPQR(excl, false) : '<p class="nota">Ninguno.</p>'}</details>`;
+    $('pqCuerpo').innerHTML = html;
+    if ($('pqCargue')) $('pqCargue').onclick = descargarCarguePQR;
+    if ($('pqCargueXlsx')) $('pqCargueXlsx').onclick = () => descargarComo(d.id, d.periodo, 'xlsx');
+    $('pqRevision').onclick = descargarRevisionPQR;
+    $('pqRevisionXlsx').onclick = async () => {
+      const t = tablaRevisionPQR(d);
+      ocupado(true, 'Preparando el listado en Excel…');
+      try { const x = await run('apiTablaXlsx', 'REVISION_NO_CARGAR_' + d.id + '_' + d.periodo, t.cab, t.filas); bajar(x); ocupado(false, 'Listado de revisión descargado en Excel. Este archivo no se carga al SUI.'); }
+      catch (e) { error(e, 'No se pudo armar el Excel'); }
+    };
+    const irPend = () => { const h = $('pqPendientes'); if (h) { h.scrollIntoView({ behavior: 'smooth' }); h.focus(); } };
+    if ($('pqVerPend')) $('pqVerPend').onclick = irPend;
+    if ($('pqIrPend')) $('pqIrPend').onclick = irPend;
+    if ($('pqGenerar')) $('pqGenerar').onclick = async () => {
+      ocupado(true, 'Generando ' + d.id + ' ' + d.periodo + '…');
+      try { const x = await run('apiProcesar', d.id, d.periodo); ocupado(false, (x.resumen || []).map((y) => y.formato + ': ' + y.estado).join(' · ')); await cargar(); await prepararPQR(); }
+      catch (e) { error(e, 'No se pudo generar'); }
+    };
+  }
+  async function descargarCarguePQR() {
+    const d = PQR; if (!d || !d.puedeDescargarCargue) return;
+    ocupado(true, 'Preparando el archivo para cargar al SUI…');
+    try { const x = await run('apiDescargarCargue', d.id, d.periodo); bajar(x); ocupado(false, x.clase + '. Descargar no cumple la obligación: falta cargar, certificar y registrar la evidencia.'); await cargar(); }
+    catch (e) { error(e, 'No se entregó el archivo de cargue'); }
+  }
+  // Una sola tabla para el listado de revisión (CSV y Excel): casos con su decisión y luego los datos pendientes
+  function tablaRevisionPQR(d) {
+    const cab = ['Decisión', 'Radicado', 'Fila PQRS', 'Fecha', 'Tipo', 'Clasificación', 'Servicio en PQRS', 'Motivo', 'Datos pendientes'];
+    const filas = [['ESTE ARCHIVO NO SE CARGA AL SUI: listado de revisión interna'], [d.titulo + ' · ' + d.resumen.registros + ' registro(s) · ' + (d.archivo && d.archivo.existe ? 'versión v' + d.archivo.version + (d.archivo.aprobado ? ' aprobada' : ' sin aprobar') : 'sin archivo generado')], []]
+      .concat([cab]).concat(d.casos.map((c) => [c.decision === 'bloqueado' ? 'por revisar' : c.decision, c.radicado, c.ref, c.fecha, c.tipo, c.clasificacion, c.servicio, c.motivo, c.pendientes.join(', ')]))
+      .concat([[], ['Fila PQRS', 'Radicado', 'Campo', 'Tipo', 'Qué pasa', 'Qué hacer']])
+      .concat(d.pendientes.map((p) => [p.fila, p.radicado, p.campo, p.tipo, p.detalle, p.queHacer]));
+    return { cab: [], filas: filas };
+  }
+  function descargarRevisionPQR() {
+    const d = PQR; if (!d) return;
+    const filas = tablaRevisionPQR(d).filas;
+    const blob = new Blob(['﻿' + filas.map((f) => f.map(csvCelda).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob); const l = document.createElement('a'); l.href = url; l.download = 'REVISION_NO_CARGAR_' + d.id + '_' + d.periodo + '.csv'; document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000);
+    estado('Listado de revisión descargado. Este archivo no se carga al SUI.');
+  }
+  $('pqPreparar').onclick = prepararPQR;
+  $('pqServicio').onchange = () => { if (PQR) prepararPQR(); };
+  $('pqPeriodo').onchange = () => { if (PQR) prepararPQR(); };
 
   // ------------------------------------------------------------ FUENTES Y DATOS FALTANTES
   async function cargarFijos() {
@@ -1228,7 +1372,7 @@ function mesesQueFaltan(matriz) {
   (function () { const a = new Date().getFullYear(); $('pesosAnio').innerHTML = [a, a - 1].map((x) => `<option value="${x}">${x}</option>`).join(''); })();
 
   // ------------------------------------------------------------ arranque
-  try { const h = (location.hash || '').replace('#', ''); if (['inicio', 'formatos', 'fuentes', 'calendario', 'barrido', 'historial', 'config'].indexOf(h) >= 0) SEC = h; } catch (x) { /* sin hash */ }
+  try { const h = (location.hash || '').replace('#', ''); if (['inicio', 'formatos', 'fuentes', 'pqr', 'calendario', 'barrido', 'historial', 'config'].indexOf(h) >= 0) SEC = h; } catch (x) { /* sin hash */ }
   // En el portal público se arranca solo después de escribir la clave de acceso (pantalla de ingreso del portal)
   const arrancar = () => { irA(SEC, true); cargar(); };
   if (window.SUI_PUERTA && !window.SUI_PUERTA.clave) window.SUI_ARRANCAR = arrancar; else arrancar();

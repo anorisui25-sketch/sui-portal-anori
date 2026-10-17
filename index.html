@@ -175,6 +175,7 @@
   <button role="tab" id="t-inicio" aria-controls="sec-inicio" aria-selected="true" data-sec="inicio">Inicio y tareas</button>
   <button role="tab" id="t-formatos" aria-controls="sec-formatos" aria-selected="false" data-sec="formatos">Formatos y archivos</button>
   <button role="tab" id="t-fuentes" aria-controls="sec-fuentes" aria-selected="false" data-sec="fuentes">Fuentes y datos faltantes</button>
+  <button role="tab" id="t-alertas" aria-controls="sec-alertas" aria-selected="false" data-sec="alertas">Alertas tempranas <span id="alertasCuenta" class="ins off" hidden></span></button>
   <button role="tab" id="t-pqr" aria-controls="sec-pqr" aria-selected="false" data-sec="pqr">Preparar reporte PQR</button>
   <button role="tab" id="t-calendario" aria-controls="sec-calendario" aria-selected="false" data-sec="calendario">Calendario</button>
   <button role="tab" id="t-barrido" aria-controls="sec-barrido" aria-selected="false" data-sec="barrido">Operación de barrido</button>
@@ -257,6 +258,21 @@
       <tbody id="fCuerpo"></tbody>
     </table>
     <p class="nota">Preparación, aprobación y estado ante el SUI son cosas distintas: descargar un archivo no cumple la obligación. “Vencido” es una condición adicional: un archivo listo también puede estar vencido. Una hoja de apoyo o el Excel de un formulario web no se cargan como archivo: sirven para revisar o digitar. Verifique los CSV con el validador del SUI antes de cargar; la aplicación no carga ni certifica nada.</p>
+  </section>
+
+  <!-- ============================ ALERTAS TEMPRANAS ============================ -->
+  <section id="sec-alertas" role="tabpanel" aria-labelledby="t-alertas" hidden>
+    <h2>Alertas tempranas en los datos a reportar</h2>
+    <p class="nota">Cada día se revisan en las hojas fuente los datos del mes en curso y del periodo por reportar contra los límites que fija la norma. Una alerta de <b>incumplimiento</b> es un valor real fuera del límite: se reporta tal cual, pero hay que gestionar la causa y dejar el soporte. Una alerta de <b>verificar</b> es un valor casi seguro mal digitado o en otra unidad: se corrige en la hoja fuente. Una alerta de <b>plazo</b> avisa que un término legal está por vencer. Al corregir el dato en la fuente, la alerta desaparece sola.</p>
+    <div class="fila-busca no-imprimir" style="margin-bottom:8px">
+      <label for="alTema">Tema</label><select id="alTema" aria-label="Tema de la alerta"><option value="">Todos</option></select>
+      <label for="alClase">Tipo</label><select id="alClase" aria-label="Tipo de alerta"><option value="">Todos</option><option value="incumplimiento">Incumplimiento</option><option value="plazo">Plazo por vencer</option><option value="verificar">Posible error de digitación</option></select>
+      <label for="alEstado">Estado</label><select id="alEstado" aria-label="Estado de la alerta"><option value="pendientes">Pendientes</option><option value="revisadas">Revisadas</option><option value="">Todas</option></select>
+      <button class="btn" id="alActualizar" type="button">Actualizar</button>
+      <button class="btn sec peq" id="alCsv" type="button">Descargar en CSV</button>
+      <button class="btn sec peq" id="alXlsx" type="button">Descargar en Excel</button>
+    </div>
+    <div id="alCuerpo" aria-live="polite"><p class="nota">Pulse “Actualizar” para revisar los datos.</p></div>
   </section>
 
   <!-- ============================ PREPARAR REPORTE PQR ============================ -->
@@ -677,7 +693,7 @@ function mesesQueFaltan(matriz) {
   function irA(sec, sinHash) {
     SEC = sec;
     document.querySelectorAll('#nav button').forEach((b) => b.setAttribute('aria-selected', b.dataset.sec === sec ? 'true' : 'false'));
-    ['inicio', 'formatos', 'fuentes', 'pqr', 'calendario', 'barrido', 'historial', 'config'].forEach((s) => { $('sec-' + s).hidden = s !== sec; });
+    ['inicio', 'formatos', 'fuentes', 'alertas', 'pqr', 'calendario', 'barrido', 'historial', 'config'].forEach((s) => { $('sec-' + s).hidden = s !== sec; });
     if (!sinHash) { try { history.replaceState(null, '', '#' + sec); } catch (x) { /* sin historial */ } }
     if (sec === 'calendario' && CAL.anio === null) { const h = new Date(); cargarCalendario(h.getFullYear(), h.getMonth() + 1); }
     if (sec === 'fuentes') { cargarFijos(); if (!FALTA.length) cargarFaltante(false); }
@@ -685,6 +701,7 @@ function mesesQueFaltan(matriz) {
     if (sec === 'historial') cargarHistorial();
     if (sec === 'config') cargarConfig();
     if (sec === 'pqr') iniciarPQR();
+    if (sec === 'alertas' && !ALERTAS) cargarAlertas();
   }
   document.querySelectorAll('#nav button').forEach((b) => { b.onclick = () => irA(b.dataset.sec); });
   $('nav').addEventListener('keydown', (ev) => {
@@ -1042,6 +1059,85 @@ function mesesQueFaltan(matriz) {
     $('naGuardar').onclick = async () => { try { await run('apiDeclararNoAplicable', id, per, $('na_fun').value, $('na_sop').value); cerrarModal(); estado('Declaración registrada.'); await cargar(); CAL.anio = null; } catch (e) { error(e, 'No se pudo declarar'); } };
   }
 
+  // ------------------------------------------------------------ ALERTAS TEMPRANAS
+  let ALERTAS = null;
+  const CLASE_ALERTA = { incumplimiento: ['err', 'Incumplimiento'], plazo: ['warn', 'Plazo'], verificar: ['info', 'Verificar dato'] };
+  const pendienteAlerta = (a) => a.estado === 'abierta' || a.estado === 'en gestión';
+  function pintarCuentaAlertas() {
+    const el = $('alertasCuenta'); if (!ALERTAS) return;
+    const r = ALERTAS.resumen; el.hidden = !r.abiertas; el.textContent = r.abiertas;
+    el.className = 'ins ' + (r.incumplimientos ? 'err' : (r.plazos ? 'warn' : 'info'));
+  }
+  async function cargarAlertas(silencioso) {
+    if (!silencioso) ocupado(true, 'Revisando los datos contra los límites normativos…');
+    try { ALERTAS = await run('apiAlertas', {}); pintarCuentaAlertas(); if (!silencioso) { pintarAlertas(); ocupado(false, ALERTAS.resumen.abiertas + ' alerta(s) pendiente(s).'); } else if (SEC === 'alertas') pintarAlertas(); }
+    catch (e) { if (!silencioso) error(e, 'No se pudieron revisar las alertas'); }
+  }
+  function alertasFiltradas() {
+    const t = $('alTema').value, c = $('alClase').value, e = $('alEstado').value;
+    return ALERTAS.alertas.filter((a) => (!t || a.tema === t) && (!c || a.clase === c) && (!e || (e === 'pendientes' ? pendienteAlerta(a) : !pendienteAlerta(a))));
+  }
+  function pintarAlertas() {
+    const d = ALERTAS; if (!d) return;
+    const sel = $('alTema'), actual = sel.value;
+    sel.innerHTML = '<option value="">Todos</option>' + Object.keys(d.alertas.reduce((m, a) => { m[a.tema] = 1; return m; }, {})).sort().map((t) => `<option value="${esc(t)}">${esc(t)}</option>`).join('');
+    sel.value = actual;
+    const r = d.resumen, lista = alertasFiltradas();
+    let html = `<p class="nota">Revisión del ${esc(d.generado)} · ${d.reglas} reglas normativas · últimos ${d.ventanaDias} días y casos abiertos.</p>
+      <div class="tarjetas">
+        <button class="tarjeta${r.incumplimientos ? ' alerta' : ''}" type="button" data-alfiltro="incumplimiento"><div class="n">${r.incumplimientos}</div><div class="t">incumplimientos (valor fuera del límite)</div></button>
+        <button class="tarjeta${r.plazos ? ' alerta' : ''}" type="button" data-alfiltro="plazo"><div class="n">${r.plazos}</div><div class="t">plazos por vencer</div></button>
+        <button class="tarjeta" type="button" data-alfiltro="verificar"><div class="n">${r.verificar}</div><div class="t">posibles errores de digitación o de unidades</div></button>
+        <div class="tarjeta sindato"><div class="n">${r.revisadas}</div><div class="t">revisadas (valor correcto o corregidas)</div></div>
+      </div>`;
+    if (!lista.length) html += '<div class="aviso ok">No hay alertas con este filtro.</div>';
+    else html += `<div style="overflow:auto"><table class="resp"><thead><tr><th scope="col">Tipo</th><th scope="col">Dato</th><th scope="col">Valor / límite</th><th scope="col">Dónde verificar</th><th scope="col">Norma</th><th scope="col">Afecta</th><th scope="col">Qué hacer</th><th scope="col">Acción</th></tr></thead><tbody>` +
+      lista.slice(0, 500).map((a, i) => {
+        const k = CLASE_ALERTA[a.clase] || ['info', a.clase];
+        const venc = a.vence ? `${esc(a.periodo)} · vence ${esc(a.vence)}${a.diasParaVencer !== null ? ' (' + (a.diasParaVencer < 0 ? 'vencido' : a.diasParaVencer + ' días') + ')' : ''}` : '';
+        return `<tr><td data-l="Tipo"><span class="ins ${k[0]}">${esc(k[1])}</span>${a.estado !== 'abierta' ? '<div class="sub">' + esc(a.estado) + (a.nota ? ': ' + esc(a.nota) : '') + '</div>' : ''}</td>
+          <td data-l="Dato"><b>${esc(a.variable)}</b><div class="sub">${esc(a.tema)}${a.referencia ? ' · ' + esc(a.referencia) : ''}${a.fecha ? ' · ' + esc(a.fecha) : ''}</div></td>
+          <td data-l="Valor / límite"><b>${esc(a.valor)}${a.unidad && /^[-\d.,<> ]+$/.test(String(a.valor)) ? ' ' + esc(a.unidad) : ''}</b><div class="sub">Límite: ${esc(a.limite)}</div>${a.detalle ? '<div class="sub">' + esc(a.detalle) + '</div>' : ''}</td>
+          <td data-l="Dónde verificar">${esc(a.dondeVerificar)}<div class="sub">${esc(a.fuente)}</div></td>
+          <td data-l="Norma"><span title="${esc(a.cita)}">${esc(a.norma)}</span></td>
+          <td data-l="Afecta">${esc(a.formatosTexto || (a.formatos || []).join(', '))}<div class="sub">${venc}</div></td>
+          <td data-l="Qué hacer" class="sub">${esc(a.queHacer)}</td>
+          <td data-l="Acción" class="acciones">${puede('capturar') ? `<button class="btn sec peq" type="button" data-alact="valor correcto" data-ali="${i}">Valor correcto…</button> <button class="btn sec peq" type="button" data-alact="en gestión" data-ali="${i}">En gestión</button> <button class="btn sec peq" type="button" data-alact="corregida" data-ali="${i}">Corregida</button>` : ''}</td></tr>`;
+      }).join('') + '</tbody></table></div>' + (lista.length > 500 ? `<p class="nota">Se muestran 500 de ${lista.length}; la descarga las trae todas.</p>` : '');
+    if (d.reglasSinFuente && d.reglasSinFuente.length) html += `<details><summary>Límites normativos que no se pueden revisar porque las hojas no tienen el dato (${d.reglasSinFuente.length})</summary><table class="resp"><tbody>${d.reglasSinFuente.map((x) => `<tr><td><b>${esc(x.variable)}</b><div class="sub">${esc(x.tema)}</div></td><td>${esc(x.norma)}</td><td class="sub">${esc(x.notas)}</td></tr>`).join('')}</tbody></table></details>`;
+    $('alCuerpo').innerHTML = html;
+    window.AL_LISTA = lista;
+  }
+  function tablaAlertas() {
+    const cab = ['Tipo', 'Estado', 'Tema', 'Dato', 'Referencia', 'Fecha', 'Valor', 'Unidad', 'Límite', 'Detalle', 'Dónde verificar', 'Fuente', 'Norma', 'Cita', 'Formatos', 'Periodo', 'Vence', 'Qué hacer', 'Nota de revisión'];
+    return { cab: cab, filas: alertasFiltradas().map((a) => [a.clase, a.estado, a.tema, a.variable, a.referencia, a.fecha, a.valor, a.unidad, a.limite, a.detalle, a.dondeVerificar, a.fuente, a.norma, a.cita, a.formatosTexto || (a.formatos || []).join(' '), a.periodo, a.vence, a.queHacer, a.nota]) };
+  }
+  $('alActualizar').onclick = () => cargarAlertas(false);
+  ['alTema', 'alClase', 'alEstado'].forEach((x) => { $(x).onchange = pintarAlertas; });
+  $('alCsv').onclick = () => {
+    if (!ALERTAS) return; const t = tablaAlertas();
+    const blob = new Blob(['﻿' + [t.cab].concat(t.filas).map((r) => r.map(csvCelda).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob); const l = document.createElement('a'); l.href = url; l.download = 'Alertas_tempranas_' + new Date().toISOString().slice(0, 10) + '.csv'; document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000);
+    estado('Alertas descargadas en CSV (' + t.filas.length + ').');
+  };
+  $('alXlsx').onclick = async () => {
+    if (!ALERTAS) return; const t = tablaAlertas();
+    ocupado(true, 'Preparando el Excel de alertas…');
+    try { bajar(await run('apiTablaXlsx', 'Alertas_tempranas_' + new Date().toISOString().slice(0, 10), t.cab, t.filas)); ocupado(false, 'Alertas descargadas en Excel (' + t.filas.length + ').'); } catch (e) { error(e, 'No se pudo armar el Excel'); }
+  };
+  $('alCuerpo').addEventListener('click', async (ev) => {
+    const f = ev.target.closest('[data-alfiltro]'); if (f) { $('alClase').value = f.dataset.alfiltro; $('alEstado').value = 'pendientes'; pintarAlertas(); return; }
+    const b = ev.target.closest('[data-alact]'); if (!b) return;
+    const a = window.AL_LISTA[Number(b.dataset.ali)]; const nuevo = b.dataset.alact;
+    const guardar = async (nota) => {
+      ocupado(true, 'Guardando la revisión…');
+      try { await run('apiMarcarAlerta', a.id, nuevo, nota || '', a.valor); a.estado = nuevo; a.nota = nota || ''; ALERTAS.resumen.revisadas += pendienteAlerta(a) ? 0 : 1; ocupado(false, 'Alerta marcada como "' + nuevo + '".'); await cargarAlertas(true); pintarAlertas(); } catch (e) { error(e, 'No se pudo guardar'); }
+    };
+    if (nuevo !== 'valor correcto') return guardar('');
+    abrirModal('El valor es correcto', `<p><b>${esc(a.variable)}</b>: ${esc(a.valor)} (límite ${esc(a.limite)})<br><span class="sub">${esc(a.fuente)}</span></p><p class="nota">Explique por qué el valor es real y dónde está el soporte (informe de laboratorio, acta, bitácora). Queda registrado con su usuario. Si el dato cambia en la hoja, la alerta vuelve a abrirse.</p><textarea id="alNota" style="width:100%;min-height:90px"></textarea><p><button class="btn ok" type="button" id="alGuardar">Guardar</button></p>`);
+    $('alGuardar').onclick = () => { const n = $('alNota').value.trim(); if (n.length < 10) { estado('Escriba la explicación o el soporte (mínimo 10 caracteres).'); return; } cerrarModal(); guardar(n); };
+  });
+
   // ------------------------------------------------------------ PREPARAR REPORTE PQR
   // Tres acciones distintas: el archivo para cargar al SUI (solo versión vigente aprobada), el listado de revisión
   // (no se carga al SUI) y los pendientes que impiden preparar el archivo.
@@ -1372,9 +1468,9 @@ function mesesQueFaltan(matriz) {
   (function () { const a = new Date().getFullYear(); $('pesosAnio').innerHTML = [a, a - 1].map((x) => `<option value="${x}">${x}</option>`).join(''); })();
 
   // ------------------------------------------------------------ arranque
-  try { const h = (location.hash || '').replace('#', ''); if (['inicio', 'formatos', 'fuentes', 'pqr', 'calendario', 'barrido', 'historial', 'config'].indexOf(h) >= 0) SEC = h; } catch (x) { /* sin hash */ }
+  try { const h = (location.hash || '').replace('#', ''); if (['inicio', 'formatos', 'fuentes', 'alertas', 'pqr', 'calendario', 'barrido', 'historial', 'config'].indexOf(h) >= 0) SEC = h; } catch (x) { /* sin hash */ }
   // En el portal público se arranca solo después de escribir la clave de acceso (pantalla de ingreso del portal)
-  const arrancar = () => { irA(SEC, true); cargar(); };
+  const arrancar = () => { irA(SEC, true); cargar().then(() => { if (!ALERTAS) cargarAlertas(true); }); };
   if (window.SUI_PUERTA && !window.SUI_PUERTA.clave) window.SUI_ARRANCAR = arrancar; else arrancar();
 })();
 </script>

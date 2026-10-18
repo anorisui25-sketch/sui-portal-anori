@@ -293,6 +293,8 @@
       <select id="pqServicio" aria-label="Servicio del reporte PQR"><option value="Acueducto">Acueducto</option><option value="Alcantarillado">Alcantarillado</option><option value="Aseo">Aseo</option></select>
       <label for="pqPeriodo">Periodo</label>
       <select id="pqPeriodo" aria-label="Periodo del reporte PQR"></select>
+      <label for="pqRegimen">Formato</label>
+      <select id="pqRegimen" aria-label="Formato del reporte PQR" title="Lo recibido hasta el 31-12-2026 sigue en el formato anterior hasta culminar; lo recibido desde el 1-01-2027 va en el formato 2027 (Res. SSPD 20261000681915/2026)"><option value="">Según el periodo</option><option value="2027">Formato 2027 (recibido desde 1-01-2027)</option><option value="anterior">Formato anterior (recibido hasta 31-12-2026)</option></select>
       <button class="btn" id="pqPreparar" type="button">Preparar</button>
     </div>
     <div id="pqCuerpo" aria-live="polite"><p class="nota">Elija el servicio y el periodo y pulse “Preparar”.</p></div>
@@ -898,7 +900,7 @@ function mesesQueFaltan(matriz) {
     try {
       switch (cod) {
         case 'generar': return regenerar(id);
-        case 'descargar': if (/^REC_/.test(id)) { const sv = { REC_ACU: 'Acueducto', REC_ALC: 'Alcantarillado', REC_ASE: 'Aseo' }[id]; if (sv) { irA('pqr'); $('pqServicio').value = sv; if (per) $('pqPeriodo').value = per; return prepararPQR(); } } return descargar(id, per);
+        case 'descargar': if (/^REC(27)?_/.test(id)) { const sv = { REC_ACU: 'Acueducto', REC_ALC: 'Alcantarillado', REC_ASE: 'Aseo', REC27_ACU: 'Acueducto', REC27_ALC: 'Alcantarillado' }[id]; if (sv) { irA('pqr'); $('pqServicio').value = sv; $('pqRegimen').value = /^REC27_/.test(id) ? '2027' : 'anterior'; if (per) $('pqPeriodo').value = per; return prepararPQR(); } } return descargar(id, per);
         case 'descargar-csv': return descargarComo(id, per, 'csv');
         case 'descargar-xlsx': return descargarComo(id, per, 'xlsx');
         case 'completar': return completarDatos(id, per);
@@ -1164,7 +1166,7 @@ function mesesQueFaltan(matriz) {
   async function prepararPQR() {
     const serv = $('pqServicio').value, per = $('pqPeriodo').value || periodoSel();
     ocupado(true, 'Revisando los casos de PQR de ' + serv + '…');
-    try { PQR = await run('apiPrepararPQR', serv, per); pintarPQR(); ocupado(false, PQR.titulo + ': ' + PQR.resumen.incluidos + ' caso(s) incluido(s), ' + PQR.resumen.bloqueantes + ' pendiente(s).'); }
+    try { PQR = await run('apiPrepararPQR', serv, per, $('pqRegimen').value); pintarPQR(); ocupado(false, PQR.titulo + ': ' + PQR.resumen.incluidos + ' caso(s) incluido(s), ' + PQR.resumen.bloqueantes + ' pendiente(s).'); }
     catch (e) { error(e, 'No se pudo preparar el reporte PQR'); }
   }
   const tablaCasosPQR = (lista, conEstado) => '<div style="overflow:auto;max-height:420px"><table class="resp"><thead><tr><th scope="col">Radicado</th><th scope="col">Fecha</th><th scope="col">Tipo</th><th scope="col">Clasificación</th><th scope="col">Servicio en PQRS</th><th scope="col">Motivo</th>' + (conEstado ? '<th scope="col">Estado</th>' : '') + '</tr></thead><tbody>' +
@@ -1184,7 +1186,7 @@ function mesesQueFaltan(matriz) {
       else if (r.registros && (!a || !a.existe || !a.vigente)) pasoSiguiente = `<button class="btn peq" type="button" id="pqGenerar" ${puedeGenerar ? '' : 'disabled title="Su rol no puede generar"'}>Generar ${esc(d.id)} ${esc(d.periodo)}</button>`;
       else if (!a.aprobado) pasoSiguiente = `<button class="btn peq" type="button" data-act="revisar" data-id="${esc(d.id)}" data-per="${esc(d.periodo)}">Revisar y aprobar</button>`;
     }
-    let html = `<h3 style="margin-bottom:2px">${esc(d.titulo)}</h3><p class="nota" style="margin-top:0">${esc(r.registros)} registro(s) para el archivo · ${esc(versionTxt)}${a && a.existe && a.generado ? ' · generado ' + esc(a.generado) : ''}</p>`;
+    let html = `<h3 style="margin-bottom:2px">${esc(d.titulo)}</h3>${d.regimenTexto ? `<p class="nota" style="margin:0"><span class="ins ${d.regimen === '2027' ? 'info' : 'warn'}">${d.regimen === '2027' ? 'Formato 2027' : 'Formato anterior'}</span> ${esc(d.regimenTexto)}</p>` : ''}<p class="nota" style="margin-top:0">${esc(r.registros)} registro(s) para el archivo · ${esc(versionTxt)}${a && a.existe && a.generado ? ' · generado ' + esc(a.generado) : ''}</p>`;
     html += `<div class="tarjetas">
       <div class="tarjeta"><div class="n">${r.incluidos}</div><div class="t">casos incluidos en el reporte</div></div>
       <div class="tarjeta"><div class="n">${r.listos}</div><div class="t">incluidos y completos</div></div>
@@ -1255,6 +1257,7 @@ function mesesQueFaltan(matriz) {
   $('pqPreparar').onclick = prepararPQR;
   $('pqServicio').onchange = () => { if (PQR) prepararPQR(); };
   $('pqPeriodo').onchange = () => { if (PQR) prepararPQR(); };
+  $('pqRegimen').onchange = () => { if (PQR) prepararPQR(); };
 
   // ------------------------------------------------------------ FUENTES Y DATOS FALTANTES
   async function cargarFijos() {

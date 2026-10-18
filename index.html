@@ -70,6 +70,14 @@
     .ins.ok { background:var(--okbg); color:var(--ok); border-color:#a5d6a7; } .ins.warn { background:var(--warnbg); color:var(--warn); border-color:#ffd88a; }
     .ins.err { background:var(--errbg); color:var(--err); border-color:#f5b5b0; } .ins.off { background:var(--offbg); color:var(--off); border-color:#cfd8dc; } .ins.info { background:var(--infobg); color:var(--info); border-color:#9db8ee; }
     .sub { font-size:12px; color:#4b5563; overflow-wrap:anywhere; }
+    .explica { min-width:320px; max-width:560px; }
+    .explica .margen { margin-top:4px; }
+    .explica .desvio { margin-top:2px; font-weight:600; color:#b91c1c; }
+    .explica .veredicto { margin-top:6px; padding:6px 8px; border-radius:6px; font-size:13px; background:#eff6ff; color:#1e3a8a; }
+    .explica .veredicto.err { background:#fef2f2; color:#991b1b; }
+    .explica .veredicto.warn { background:#fffbeb; color:#92400e; }
+    .explica details, td details { margin-top:4px; }
+    .explica summary, td summary { cursor:pointer; font-size:12px; color:#1d4ed8; }
     .acciones { white-space:nowrap; }
     details.menu { display:inline-block; position:relative; }
     details.menu > summary { list-style:none; cursor:pointer; display:inline-block; padding:6px 10px; border-radius:8px; background:#e2e8f0; font-size:13px; min-height:32px; }
@@ -128,6 +136,7 @@
   <label style="font-size:13px;color:#33404d;display:flex;gap:8px;align-items:center;margin-bottom:16px"><input id="suiRecordar" type="checkbox" checked> Recordar en este equipo</label>
   <button id="suiEntrar" type="submit" style="width:100%;padding:11px;font-size:15px;border:0;border-radius:8px;background:#1f6feb;color:#fff;cursor:pointer">Entrar</button>
   <p id="suiMsg" role="alert" style="min-height:20px;margin:12px 0 0;font-size:14px;color:#b42318"></p>
+  <p style="margin:8px 0 0;font-size:12px;color:#5b6876">¿No puede entrar? El usuario y la clave los crea o cambia el administrador del portal en la hoja SUI (menú SUI › «Portal: crear usuario o cambiar su clave»). Después de 10 intentos fallidos el usuario se bloquea 10 minutos.</p>
  </form>
 </div>
 <script>
@@ -263,7 +272,7 @@
   <!-- ============================ ALERTAS TEMPRANAS ============================ -->
   <section id="sec-alertas" role="tabpanel" aria-labelledby="t-alertas" hidden>
     <h2>Alertas tempranas en los datos a reportar</h2>
-    <p class="nota">Cada día se revisan en las hojas fuente los datos del mes en curso y del periodo por reportar contra los límites que fija la norma. Una alerta de <b>incumplimiento</b> es un valor real fuera del límite: se reporta tal cual, pero hay que gestionar la causa y dejar el soporte. Una alerta de <b>verificar</b> es un valor casi seguro mal digitado o en otra unidad: se corrige en la hoja fuente. Una alerta de <b>plazo</b> avisa que un término legal está por vencer. Al corregir el dato en la fuente, la alerta desaparece sola.</p>
+    <p class="nota">Cada día el portal revisa los datos de las hojas fuente contra los límites de la norma. Cada alerta dice qué se registró, cuál es el margen permitido, cuánto se sale y si es un incumplimiento. <b>Incumplió la norma</b>: el dato real está fuera del límite; se reporta tal como es, se corrige la causa y se guarda el soporte. <b>Revisar el dato</b>: el valor parece mal digitado o en otra unidad; se corrige en la hoja fuente. <b>Plazo por vencer</b>: todavía está a tiempo. Al corregir el dato en la hoja, la alerta desaparece sola.</p>
     <div class="fila-busca no-imprimir" style="margin-bottom:8px">
       <label for="alTema">Tema</label><select id="alTema" aria-label="Tema de la alerta"><option value="">Todos</option></select>
       <label for="alClase">Tipo</label><select id="alClase" aria-label="Tipo de alerta"><option value="">Todos</option><option value="incumplimiento">Incumplimiento</option><option value="plazo">Plazo por vencer</option><option value="verificar">Posible error de digitación</option></select>
@@ -918,12 +927,15 @@ function mesesQueFaltan(matriz) {
   function descargar(id, per) {
     const f = fila(id, per) || {};
     const cargue = f.tipoSalida === 'cargue_csv';
-    abrirModal('Descargar · ' + (f.nombre || id), `<p class="nota">${esc(f.periodoLegible || per || '')}${f.registros ? ' · ' + esc(f.registros) + ' registros' : ''}</p>
+    const aprobado = f.aprobacion === 'aprobado';
+    const estadoTxt = cargue ? (aprobado ? '<span class="ins ok">Aprobado</span> Al descargar se comprueba de nuevo contra las fuentes: si cambiaron, el archivo sale como BORRADOR_ y no debe cargarse.' : '<span class="ins warn">Borrador</span> Esta versión todavía no está aprobada (' + esc(f.aprobacion || 'sin aprobar') + '): sirve para revisar, no para cargar al SUI.') : '<span class="ins info">Formulario</span> Se diligencia en el SUI con la hoja de apoyo.';
+    abrirModal('Descargar · ' + (f.nombre || id), `<p class="nota">${esc(f.periodoLegible || per || '')}${f.registros ? ' · ' + esc(f.registros) + ' registros' : ''}${f.version ? ' · versión v' + esc(f.version) : ''}</p>
+      <p>${estadoTxt}</p>
       <div class="tarjetas" style="grid-template-columns:repeat(auto-fit, minmax(200px, 1fr))">
-        <button class="tarjeta" type="button" id="dlCsv"><div class="v">⬇ CSV</div><div class="t">${cargue ? 'Archivo para cargar al SUI (cargue masivo)' : 'La misma tabla en CSV, para abrir en Excel u otros programas'}</div></button>
+        <button class="tarjeta" type="button" id="dlCsv"><div class="v">⬇ CSV</div><div class="t">${cargue ? (aprobado ? 'Archivo aprobado para cargar al SUI' : 'BORRADOR para revisar (no cargar al SUI)') : 'La misma tabla en CSV, para abrir en Excel u otros programas'}</div></button>
         <button class="tarjeta" type="button" id="dlXlsx"><div class="v">⬇ Excel</div><div class="t">${cargue ? 'Copia en Excel para revisar. Al SUI se carga el CSV' : 'Hoja de apoyo para digitar en el SUI'}</div></button>
       </div>
-      <p class="nota">Si la versión no está aprobada, el nombre del archivo empieza por BORRADOR_. Una hoja de apoyo empieza por APOYO_ y no es el formato oficial validado.</p>`);
+      <p class="nota">El nombre del archivo dice qué es: BORRADOR_ (no cargar), APOYO_ (para digitar) o sin prefijo (aprobado y vigente). Descargar no cumple la obligación: falta cargar, certificar y registrar la evidencia.</p>`);
     $('dlCsv').onclick = () => { cerrarModal(); descargarComo(id, per, 'csv'); };
     $('dlXlsx').onclick = () => { cerrarModal(); descargarComo(id, per, 'xlsx'); };
   }
@@ -1061,7 +1073,7 @@ function mesesQueFaltan(matriz) {
 
   // ------------------------------------------------------------ ALERTAS TEMPRANAS
   let ALERTAS = null;
-  const CLASE_ALERTA = { incumplimiento: ['err', 'Incumplimiento'], plazo: ['warn', 'Plazo'], verificar: ['info', 'Verificar dato'] };
+  const CLASE_ALERTA = { incumplimiento: ['err', 'Incumplió la norma'], plazo: ['warn', 'Plazo por vencer'], verificar: ['info', 'Revisar el dato'] };
   const pendienteAlerta = (a) => a.estado === 'abierta' || a.estado === 'en gestión';
   function pintarCuentaAlertas() {
     const el = $('alertasCuenta'); if (!ALERTAS) return;
@@ -1091,17 +1103,19 @@ function mesesQueFaltan(matriz) {
         <div class="tarjeta sindato"><div class="n">${r.revisadas}</div><div class="t">revisadas (valor correcto o corregidas)</div></div>
       </div>`;
     if (!lista.length) html += '<div class="aviso ok">No hay alertas con este filtro.</div>';
-    else html += `<div style="overflow:auto"><table class="resp"><thead><tr><th scope="col">Tipo</th><th scope="col">Dato</th><th scope="col">Valor / límite</th><th scope="col">Dónde verificar</th><th scope="col">Norma</th><th scope="col">Afecta</th><th scope="col">Qué hacer</th><th scope="col">Acción</th></tr></thead><tbody>` +
+    else html += `<p class="nota"><b>Cómo leer cada alerta:</b> qué se registró, cuál es el margen permitido, cuánto se sale y si es un incumplimiento. <span class="ins err">Incumplió la norma</span> el dato real está fuera del límite. <span class="ins info">Revisar el dato</span> parece un error de digitación o de unidades. <span class="ins warn">Plazo por vencer</span> todavía está a tiempo.</p><div style="overflow:auto"><table class="resp"><thead><tr><th scope="col">Resultado</th><th scope="col">Qué pasó y qué margen se permite</th><th scope="col">Dónde corregir</th><th scope="col">Norma</th><th scope="col">Afecta</th><th scope="col">Acción</th></tr></thead><tbody>` +
       lista.slice(0, 500).map((a, i) => {
         const k = CLASE_ALERTA[a.clase] || ['info', a.clase];
         const venc = a.vence ? `${esc(a.periodo)} · vence ${esc(a.vence)}${a.diasParaVencer !== null ? ' (' + (a.diasParaVencer < 0 ? 'vencido' : a.diasParaVencer + ' días') + ')' : ''}` : '';
         return `<tr><td data-l="Tipo"><span class="ins ${k[0]}">${esc(k[1])}</span>${a.estado !== 'abierta' ? '<div class="sub">' + esc(a.estado) + (a.nota ? ': ' + esc(a.nota) : '') + '</div>' : ''}</td>
-          <td data-l="Dato"><b>${esc(a.variable)}</b><div class="sub">${esc(a.tema)}${a.referencia ? ' · ' + esc(a.referencia) : ''}${a.fecha ? ' · ' + esc(a.fecha) : ''}</div></td>
-          <td data-l="Valor / límite"><b>${esc(a.valor)}${a.unidad && /^[-\d.,<> ]+$/.test(String(a.valor)) ? ' ' + esc(a.unidad) : ''}</b><div class="sub">Límite: ${esc(a.limite)}</div>${a.detalle ? '<div class="sub">' + esc(a.detalle) + '</div>' : ''}</td>
-          <td data-l="Dónde verificar">${esc(a.dondeVerificar)}<div class="sub">${esc(a.fuente)}</div></td>
-          <td data-l="Norma"><span title="${esc(a.cita)}">${esc(a.norma)}</span></td>
+          <td data-l="Qué pasó" class="explica"><div class="sub">${esc(a.tema)}</div><b>${esc(a.queFallo || (a.variable + ': ' + a.valor))}</b>
+            ${a.margen ? `<div class="margen">${esc(a.margen)}</div>` : `<div class="margen">Límite: ${esc(a.limite)}</div>`}
+            ${a.desvio ? `<div class="desvio">${esc(a.desvio)}</div>` : ''}
+            <div class="veredicto ${k[0]}">${esc(a.veredicto || '')}</div>
+            <details><summary>Cómo resolverlo</summary><div class="sub">${esc(a.queHacer)}</div></details></td>
+          <td data-l="Dónde corregir">${esc(a.dondeVerificar)}<div class="sub">${esc(a.fuente)}</div></td>
+          <td data-l="Norma">${esc(a.norma)}${a.cita ? `<details><summary>Qué dice la norma</summary><div class="sub">“${esc(a.cita)}”</div></details>` : ''}</td>
           <td data-l="Afecta">${esc(a.formatosTexto || (a.formatos || []).join(', '))}<div class="sub">${venc}</div></td>
-          <td data-l="Qué hacer" class="sub">${esc(a.queHacer)}</td>
           <td data-l="Acción" class="acciones">${puede('capturar') ? `<button class="btn sec peq" type="button" data-alact="valor correcto" data-ali="${i}">Valor correcto…</button> <button class="btn sec peq" type="button" data-alact="en gestión" data-ali="${i}">En gestión</button> <button class="btn sec peq" type="button" data-alact="corregida" data-ali="${i}">Corregida</button>` : ''}</td></tr>`;
       }).join('') + '</tbody></table></div>' + (lista.length > 500 ? `<p class="nota">Se muestran 500 de ${lista.length}; la descarga las trae todas.</p>` : '');
     if (d.reglasSinFuente && d.reglasSinFuente.length) html += `<details><summary>Límites normativos que no se pueden revisar porque las hojas no tienen el dato (${d.reglasSinFuente.length})</summary><table class="resp"><tbody>${d.reglasSinFuente.map((x) => `<tr><td><b>${esc(x.variable)}</b><div class="sub">${esc(x.tema)}</div></td><td>${esc(x.norma)}</td><td class="sub">${esc(x.notas)}</td></tr>`).join('')}</tbody></table></details>`;
@@ -1109,8 +1123,8 @@ function mesesQueFaltan(matriz) {
     window.AL_LISTA = lista;
   }
   function tablaAlertas() {
-    const cab = ['Tipo', 'Estado', 'Tema', 'Dato', 'Referencia', 'Fecha', 'Valor', 'Unidad', 'Límite', 'Detalle', 'Dónde verificar', 'Fuente', 'Norma', 'Cita', 'Formatos', 'Periodo', 'Vence', 'Qué hacer', 'Nota de revisión'];
-    return { cab: cab, filas: alertasFiltradas().map((a) => [a.clase, a.estado, a.tema, a.variable, a.referencia, a.fecha, a.valor, a.unidad, a.limite, a.detalle, a.dondeVerificar, a.fuente, a.norma, a.cita, a.formatosTexto || (a.formatos || []).join(' '), a.periodo, a.vence, a.queHacer, a.nota]) };
+    const cab = ['Resultado', 'Estado', 'Tema', 'Qué pasó', 'Margen permitido', 'Cuánto se sale', '¿Es incumplimiento?', 'Dato', 'Referencia', 'Fecha', 'Valor', 'Unidad', 'Límite', 'Detalle', 'Dónde corregir', 'Fuente', 'Norma', 'Qué dice la norma', 'Formatos', 'Periodo', 'Vence', 'Cómo resolverlo', 'Nota de revisión'];
+    return { cab: cab, filas: alertasFiltradas().map((a) => [(CLASE_ALERTA[a.clase] || [0, a.clase])[1], a.estado, a.tema, a.queFallo || '', a.margen || a.limite, a.desvio || '', a.veredicto || '', a.variable, a.referencia, a.fecha, a.valor, a.unidad, a.limite, a.detalle, a.dondeVerificar, a.fuente, a.norma, a.cita, a.formatosTexto || (a.formatos || []).join(' '), a.periodo, a.vence, a.queHacer, a.nota]) };
   }
   $('alActualizar').onclick = () => cargarAlertas(false);
   ['alTema', 'alClase', 'alEstado'].forEach((x) => { $(x).onchange = pintarAlertas; });
@@ -1134,7 +1148,7 @@ function mesesQueFaltan(matriz) {
       try { await run('apiMarcarAlerta', a.id, nuevo, nota || '', a.valor); a.estado = nuevo; a.nota = nota || ''; ALERTAS.resumen.revisadas += pendienteAlerta(a) ? 0 : 1; ocupado(false, 'Alerta marcada como "' + nuevo + '".'); await cargarAlertas(true); pintarAlertas(); } catch (e) { error(e, 'No se pudo guardar'); }
     };
     if (nuevo !== 'valor correcto') return guardar('');
-    abrirModal('El valor es correcto', `<p><b>${esc(a.variable)}</b>: ${esc(a.valor)} (límite ${esc(a.limite)})<br><span class="sub">${esc(a.fuente)}</span></p><p class="nota">Explique por qué el valor es real y dónde está el soporte (informe de laboratorio, acta, bitácora). Queda registrado con su usuario. Si el dato cambia en la hoja, la alerta vuelve a abrirse.</p><textarea id="alNota" style="width:100%;min-height:90px"></textarea><p><button class="btn ok" type="button" id="alGuardar">Guardar</button></p>`);
+    abrirModal('El valor es correcto', `<p><b>${esc(a.queFallo || (a.variable + ': ' + a.valor))}</b><br>${esc(a.margen || ('Límite: ' + a.limite))} ${esc(a.desvio || '')}<br><span class="sub">${esc(a.fuente)}</span></p><p class="nota">Explique por qué el valor es real y dónde está el soporte (informe de laboratorio, acta, bitácora). Queda registrado con su usuario. Si el dato cambia en la hoja, la alerta vuelve a abrirse.</p><textarea id="alNota" style="width:100%;min-height:90px"></textarea><p><button class="btn ok" type="button" id="alGuardar">Guardar</button></p>`);
     $('alGuardar').onclick = () => { const n = $('alNota').value.trim(); if (n.length < 10) { estado('Escriba la explicación o el soporte (mínimo 10 caracteres).'); return; } cerrarModal(); guardar(n); };
   });
 

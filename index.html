@@ -249,7 +249,7 @@
         <button class="btn sec" id="btnLimpiar" type="button">Limpiar filtros</button>
       </div>
       <h3 id="fTemasTitulo">¿Qué tema buscas?</h3>
-      <p class="nota">Pulsa un tema para ver sus formatos juntos. Un formato puede estar en varios temas para que lo encuentres más fácil; en la lista aparece una sola vez.</p>
+      <p class="nota">Pulsa un tema para ver sus formatos juntos. Un formato puede estar en varios temas para que lo encuentres más fácil; en la lista aparece una sola vez. Estos temas ayudan a buscar: el código y la norma del reporte definen la obligación oficial.</p>
       <div class="temas-grid" id="fTemas" role="group" aria-label="Temas de los reportes"></div>
       <div class="vistas" id="fVistas" role="group" aria-label="Vistas rápidas"></div>
       <details class="filtros" id="fDetalle">
@@ -522,7 +522,7 @@ const REGLAS_TEMATICAS = {
   relleno: /disposicion final|relleno|lixiviad|vida util de sitios|bascula de pesaje|capacidad de recepcion|toneladas dispuestas|clausura y posclausura|categoria del relleno/,
   barrido: /barrido|limpieza urbana|microrruta/,
   peso: /peso|pesaje|bascul|tonelad|cantidad de residuos|residuos generados/,
-  recoleccion: /recoleccion|transporte de residuos|vehiculos para el transporte de residuos|estacion(es)? de transferencia|ruta desde|areas? de prestacion del servicio/,
+  recoleccion: /recoleccion|transporte de residuos|vehiculos para el transporte de residuos|estacion(es)? de transferencia|ruta desde|areas? de prestacion del servicio|microrruta|residuos generados|toneladas? provenientes del area de prestacion/,
   tarifa: /tarif|costo|productividad/
 };
 function familiaFormato(f) {

@@ -313,6 +313,16 @@
   <section id="sec-pqr" role="tabpanel" aria-labelledby="t-pqr" hidden>
     <h2>Reporte de peticiones, quejas y reclamos (PQR)</h2>
     <p class="nota">Primero elige el servicio y el periodo. Luego podrás revisar los casos antes de generar el archivo. En este paso todavía no se cambia ni se crea ningún archivo.</p>
+    <details class="periodo-info"><summary>¿Qué datos pide el formato nuevo de 2027?</summary>
+      <p class="nota">La Resolución SSPD 20261000681915 pide un CSV con 22 campos, en este orden:</p>
+      <ol class="falta">
+        <li><b>Identificar el caso (1–8):</b> radicado; fecha de radicación; cuenta contrato; códigos DANE de departamento, municipio y centro poblado; código del servicio; tipo de trámite.</li>
+        <li><b>Explicar el motivo (9–12):</b> grupo, detalle y subdetalle de la causal; número o identificación de la factura.</li>
+        <li><b>Registrar la respuesta (13–17):</b> tipo de respuesta, radicado de respuesta y fecha de respuesta; tipo y fecha de comunicación o notificación.</li>
+        <li><b>Registrar recursos (18–22):</b> si hubo reposición y apelación; decisión; radicado y fecha del recurso; fecha de envío del expediente a la SSPD.</li>
+      </ol>
+      <p class="nota">Si un caso tiene varias causas, se informan todos sus detalles. Si una misma reclamación incluye varias facturas o periodos, se registra una sola vez con su radicado; las actuaciones posteriores actualizan ese registro. El archivo final todavía debe pasar la validación del SUI.</p>
+    </details>
     <div class="fila-busca no-imprimir" style="margin-bottom:8px">
       <label for="pqServicio">Servicio</label>
       <select id="pqServicio" aria-label="Servicio del reporte PQR"><option value="Acueducto">Acueducto</option><option value="Alcantarillado">Alcantarillado</option><option value="Aseo">Aseo</option></select>
@@ -559,6 +569,32 @@ function familiasFormato(f) {
   if (REGLAS_TEMATICAS.recoleccion.test(texto)) familias.push('Recolección y transporte');
   if (REGLAS_TEMATICAS.tarifa.test(texto) || tema === 'tarifario' || tema === 'tarifas') familias.push('Tarifas y costos');
   return [...new Set(familias)];
+}
+function guiaCamposNormativos(f) {
+  const id = f && f.id || '';
+  if (/^REC27_/.test(id) || id === 'INV_ASE_REPORTE_DE_RECLAMACIONES_QUEJAS_Y_RECURSO') {
+    return 'Formato 2027: 22 campos, en el orden oficial. La ficha muestra los nombres, tipos y códigos permitidos; el CSV debe validarse en el SUI antes de certificarlo.';
+  }
+  if (id === 'INV_AMB_REGISTRO_DE_PUNTOS_DE_ATENCION_PRESENCIAL' || id === 'INV_ASE_REGISTRO_DE_PUNTOS_DE_ATENCION_PRESENCIAL') {
+    return 'La norma pide dos formularios separados. F1, por cada punto presencial: DANE de departamento y municipio, código y nombre del punto, dirección, cobertura (opcional), horario, fecha de inicio, estado, fecha del cambio y nivel de atención. F2, por cada canal: tipo y código del canal, medio de acceso, descripción (opcional), horario, cobertura, fecha de habilitación, otro tipo (si corresponde), estado, fecha del cambio y nivel de atención. Ambos se reportan anualmente; apertura, cierre o cambios se actualizan dentro de 10 días.';
+  }
+  if (id === 'INV_12_ASE_REGISTRO_DE_MICRORRUTAS') {
+    return 'La lista de tipo de microrruta distingue 11 actividades: 1 recolección de no aprovechables; 2 barrido y limpieza; 3 limpieza de playas; 4 corte de césped; 5 poda; 6 recolección de aprovechables; 7 recolección de residuos de barrido; 8 recolección de residuos de corte y poda; 9 residuos ordinarios para tratamiento; 10 orgánicos para tratamiento; 11 inorgánicos para tratamiento. La hoja del portal es una ayuda y no reemplaza el cargue oficial del SUI.';
+  }
+  if (id === 'INV_13_ASE_ACTUALIZACION_DE_MICRORRUTAS') {
+    return 'La actualización debe conservar el NUMICRO y registrar el cambio de estado de la microrruta. La lista oficial de tipos incluye 11 actividades; use los códigos que presenta el SUI. Esta hoja del portal es una ayuda, no el formato oficial de cargue.';
+  }
+  if (id === 'RES_ASE') {
+    return 'El formato tiene 14 campos. Esta plantilla está configurada para viajes que terminan en el relleno: tipo de destino 1 y NUSD del relleno. La norma pide usar el identificador que corresponde al destino (NUSD, NUET, NUECA o NUIT); esta plantilla no sirve para otros destinos sin cambiar su configuración.';
+  }
+  return '';
+}
+function alertaCamposNormativos(f) {
+  const id = f && f.id || '';
+  if (id === 'INV_AMB_REGISTRO_DE_PUNTOS_DE_ATENCION_PRESENCIAL') return 'El inventario del portal junta F1 y F2 en una sola fila de búsqueda. En el SUI son dos formularios independientes; el primer reporte vence el 15 de enero de 2027.';
+  if (id === 'INV_ASE_REPORTE_DE_RECLAMACIONES_QUEJAS_Y_RECURSO') return 'Esta fila duplica el reporte 2027 que ya tiene el código interno REC27_ASE. El responsable del portal debe dejar un solo registro de seguimiento.';
+  if (id === 'RES_ASE') return 'Pendiente de validar: que el NUMICRO tomado de cada fuente sea el mismo registrado en el SUI. No apruebe la plantilla mientras este dato siga pendiente.';
+  return '';
 }
 
 const VISTAS = [
@@ -1189,6 +1225,9 @@ function mesesQueFaltan(matriz) {
       <dt>Norma</dt><dd>${esc(f.norma)}<br><span class="ins ${v.estado === 'verificado' ? 'ok' : (v.estado === 'por verificar' ? 'warn' : 'info')}">${esc(v.estado || '')}</span> ${v.fuente ? 'Fuente: ' + esc(v.fuente) : ''}${v.enlace ? ' · <a href="' + esc(v.enlace) + '" target="_blank" rel="noopener">enlace</a>' : ''} · consulta ${esc(v.consulta || '')} · vigencia: ${esc(v.vigencia || '')}${v.pendiente ? '<br>Por verificar: ' + esc(v.pendiente) : ''}</dd>
       <dt>¿Aplica?</dt><dd>${esc(f.aplica)} ${esc(f.razonAplica ? '– ' + f.razonAplica : '')}</dd><dt>Qué información contiene</dt><dd>${esc(f.informacion)}</dd><dt>De dónde sale el dato</dt><dd>${esc(f.fuenteProbable)}</dd>
       <dt>¿Se genera solo?</dt><dd>${f.automatico ? 'Sí, desde las hojas fuente' : 'No: se digita o se carga a mano (ver “Fuentes y datos faltantes”)'}</dd></dl>`;
+    const guia = guiaCamposNormativos(f), alerta = alertaCamposNormativos(f);
+    if (guia) html += `<h3>Campos que pide la norma</h3><p>${esc(guia)}</p>`;
+    if (alerta) html += `<div class="aviso">${esc(alerta)}</div>`;
     if (f.campos.length) html += '<h3>Campos del archivo SUI</h3><div style="overflow:auto"><table><thead><tr><th scope="col">#</th><th scope="col">Campo</th><th scope="col">Tipo</th><th scope="col">Oblig.</th><th scope="col">De dónde se toma</th><th scope="col">Códigos / nota</th></tr></thead><tbody>' + f.campos.map((c) => `<tr><td>${c.n}</td><td>${esc(c.nombre)}</td><td>${esc(c.tipo)}</td><td>${esc(c.obligatorio)}</td><td>${esc(c.origen)}</td><td class="sub">${esc(c.dominio)}${c.nota ? ' · ' + esc(c.nota) : ''}</td></tr>`).join('') + '</tbody></table></div>';
     abrirModal(f.nombre, html);
   }

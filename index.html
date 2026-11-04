@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta name="robots" content="noindex, nofollow">
-<script>window.SUI_API_URL = "https://script.google.com/macros/s/AKfycbwSU9mtZqzgUQNNlHXobc_OZ67aQHrI6w-i128LQgKl2yvOv8UXcGNMZJHnpuVal_fzHA/exec"; window.SUI_PUERTA = { clave: '' };</script>
+<script>window.SUI_API_URL = "https://script.google.com/macros/s/AKfycbwSU9mtZqzgUQNNlHXobc_OZ67aQHrI6w-i128LQgKl2yvOv8UXcGNMZJHnpuVal_fzHA/exec"; window.SUI_PUERTA = { clave: 'PUBLICO' };</script>
 
   <meta charset="utf-8">
   <base target="_top">
@@ -11,7 +11,7 @@
   <style>
     :root { --ok:#1b5e20; --okbg:#e8f5e9; --warn:#7a4a00; --warnbg:#fff3d6; --err:#b71c1c; --errbg:#fdecea; --off:#4b5563; --offbg:#eceff1; --info:#0b3d91; --infobg:#e3edff; --bg:#f4f6f8; --card:#fff; --txt:#1f2937; --linea:#d5dbe3; --foco:#ff8f00; }
     * { box-sizing:border-box; }
-    body { margin:0; font-family:Arial, Helvetica, sans-serif; background:var(--bg); color:var(--txt); font-size:15px; line-height:1.4; }
+    body { margin:0; font-family:Arial, Helvetica, sans-serif; background:var(--bg); color:var(--txt); font-size:17px; line-height:1.5; }
     a { color:var(--info); }
     :focus-visible { outline:3px solid var(--foco); outline-offset:2px; }
     .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
@@ -21,41 +21,59 @@
     header h1 { font-size:18px; margin:0; flex:1 1 220px; }
     header a { color:#dbe8ff; font-size:14px; }
     header .quien { font-size:12px; color:#dbe8ff; }
-    header label { font-size:13px; display:flex; align-items:center; gap:6px; }
+    header label { font-size:16px; display:flex; align-items:center; gap:8px; }
     header select { font-size:15px; padding:6px 8px; border-radius:6px; border:1px solid #fff; }
-    nav.principal { background:#fff; border-bottom:1px solid var(--linea); padding:0 12px; display:flex; flex-wrap:wrap; gap:2px; }
-    nav.principal button { background:none; border:none; padding:10px 12px; font-size:15px; cursor:pointer; border-bottom:4px solid transparent; color:#374151; white-space:nowrap; }
+    nav.principal { background:#fff; border-bottom:1px solid var(--linea); padding:0 12px; display:flex; flex-wrap:wrap; align-items:center; gap:2px; }
+    #nav { display:flex; flex-wrap:wrap; gap:2px; }
+    nav.principal button { background:none; border:none; padding:12px 14px; font-size:16px; cursor:pointer; border-bottom:4px solid transparent; color:#374151; white-space:nowrap; min-height:48px; }
     nav.principal button[aria-selected="true"] { border-bottom-color:var(--info); color:var(--info); font-weight:bold; }
     nav.principal .n { background:var(--errbg); color:var(--err); border-radius:10px; padding:0 7px; font-size:12px; margin-left:4px; }
     main { padding:14px 16px 60px; max-width:1560px; margin:0 auto; }
-    h2 { font-size:19px; margin:4px 0 10px; } h3 { font-size:16px; margin:14px 0 6px; }
-    .btn { padding:9px 14px; border:none; border-radius:8px; background:var(--info); color:#fff; cursor:pointer; font-size:14px; min-height:38px; }
-    .btn.sec { background:#e2e8f0; color:#1f2937; } .btn.ok { background:var(--ok); } .btn.peligro { background:var(--err); } .btn.peq { padding:6px 10px; font-size:13px; min-height:32px; }
+    h2 { font-size:24px; margin:4px 0 10px; } h3 { font-size:20px; margin:18px 0 8px; }
+    .btn { padding:10px 15px; border:none; border-radius:8px; background:var(--info); color:#fff; cursor:pointer; font-size:16px; min-height:44px; }
+    .btn.sec { background:#e2e8f0; color:#1f2937; } .btn.ok { background:var(--ok); } .btn.peligro { background:var(--err); } .btn.peq { padding:8px 12px; font-size:14px; min-height:40px; }
     .btn:disabled { opacity:.5; cursor:default; }
     input[type=text], input[type=search], input[type=date], input[type=number], select, textarea { font-size:16px; padding:9px 10px; border:1px solid #9aa5b4; border-radius:8px; background:#fff; max-width:100%; }
     textarea { width:100%; min-height:70px; }
     .tarjetas { display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:10px; margin:10px 0 14px; }
     .tarjeta { background:var(--card); border:1px solid var(--linea); border-radius:10px; padding:12px 14px; text-align:left; font:inherit; color:inherit; }
     button.tarjeta { cursor:pointer; } button.tarjeta:hover { border-color:var(--info); }
-    .tarjeta .n { font-size:28px; font-weight:bold; } .tarjeta .t { font-size:13px; color:#374151; }
+    .tarjeta .n { font-size:28px; font-weight:bold; } .tarjeta .t { font-size:15px; color:#374151; }
     .pasos { display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:10px; margin:10px 0 14px; counter-reset:paso; }
     .paso { background:#fff; border:1px solid var(--linea); border-left:6px solid var(--info); border-radius:10px; padding:12px 14px; text-align:left; font:inherit; color:inherit; cursor:pointer; }
-    .paso::before { counter-increment:paso; content:"Paso " counter(paso); font-size:12px; font-weight:bold; color:var(--info); display:block; }
+    .paso::before { counter-increment:paso; content:"Paso " counter(paso); font-size:14px; font-weight:bold; color:var(--info); display:block; }
     .paso b { display:block; margin:2px 0; } .paso .n { font-size:26px; font-weight:bold; }
-    .ahora { background:var(--infobg); border:1px solid #9db8ee; border-radius:10px; padding:12px 14px; margin-bottom:12px; }
-    .nota { font-size:13px; color:#374151; } .peq { font-size:13px; }
+    .ahora { background:var(--infobg); border:1px solid #9db8ee; border-radius:10px; padding:16px 18px; margin-bottom:16px; font-size:18px; }
+    .nota { font-size:15px; color:#374151; } .peq { font-size:14px; }
+    .inicio-acciones { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin:12px 0 18px; }
+    .inicio-accion { display:block; width:100%; min-height:110px; background:#fff; border:2px solid #cbd5e1; border-radius:12px; padding:16px; text-align:left; color:var(--txt); cursor:pointer; font:inherit; }
+    .inicio-accion:hover,.inicio-accion:focus-visible { border-color:var(--info); background:#f8fbff; }
+    .inicio-accion strong { display:block; color:var(--info); font-size:19px; margin-bottom:4px; }
+    .inicio-accion span { display:block; font-size:15px; }
+    details.mas-herramientas { margin-left:auto; position:relative; }
+    details.mas-herramientas > summary { cursor:pointer; list-style:none; min-height:48px; padding:12px 14px; font-size:16px; font-weight:bold; color:#374151; }
+    details.mas-herramientas > summary::-webkit-details-marker { display:none; }
+    .herramientas-lista { position:absolute; z-index:20; right:0; top:100%; min-width:250px; background:#fff; border:1px solid var(--linea); border-radius:8px; box-shadow:0 4px 14px #0002; padding:6px; }
+    .herramientas-lista button { display:block; width:100%; text-align:left; border:0; border-radius:6px; min-height:44px; padding:10px 12px; background:#fff; cursor:pointer; font:inherit; }
+    .herramientas-lista button:hover,.herramientas-lista button[aria-current="page"] { background:var(--infobg); color:var(--info); }
+    .herramientas-lista a { display:block; padding:10px 12px; color:var(--info); text-decoration:none; border-radius:6px; }
+    .herramientas-lista a:hover { background:var(--infobg); }
+    details.acciones-varias { margin:10px 0; padding:10px 12px; background:#fff; border:1px solid var(--linea); border-radius:8px; }
+    details.acciones-varias > summary { cursor:pointer; font-weight:bold; padding:4px; }
+    details.resumen-detalle, details.periodo-info { margin:12px 0; padding:10px 12px; background:#fff; border:1px solid var(--linea); border-radius:8px; }
+    details.resumen-detalle > summary, details.periodo-info > summary { cursor:pointer; font-weight:bold; padding:4px; }
     .barra-filtros { background:#fff; border:1px solid var(--linea); border-radius:10px; padding:10px 12px; margin-bottom:10px; }
     .fila-busca { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
     .fila-busca input[type=search] { flex:1 1 280px; }
     .vistas { display:flex; gap:6px; flex-wrap:wrap; margin:10px 0 4px; }
-    .vista { padding:7px 12px; border-radius:18px; border:1px solid #8896a8; background:#fff; cursor:pointer; font-size:14px; }
+    .vista { padding:8px 13px; border-radius:18px; border:1px solid #8896a8; background:#fff; cursor:pointer; font-size:15px; min-height:44px; }
     .vista[aria-pressed="true"] { background:var(--info); color:#fff; border-color:var(--info); }
     .vista .n { font-weight:bold; margin-left:4px; }
-    details.filtros > summary { cursor:pointer; padding:6px 0; font-weight:bold; }
+    details.filtros > summary { cursor:pointer; padding:10px 0; font-weight:bold; }
     .grupos { display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:10px; margin-top:8px; }
     fieldset.grupo { border:1px solid var(--linea); border-radius:8px; padding:6px 10px 8px; margin:0; max-height:210px; overflow:auto; }
-    fieldset.grupo legend { font-weight:bold; font-size:13px; padding:0 4px; }
-    fieldset.grupo label { display:flex; gap:6px; align-items:flex-start; padding:2px 0; font-size:14px; }
+    fieldset.grupo legend { font-weight:bold; font-size:15px; padding:0 4px; }
+    fieldset.grupo label { display:flex; gap:8px; align-items:flex-start; padding:6px 0; font-size:15px; }
     fieldset.grupo input { margin-top:3px; }
     .activos { display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin:8px 0 2px; min-height:28px; }
     .etiqueta { background:var(--infobg); border:1px solid #9db8ee; border-radius:14px; padding:3px 6px 3px 10px; font-size:13px; display:inline-flex; gap:6px; align-items:center; }
@@ -64,12 +82,15 @@
     .orden { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:6px 0; }
     table { width:100%; border-collapse:collapse; background:var(--card); border-radius:8px; overflow:hidden; box-shadow:0 1px 2px rgba(0,0,0,.08); }
     th, td { padding:9px 10px; border-bottom:1px solid #e5eaf0; text-align:left; vertical-align:top; }
-    th { background:#e8eef7; font-size:12px; text-transform:uppercase; letter-spacing:.3px; }
+    th { background:#e8eef7; font-size:14px; text-transform:none; letter-spacing:0; }
     tr:hover td { background:#f8fafc; }
-    .ins { display:inline-block; padding:2px 8px; border-radius:10px; font-size:12px; font-weight:bold; margin:1px 3px 1px 0; border:1px solid transparent; white-space:nowrap; }
+    .ins { display:inline-block; padding:3px 9px; border-radius:10px; font-size:14px; font-weight:bold; margin:2px 3px 2px 0; border:1px solid transparent; white-space:nowrap; }
     .ins.ok { background:var(--okbg); color:var(--ok); border-color:#a5d6a7; } .ins.warn { background:var(--warnbg); color:var(--warn); border-color:#ffd88a; }
     .ins.err { background:var(--errbg); color:var(--err); border-color:#f5b5b0; } .ins.off { background:var(--offbg); color:var(--off); border-color:#cfd8dc; } .ins.info { background:var(--infobg); color:var(--info); border-color:#9db8ee; }
-    .sub { font-size:12px; color:#4b5563; overflow-wrap:anywhere; }
+    .sub { font-size:14px; color:#4b5563; overflow-wrap:anywhere; }
+    .estado-detalle { margin-top:6px; }
+    .estado-detalle > summary { cursor:pointer; color:var(--info); font-size:14px; }
+    .detalle-estados { margin-top:6px; }
     .explica { min-width:320px; max-width:560px; }
     .explica .margen { margin-top:4px; }
     .explica .desvio { margin-top:2px; font-weight:600; color:#b91c1c; }
@@ -109,99 +130,70 @@
     .galeria .sinprev { height:110px; display:flex; align-items:center; justify-content:center; text-align:center; background:var(--offbg); border-radius:6px; color:var(--off); }
     .tarjeta.alerta { border-left:5px solid #f9a825; } .tarjeta.sindato { border-left:5px solid #9aa5b1; } .tarjeta .v { font-size:22px; font-weight:bold; overflow-wrap:anywhere; }
     @media (max-width:860px) {
-      nav.principal button { padding:8px 10px; font-size:14px; }
+      nav.principal button { padding:9px 10px; font-size:15px; }
+      details.mas-herramientas { margin-left:0; }
       .form-row { grid-template-columns:1fr; }
       table.resp thead { display:none; }
       table.resp, table.resp tbody, table.resp tr, table.resp td { display:block; width:100%; }
       table.resp tr { border:1px solid var(--linea); border-radius:10px; margin-bottom:10px; background:#fff; padding:6px 4px; }
       table.resp td { border:none; padding:5px 10px; }
-      table.resp td[data-l]::before { content:attr(data-l) ": "; font-weight:bold; font-size:12px; color:#4b5563; display:block; }
+      table.resp td[data-l]::before { content:attr(data-l) ": "; font-weight:bold; font-size:14px; color:#4b5563; display:block; }
       .cal .dia { min-height:60px; } .cal .ev { font-size:11px; }
     }
     .grupo-entrega { background:#fff; border:1px solid var(--linea); border-radius:10px; padding:8px 12px; margin-bottom:10px; }
     .grupo-entrega > summary { cursor:pointer; font-weight:bold; padding:4px 0; }
-    @media print { header, nav, #estado, .modal, .no-imprimir, .salto, .btn, details.menu { display:none !important; } main > section:not(#sec-inicio) { display:none !important; } #sec-inicio > *:not(#bloqueEntrega) { display:none !important; } body { background:#fff; } .grupo-entrega { break-inside:avoid; } }
+    @media print { header, nav, #estado, .modal, .no-imprimir, .salto, .btn, details.menu { display:none !important; } main > section:not(#sec-inicio) { display:none !important; } #sec-inicio > *:not(.resumen-detalle) { display:none !important; } .resumen-detalle { display:block !important; } .resumen-detalle > summary, .resumen-detalle > *:not(#bloqueEntrega) { display:none !important; } #bloqueEntrega { display:block !important; } body { background:#fff; } .grupo-entrega { break-inside:avoid; } }
     @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto !important; } }
   </style>
 </head>
 <body>
-<div id="suiIngreso" style="position:fixed;inset:0;z-index:9999;background:#f4f6f8;display:flex;align-items:center;justify-content:center;padding:16px;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif">
- <form id="suiForm" style="background:#fff;max-width:380px;width:100%;padding:28px 24px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08)">
-  <h1 style="font-size:20px;margin:0 0 4px;color:#1d2733">Portal SUI – Anorí</h1>
-  <p style="margin:0 0 18px;color:#5b6876;font-size:14px">Ingrese con su usuario y clave.</p>
-  <label for="suiUsuario" style="font-size:13px;color:#33404d">Usuario</label>
-  <input id="suiUsuario" type="text" autocomplete="username" autocapitalize="none" required style="display:block;width:100%;box-sizing:border-box;margin:6px 0 12px;padding:10px 12px;font-size:16px;border:1px solid #c5ced8;border-radius:8px">
-  <label for="suiClave" style="font-size:13px;color:#33404d">Clave</label>
-  <input id="suiClave" type="password" autocomplete="current-password" required style="display:block;width:100%;box-sizing:border-box;margin:6px 0 12px;padding:10px 12px;font-size:16px;border:1px solid #c5ced8;border-radius:8px">
-  <label style="font-size:13px;color:#33404d;display:flex;gap:8px;align-items:center;margin-bottom:16px"><input id="suiRecordar" type="checkbox" checked> Recordar en este equipo</label>
-  <button id="suiEntrar" type="submit" style="width:100%;padding:11px;font-size:15px;border:0;border-radius:8px;background:#1f6feb;color:#fff;cursor:pointer">Entrar</button>
-  <p id="suiMsg" role="alert" style="min-height:20px;margin:12px 0 0;font-size:14px;color:#b42318"></p>
-  <p style="margin:8px 0 0;font-size:12px;color:#5b6876">¿No puede entrar? El usuario y la clave los crea o cambia el administrador del portal en la hoja SUI (menú SUI › «Portal: crear usuario o cambiar su clave»). Después de 10 intentos fallidos el usuario se bloquea 10 minutos.</p>
- </form>
-</div>
-<script>
-(function () {
-  var KEY = 'sui_clave_portal';
-  function leer() { try { return localStorage.getItem(KEY) || sessionStorage.getItem(KEY) || ''; } catch (x) { return ''; } }
-  function guardar(c, recordar) { try { (recordar ? localStorage : sessionStorage).setItem(KEY, c); } catch (x) {} }
-  function borrar() { try { localStorage.removeItem(KEY); sessionStorage.removeItem(KEY); } catch (x) {} }
-  function probar(c, recordar, silencioso) {
-    var msg = document.getElementById('suiMsg'), btn = document.getElementById('suiEntrar');
-    btn.disabled = true; btn.textContent = 'Verificando…'; msg.textContent = '';
-    fetch(window.SUI_API_URL, { method: 'POST', credentials: 'omit', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ clave: c, fn: 'apiUsuarioActual', args: [] }) })
-      .then(function (r) { return r.json(); })
-      .then(function (j) {
-        if (!j.ok) throw new Error(j.error || 'No se pudo entrar');
-        guardar(c, recordar); window.SUI_PUERTA.clave = c;
-        document.getElementById('suiIngreso').remove();
-        var salir = document.createElement('button'); salir.textContent = 'Salir'; salir.type = 'button';
-        salir.style.cssText = 'position:fixed;right:12px;bottom:12px;z-index:9998;padding:6px 12px;border:1px solid #c5ced8;border-radius:8px;background:#fff;cursor:pointer;font-size:13px';
-        salir.onclick = function () { borrar(); location.reload(); }; document.body.appendChild(salir);
-        if (window.SUI_ARRANCAR) window.SUI_ARRANCAR();
-      })
-      .catch(function (e) {
-        btn.disabled = false; btn.textContent = 'Entrar';
-        if (silencioso) { borrar(); return; }
-        msg.textContent = /Failed to fetch|NetworkError/.test(String(e && e.message)) ? 'Sin conexión con el servidor. Revise internet e intente de nuevo.' : String(e && e.message ? e.message : e);
-      });
-  }
-  document.getElementById('suiForm').addEventListener('submit', function (ev) { ev.preventDefault(); var u = document.getElementById('suiUsuario').value.trim(), k = document.getElementById('suiClave').value; var c = u && k ? u + String.fromCharCode(10) + k : ''; if (c) probar(c, document.getElementById('suiRecordar').checked, false); });
-  var guardada = leer(); if (guardada) probar(guardada, true, true); else document.getElementById('suiUsuario').focus();
-})();
-</script>
-
 <a class="salto" href="#contenido">Saltar al contenido</a>
 <header>
-  <h1>SUI · Portal de formatos – Anorí</h1>
-  <label for="gPeriodo">Mes de trabajo <select id="gPeriodo" aria-label="Mes de trabajo"></select></label>
-  <button class="btn sec" id="btnRefrescar" type="button">Actualizar</button>
+  <div><h1>Reportes de servicios públicos · Anorí</h1><span class="quien">Ayuda a preparar y revisar los reportes para el SUI.</span></div>
+  <label for="gPeriodo">Mes que vas a revisar <select id="gPeriodo" aria-label="Mes de trabajo"></select></label>
+  <button class="btn sec" id="btnRefrescar" type="button">Actualizar información</button>
   <button class="btn sec" id="btnAyuda" type="button">¿Cómo funciona?</button>
-  <a id="lnkHoja" href="#" target="_blank" rel="noopener">Hoja de cálculo</a>
-  <a id="lnkDrive" href="#" target="_blank" rel="noopener">Carpeta Drive</a>
   <span class="quien" id="quien"></span>
 </header>
-<nav class="principal" role="tablist" aria-label="Secciones del portal" id="nav">
-  <button role="tab" id="t-inicio" aria-controls="sec-inicio" aria-selected="true" data-sec="inicio">Inicio y tareas</button>
-  <button role="tab" id="t-formatos" aria-controls="sec-formatos" aria-selected="false" data-sec="formatos">Formatos y archivos</button>
-  <button role="tab" id="t-fuentes" aria-controls="sec-fuentes" aria-selected="false" data-sec="fuentes">Fuentes y datos faltantes</button>
-  <button role="tab" id="t-alertas" aria-controls="sec-alertas" aria-selected="false" data-sec="alertas">Alertas tempranas <span id="alertasCuenta" class="ins off" hidden></span></button>
-  <button role="tab" id="t-pqr" aria-controls="sec-pqr" aria-selected="false" data-sec="pqr">Preparar reporte PQR</button>
-  <button role="tab" id="t-calendario" aria-controls="sec-calendario" aria-selected="false" data-sec="calendario">Calendario</button>
-  <button role="tab" id="t-barrido" aria-controls="sec-barrido" aria-selected="false" data-sec="barrido">Operación de barrido</button>
-  <button role="tab" id="t-historial" aria-controls="sec-historial" aria-selected="false" data-sec="historial">Historial y evidencias</button>
-  <button role="tab" id="t-config" aria-controls="sec-config" aria-selected="false" data-sec="config">Configuración</button>
+<nav class="principal" aria-label="Navegación principal">
+  <div id="nav" role="tablist" aria-label="Tareas principales">
+    <button role="tab" id="t-inicio" aria-controls="sec-inicio" aria-selected="true" data-sec="inicio">Inicio</button>
+    <button role="tab" id="t-formatos" aria-controls="sec-formatos" aria-selected="false" data-sec="formatos">Reportes</button>
+    <button role="tab" id="t-fuentes" aria-controls="sec-fuentes" aria-selected="false" data-sec="fuentes">Datos</button>
+    <button role="tab" id="t-pqr" aria-controls="sec-pqr" aria-selected="false" data-sec="pqr">PQR</button>
+  </div>
+  <details class="mas-herramientas">
+    <summary>Más herramientas ▾</summary>
+    <div class="herramientas-lista" role="group" aria-label="Otras herramientas">
+      <button type="button" id="t-alertas" aria-controls="sec-alertas" data-sec="alertas">Alertas en los datos</button>
+      <button type="button" id="t-calendario" aria-controls="sec-calendario" data-sec="calendario">Calendario de entregas</button>
+      <button type="button" id="t-barrido" aria-controls="sec-barrido" data-sec="barrido">Registro de barrido</button>
+      <button type="button" id="t-historial" aria-controls="sec-historial" data-sec="historial">Historial y soportes</button>
+      <button type="button" id="t-config" aria-controls="sec-config" data-sec="config">Configuración</button>
+      <a id="lnkHoja" href="#" target="_blank" rel="noopener">Abrir hoja de cálculo</a>
+      <a id="lnkDrive" href="#" target="_blank" rel="noopener">Abrir carpeta de archivos</a>
+    </div>
+  </details>
 </nav>
 <main id="contenido" tabindex="-1">
 
   <!-- ============================ INICIO Y TAREAS ============================ -->
   <section id="sec-inicio" role="tabpanel" aria-labelledby="t-inicio">
-    <h2>Qué hay que hacer</h2>
-    <p class="nota" id="iNota">Cargando…</p>
+    <h2>¿Qué necesitas hacer?</h2>
+    <p class="nota">Elige una opción. El portal te mostrará qué sigue.</p>
+    <div class="inicio-acciones" aria-label="Acciones para comenzar">
+      <button class="inicio-accion" type="button" data-ir-a="formatos"><strong>Preparar un reporte</strong><span>Busca el reporte del mes y revisa qué le falta.</span></button>
+      <button class="inicio-accion" type="button" data-ir-a="fuentes" data-scroll-to="faltantesTitulo"><strong>Ver qué datos faltan</strong><span>Encuentra qué debes completar para preparar los reportes.</span></button>
+      <button class="inicio-accion" type="button" data-ir-vista="por-revisar"><strong>Revisar reportes listos</strong><span>Encuentra archivos que esperan revisión y aprobación.</span></button>
+    </div>
+    <details class="periodo-info"><summary>Información sobre este mes (opcional)</summary><p class="nota" id="iNota">Cargando…</p></details>
     <div class="ahora" id="iAhora" hidden></div>
+    <div id="iSinFecha"></div>
+    <details class="resumen-detalle">
+    <summary>Ver pasos, tareas y otros detalles</summary>
     <div class="pasos" id="iPasos"></div>
     <h3>Vistas rápidas del mes</h3>
     <div class="tarjetas" id="iVistas"></div>
-    <div id="iSinFecha"></div>
     <h3>Tareas abiertas</h3>
     <div id="iTareas"><p class="nota">Cargando…</p></div>
     <div id="bloquePesos" class="no-imprimir">
@@ -227,18 +219,21 @@
       </div>
       <div id="iEntrega"><p class="nota">Cargando…</p></div>
     </div>
+    </details>
   </section>
 
   <!-- ============================ FORMATOS Y ARCHIVOS ============================ -->
   <section id="sec-formatos" role="tabpanel" aria-labelledby="t-formatos" hidden>
+    <h2>Reportes del mes</h2>
+    <p class="nota">Escribe una palabra para encontrar el reporte. Cada reporte indica cuál es el siguiente paso.</p>
     <div class="barra-filtros">
       <div class="fila-busca">
-        <input type="search" id="fTexto" placeholder="Buscar por nombre, código o palabra clave (presión, relleno, PQR…)" aria-label="Buscar formatos">
+        <input type="search" id="fTexto" placeholder="Escribe el nombre o tema del reporte" aria-label="Buscar reportes por nombre o tema">
         <button class="btn sec" id="btnLimpiar" type="button">Limpiar filtros</button>
       </div>
       <div class="vistas" id="fVistas" role="group" aria-label="Vistas rápidas"></div>
-      <details class="filtros" id="fDetalle" open>
-        <summary>Filtros combinables (entre categorías se combinan con “y”; dentro de una categoría, con “o”)</summary>
+      <details class="filtros" id="fDetalle">
+        <summary>Buscar por servicio, estado o fecha (opcional)</summary>
         <div class="grupos" id="fGrupos"></div>
         <div class="fila-busca" style="margin-top:8px">
           <label>Vence desde <input type="date" id="fDesde"></label>
@@ -256,17 +251,20 @@
     </div>
     <p class="nota" id="fContadores"></p>
     <div class="seleccion" id="fSeleccion" hidden></div>
-    <div class="fila-busca" style="margin-bottom:8px">
-      <label><input type="checkbox" id="selTodos"> Seleccionar todos los visibles con archivo</label>
-      <label>Formato <select id="zipFormato" aria-label="Formato de los archivos del ZIP"><option value="">Como se generaron</option><option value="csv">CSV</option><option value="xlsx">Excel</option><option value="ambos">CSV y Excel</option></select></label>
-      <button class="btn ok" id="btnZipSel" type="button">⬇ Descargar seleccionados (ZIP)</button>
-      <button class="btn" id="btnTodo" type="button">↻ Generar todos los automáticos del mes</button>
-    </div>
+    <details class="acciones-varias">
+      <summary>Acciones para varios reportes (opcional)</summary>
+      <div class="fila-busca" style="margin:8px 0">
+        <label><input type="checkbox" id="selTodos"> Elegir todos los que se ven y tienen archivo</label>
+        <label>Tipo de archivo <select id="zipFormato" aria-label="Tipo de los archivos descargados"><option value="">Como se generaron</option><option value="csv">CSV</option><option value="xlsx">Excel</option><option value="ambos">CSV y Excel</option></select></label>
+        <button class="btn ok" id="btnZipSel" type="button">Descargar reportes elegidos</button>
+        <button class="btn" id="btnTodo" type="button">Preparar todos los reportes automáticos del mes</button>
+      </div>
+    </details>
     <table class="resp" id="fTabla">
-      <thead><tr><th scope="col"><span class="sr">Elegir</span></th><th scope="col">Formato</th><th scope="col">Periodo reportado</th><th scope="col">Vence</th><th scope="col">Preparación</th><th scope="col">Aprobación</th><th scope="col">Ante el SUI</th><th scope="col">Acción</th></tr></thead>
+      <thead><tr><th scope="col">Elegir</th><th scope="col">Reporte</th><th scope="col">Mes</th><th scope="col">Fecha límite</th><th scope="col">Estado</th><th scope="col">Siguiente paso</th></tr></thead>
       <tbody id="fCuerpo"></tbody>
     </table>
-    <p class="nota">Preparación, aprobación y estado ante el SUI son cosas distintas: descargar un archivo no cumple la obligación. “Vencido” es una condición adicional: un archivo listo también puede estar vencido. Una hoja de apoyo o el Excel de un formulario web no se cargan como archivo: sirven para revisar o digitar. Verifique los CSV con el validador del SUI antes de cargar; la aplicación no carga ni certifica nada.</p>
+    <details><summary>¿Qué significan los estados?</summary><p class="nota">El portal prepara archivos y ayuda a revisarlos. Descargar no significa que el reporte ya se entregó: todavía debe cargarse y confirmarse en el SUI. Si no sabes qué significa un estado, abre el reporte y revisa el mensaje que aparece debajo.</p></details>
   </section>
 
   <!-- ============================ ALERTAS TEMPRANAS ============================ -->
@@ -286,31 +284,33 @@
 
   <!-- ============================ PREPARAR REPORTE PQR ============================ -->
   <section id="sec-pqr" role="tabpanel" aria-labelledby="t-pqr" hidden>
-    <h2>Preparar reporte PQR</h2>
-    <p class="nota">El reporte de peticiones, quejas y recursos se presenta en un archivo por servicio (Res. SSPD 20151300054575, Anexo A). Aquí se ve, antes de generar, qué casos entran al reporte, cuáles se excluyen y por qué, y qué falta. Preparar no genera ni modifica archivos.</p>
+    <h2>Reporte de peticiones, quejas y reclamos (PQR)</h2>
+    <p class="nota">Primero elige el servicio y el periodo. Luego podrás revisar los casos antes de generar el archivo. En este paso todavía no se cambia ni se crea ningún archivo.</p>
     <div class="fila-busca no-imprimir" style="margin-bottom:8px">
       <label for="pqServicio">Servicio</label>
       <select id="pqServicio" aria-label="Servicio del reporte PQR"><option value="Acueducto">Acueducto</option><option value="Alcantarillado">Alcantarillado</option><option value="Aseo">Aseo</option></select>
       <label for="pqPeriodo">Periodo</label>
       <select id="pqPeriodo" aria-label="Periodo del reporte PQR"></select>
-      <label for="pqRegimen">Formato</label>
-      <select id="pqRegimen" aria-label="Formato del reporte PQR" title="Lo recibido hasta el 31-12-2026 sigue en el formato anterior hasta culminar; lo recibido desde el 1-01-2027 va en el formato 2027 (Res. SSPD 20261000681915/2026)"><option value="">Según el periodo</option><option value="2027">Formato 2027 (recibido desde 1-01-2027)</option><option value="anterior">Formato anterior (recibido hasta 31-12-2026)</option></select>
-      <button class="btn" id="pqPreparar" type="button">Preparar</button>
+      <button class="btn" id="pqPreparar" type="button">Revisar los casos</button>
     </div>
-    <div id="pqCuerpo" aria-live="polite"><p class="nota">Elija el servicio y el periodo y pulse “Preparar”.</p></div>
+    <details class="periodo-info"><summary>Opciones de formato (solo si te lo indicaron)</summary>
+      <label for="pqRegimen">Formato del reporte</label>
+      <select id="pqRegimen" aria-label="Formato del reporte PQR" title="Lo recibido hasta el 31-12-2026 sigue en el formato anterior hasta culminar; lo recibido desde el 1-01-2027 va en el formato 2027 (Res. SSPD 20261000681915/2026)"><option value="">Elegir automáticamente según el periodo</option><option value="2027">Formato 2027</option><option value="anterior">Formato anterior</option></select>
+    </details>
+    <div id="pqCuerpo" aria-live="polite"><p class="nota">Elige un servicio y un periodo. Luego selecciona “Revisar los casos”.</p></div>
   </section>
 
   <!-- ============================ FUENTES Y DATOS FALTANTES ============================ -->
   <section id="sec-fuentes" role="tabpanel" aria-labelledby="t-fuentes" hidden>
-    <h2>Fuentes y datos faltantes</h2>
+    <h2>Datos de la empresa y datos faltantes</h2>
     <div class="tarjeta" style="margin-bottom:14px">
-      <h3 style="margin-top:0">Datos fijos de la empresa</h3>
-      <p class="nota">Se digitan una sola vez (identificadores del SUI, báscula, aforos, placas, frecuencias). Al guardar, los formatos que dependen de cada dato se vuelven a generar. Deje en blanco lo que no conozca: un dato vacío deja el formato en borrador, nunca se inventa.</p>
+      <h3 style="margin-top:0">Información básica de la empresa (se guarda una vez)</h3>
+      <p class="nota">Aquí se escriben datos que cambian poco, como identificadores, placas y frecuencias. Si no conoces un dato, déjalo vacío y pide ayuda: el portal no lo inventa.</p>
       <div id="fijosGrupos">Cargando…</div>
-      <p style="margin:10px 0 0"><button class="btn ok" id="btnFijosGenerar" type="button">Guardar y generar formatos afectados</button> <button class="btn sec" id="btnFijosGuardar" type="button">Solo guardar</button> <span class="nota" id="fijosMsg" role="status"></span></p>
+      <p style="margin:10px 0 0"><button class="btn ok" id="btnFijosGenerar" type="button">Guardar y preparar reportes relacionados</button> <button class="btn sec" id="btnFijosGuardar" type="button">Guardar sin preparar reportes</button> <span class="nota" id="fijosMsg" role="status"></span></p>
       <div id="fijosResultado"></div>
     </div>
-    <h3>Qué falta, por formato</h3>
+    <h3 id="faltantesTitulo">Datos que faltan para los reportes</h3>
     <p class="nota">Cada caso explica la causa (fuente inaccesible, pestaña vacía, columnas ausentes, registros de otro periodo, fechas inválidas o datos fijos sin definir) y la acción correctiva. No hace falta generar el formato para saberlo.</p>
     <div class="fila-busca" style="margin-bottom:8px">
       <input type="search" id="falTexto" placeholder="Buscar formato o causa…" aria-label="Buscar en datos faltantes">
@@ -515,6 +515,33 @@ function insignias(f) {
   return { prep: prep, apr: apr, sui: sui, vencido: f.vencido ? ['err', '⏰ ' + textoPlazo(f)] : null };
 }
 
+/** Estado corto y accionable; los tres estados técnicos siguen disponibles al abrir el detalle. */
+function estadoSimple(f) {
+  if (!exigible(f)) return f.aplicabilidad === 'no aplica' ? 'No corresponde' : 'Por verificar';
+  if (hecho(f)) return 'Entregado y certificado';
+  if (f.preparacion === 'listo' && f.automatico && f.alDia === false) return 'Datos incompletos';
+  if (f.estadoSUI === 'cargado') return 'Cargado; falta certificar';
+  if (f.preparacion === 'faltan datos') return 'Faltan datos';
+  if (f.preparacion === 'con errores') return 'Revisar errores';
+  if (f.preparacion === 'sin datos en el periodo') return 'No hay datos del mes';
+  if (f.preparacion === 'manual') return 'Se llena a mano';
+  if (f.preparacion === 'sin generar' || f.preparacion === 'pendiente') return 'Pendiente de preparar';
+  if (f.preparacion === 'listo' && REVISAR.indexOf(f.aprobacion) >= 0) return 'Listo para revisar';
+  if (f.preparacion === 'listo' && f.aprobacion === 'aprobado') return f.listoDescarga ? 'Listo para entregar' : 'Aprobado';
+  if (f.preparacion === 'listo') return 'Archivo preparado';
+  return f.preparacion || 'Revisar';
+}
+function claseEstadoSimple(f) {
+  if (!exigible(f)) return 'off';
+  if (hecho(f)) return 'ok';
+  if (f.preparacion === 'listo' && f.automatico && f.alDia === false) return 'warn';
+  if (f.preparacion === 'listo' && f.aprobacion === 'aprobado') return 'ok';
+  if (f.estadoSUI === 'cargado' || (f.preparacion === 'listo' && REVISAR.indexOf(f.aprobacion) >= 0)) return 'info';
+  if (f.preparacion === 'con errores') return 'err';
+  if (f.preparacion === 'faltan datos' || f.preparacion === 'sin datos en el periodo') return 'warn';
+  return 'off';
+}
+
 /** Acción principal según el estado. permisos: lista de permisos del usuario (o vacío = todos). */
 function accionPrincipal(f, permisos) {
   const puede = (p) => !permisos || !permisos.length || permisos.indexOf(p) >= 0;
@@ -523,7 +550,7 @@ function accionPrincipal(f, permisos) {
   if (f.estadoSUI === 'cargado') return puede('evidencia') ? { codigo: 'evidencia', etiqueta: 'Registrar certificación', clase: 'ok' } : { codigo: 'ficha', etiqueta: 'Ver ficha', clase: 'sec' };
   switch (f.preparacion) {
     case 'manual': return puede('evidencia') ? { codigo: 'evidencia', etiqueta: 'Registrar evidencia', clase: '' } : { codigo: 'ficha', etiqueta: 'Ver ficha', clase: 'sec' };
-    case 'sin generar': case 'pendiente': return puede('capturar') || puede('revisar') ? { codigo: 'generar', etiqueta: 'Generar', clase: '' } : { codigo: 'ficha', etiqueta: 'Ver ficha', clase: 'sec' };
+    case 'sin generar': case 'pendiente': return puede('capturar') || puede('revisar') ? { codigo: 'generar', etiqueta: 'Preparar archivo', clase: '' } : { codigo: 'ficha', etiqueta: 'Ver ficha', clase: 'sec' };
     case 'faltan datos': return puede('capturar') ? { codigo: 'completar', etiqueta: 'Completar datos', clase: 'warn' } : { codigo: 'diagnostico', etiqueta: 'Ver qué falta', clase: 'sec' };
     case 'con errores': return { codigo: 'errores', etiqueta: 'Ver errores', clase: 'peligro' };
     case 'sin datos en el periodo': return { codigo: 'diagnostico', etiqueta: 'Ver por qué no hay datos', clase: '' };
@@ -541,7 +568,7 @@ function accionesSecundarias(f, permisos) {
   const principal = accionPrincipal(f, permisos).codigo, l = [];
   const add = (codigo, etiqueta) => { if (codigo !== principal) l.push({ codigo: codigo, etiqueta: etiqueta }); };
   if (exigible(f)) {
-    if (f.automatico && f.tipo !== 'externo' && (puede('capturar') || puede('revisar'))) add('generar', 'Generar de nuevo');
+    if (f.automatico && f.tipo !== 'externo' && (puede('capturar') || puede('revisar'))) add('generar', 'Preparar otra vez');
     if (puede('descargar') && f.listoDescarga) { add('descargar-csv', 'Descargar en CSV'); add('descargar-xlsx', 'Descargar en Excel'); }
     else if (puede('descargar') && f.tieneArchivo) { add('descargar-csv', 'Descargar borrador en CSV'); add('descargar-xlsx', 'Descargar borrador en Excel'); }
     if (f.hojaApoyo || f.tipoSalida === 'formulario_web') add('apoyo', 'Ver datos calculados');
@@ -674,7 +701,7 @@ function mesesQueFaltan(matriz) {
   };
   const msgError = (e) => { const m = e && e.message ? String(e.message) : String(e || ''); return m.replace(/^Error:\s*/, '').trim() || 'El servidor no dio detalle del error. Pulse “Actualizar”; si persiste, revise la pestaña Log de la hoja.'; };
 
-  let DATOS = null, E = cargarEstado(), SEC = 'inicio', CAL = { anio: null, mes: null, eventos: [], sinFecha: [] }, FALTA = [], FIJOS = [], HIST = null, CONFIG = null, TAREAS = [], ULTIMO_FOCO = null, BAR = null;
+  let DATOS = null, E = cargarEstado(), SEC = 'inicio', CAL = { anio: null, mes: null, eventos: [], sinFecha: [] }, FALTA = [], FIJOS = [], HIST = null, CONFIG = null, TAREAS = [], TAREAS_ERROR = '', SEL_FORMATOS = new Set(), ULTIMO_FOCO = null, BAR = null;
   const permisos = () => (DATOS && DATOS.usuario && DATOS.usuario.permisos) || [];
   const puede = (p) => !DATOS || !DATOS.usuario || !DATOS.usuario.permisos || DATOS.usuario.permisos.indexOf(p) >= 0;
   const periodoSel = () => $('gPeriodo').value || (DATOS && DATOS.periodo) || null;
@@ -698,12 +725,13 @@ function mesesQueFaltan(matriz) {
       if (ev.shiftKey && document.activeElement === a) { ev.preventDefault(); z.focus(); } else if (!ev.shiftKey && document.activeElement === z) { ev.preventDefault(); a.focus(); }
     }
   });
-  document.addEventListener('click', (ev) => { document.querySelectorAll('details.menu[open]').forEach((d) => { if (!d.contains(ev.target)) d.removeAttribute('open'); }); });
+  document.addEventListener('click', (ev) => { document.querySelectorAll('details.menu[open], details.mas-herramientas[open]').forEach((d) => { if (!d.contains(ev.target)) d.removeAttribute('open'); }); });
 
   // ------------------------------------------------------------ secciones (pestañas con teclado)
   function irA(sec, sinHash) {
     SEC = sec;
     document.querySelectorAll('#nav button').forEach((b) => b.setAttribute('aria-selected', b.dataset.sec === sec ? 'true' : 'false'));
+    document.querySelectorAll('.herramientas-lista [data-sec]').forEach((b) => { if (b.dataset.sec === sec) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
     ['inicio', 'formatos', 'fuentes', 'alertas', 'pqr', 'calendario', 'barrido', 'historial', 'config'].forEach((s) => { $('sec-' + s).hidden = s !== sec; });
     if (!sinHash) { try { history.replaceState(null, '', '#' + sec); } catch (x) { /* sin historial */ } }
     if (sec === 'calendario' && CAL.anio === null) { const h = new Date(); cargarCalendario(h.getFullYear(), h.getMonth() + 1); }
@@ -713,8 +741,16 @@ function mesesQueFaltan(matriz) {
     if (sec === 'config') cargarConfig();
     if (sec === 'pqr') iniciarPQR();
     if (sec === 'alertas' && !ALERTAS) cargarAlertas();
+    document.querySelectorAll('details.mas-herramientas[open]').forEach((d) => d.removeAttribute('open'));
   }
   document.querySelectorAll('#nav button').forEach((b) => { b.onclick = () => irA(b.dataset.sec); });
+  document.querySelectorAll('.herramientas-lista [data-sec]').forEach((b) => { b.onclick = () => irA(b.dataset.sec); });
+  document.addEventListener('click', (ev) => {
+    const a = ev.target.closest('[data-ir-a]');
+    if (a) { irA(a.dataset.irA); if (a.dataset.scrollTo) requestAnimationFrame(() => { const destino = $(a.dataset.scrollTo); if (destino) destino.scrollIntoView({ block: 'start' }); }); return; }
+    const v = ev.target.closest('[data-ir-vista]');
+    if (v) aplicarVista(v.dataset.irVista);
+  });
   $('nav').addEventListener('keydown', (ev) => {
     const bs = [...document.querySelectorAll('#nav button')]; const i = bs.indexOf(document.activeElement); if (i < 0) return;
     let j = null; if (ev.key === 'ArrowRight') j = (i + 1) % bs.length; else if (ev.key === 'ArrowLeft') j = (i - 1 + bs.length) % bs.length; else if (ev.key === 'Home') j = 0; else if (ev.key === 'End') j = bs.length - 1;
@@ -725,8 +761,10 @@ function mesesQueFaltan(matriz) {
   async function cargar(periodo) {
     ocupado(true, 'Cargando…');
     try {
+      const periodoAnterior = DATOS && DATOS.periodo;
       DATOS = await run('apiEstado', periodo || $('gPeriodo').value || null);
-      try { TAREAS = await run('apiTareas', null); } catch (x) { TAREAS = []; }
+      if (periodoAnterior && periodoAnterior !== DATOS.periodo) SEL_FORMATOS.clear();
+      try { TAREAS = await run('apiTareas', null); TAREAS_ERROR = ''; } catch (x) { TAREAS = []; TAREAS_ERROR = msgError(x); }
       pintarEncabezado(); pintarInicio(); pintarFormatos();
       if (SEC === 'calendario') cargarCalendario(CAL.anio, CAL.mes);
       ocupado(false, 'Actualizado ' + new Date().toLocaleTimeString());
@@ -742,11 +780,11 @@ function mesesQueFaltan(matriz) {
   function pintarInicio() {
     const c = contadoresMes(DATOS.filas), r = DATOS.resumen;
     $('iNota').textContent = 'Mes de trabajo: ' + mesTexto(DATOS.periodo) + '. Seguimiento desde el ' + (DATOS.seguimientoDesde || '1-jul-2026') + ' (lo anterior no genera vencidos ni faltantes' + (r.antesSeguimiento ? '; ' + r.antesSeguimiento + ' formatos de este mes quedan “antes del seguimiento”' : '') + '). ' + r.nota;
-    const sig = siguientesAcciones(DATOS.filas, permisos(), 5);
+    const sig = siguientesAcciones(DATOS.filas, permisos(), 3);
     const ah = $('iAhora');
     if (sig.length) {
       ah.hidden = false;
-      ah.innerHTML = '<b>Qué hago ahora</b><ol style="margin:6px 0 0 18px;padding:0">' + sig.map((x, i) => `<li>${esc(x.f.nombre)} <span class="sub">(${esc(x.f.periodoLegible)} · ${esc(textoPlazo(x.f))})</span> – <button class="btn peq ${x.a.clase}" data-act="${x.a.codigo}" data-id="${esc(x.f.id)}" data-per="${esc(x.f.periodo)}" type="button">${esc(x.a.etiqueta)}</button></li>`).join('') + '</ol>';
+      ah.innerHTML = '<b>Qué hacer primero</b><ol style="margin:6px 0 0 18px;padding:0">' + sig.map((x, i) => `<li>${esc(x.f.nombre)} <span class="sub">(${esc(x.f.periodoLegible)} · ${esc(textoPlazo(x.f))})</span> – <button class="btn peq ${x.a.clase}" data-act="${x.a.codigo}" data-id="${esc(x.f.id)}" data-per="${esc(x.f.periodo)}" type="button">${esc(x.a.etiqueta)}</button></li>`).join('') + '</ol>';
     } else { ah.hidden = false; ah.innerHTML = '<b>No hay acciones pendientes en este mes.</b> <span class="nota">Revise los datos faltantes o cambie el mes de trabajo.</span>'; }
     $('iPasos').innerHTML = [
       ['Completa los datos', c['faltan-datos'], 'formatos con datos por completar', 'faltan-datos'],
@@ -758,7 +796,7 @@ function mesesQueFaltan(matriz) {
       `<div class="tarjeta"><div class="n">${c.listos} / ${c.total}</div><div class="t">Listos del total del mes</div></div><div class="tarjeta"><div class="n">${c.certificados}</div><div class="t">Certificados ante el SUI</div></div>`;
     $('iSinFecha').innerHTML = (c.historicos ? `<div class="aviso">${c.historicos} formato(s) llevan más de ${HISTORICO_DIAS} días vencidos sin evidencia. Casi siempre son cargues anteriores a esta aplicación: confírmelos en la vista “Vencidos sin evidencia” y registre la evidencia (o declare “no aplica” con fundamento y soporte). No se mezclan con “Qué hago ahora”.</div>` : '') + (r.sinFecha ? `<div class="aviso">${r.sinFecha} formato(s) de este mes no tienen una fecha de vencimiento confirmada (regla por verificar): no se les asigna una fecha estimada. Véalos en Calendario → Sin fecha confirmada.</div>` : '');
     pintarEntrega();
-    $('iTareas').innerHTML = TAREAS.length ? '<table class="resp"><thead><tr><th scope="col">Tarea</th><th scope="col">Formato</th><th scope="col">Periodo</th><th scope="col">Vence</th></tr></thead><tbody>' + TAREAS.slice(0, 40).map((t) => `<tr><td data-l="Tarea">${esc(t.descripcion)}${t.periodo && DATOS && DATOS.periodo && String(t.periodo) < String(DATOS.periodo) ? ' <span class="ins off">pendiente de un periodo anterior</span>' : ''}</td><td data-l="Formato">${esc(nombreDe(t.formato))}</td><td data-l="Periodo">${esc(t.periodo)}</td><td data-l="Vence">${esc(t.vence || '–')}</td></tr>`).join('') + '</tbody></table>' : '<p class="nota">No hay tareas abiertas.</p>';
+    $('iTareas').innerHTML = TAREAS_ERROR ? `<div class="aviso err">No se pudieron cargar las tareas. ${esc(TAREAS_ERROR)}. <button type="button" class="btn sec" onclick="location.reload()">Intentar de nuevo</button></div>` : TAREAS.length ? '<table class="resp"><thead><tr><th scope="col">Tarea</th><th scope="col">Formato</th><th scope="col">Periodo</th><th scope="col">Vence</th></tr></thead><tbody>' + TAREAS.slice(0, 40).map((t) => `<tr><td data-l="Tarea">${esc(t.descripcion)}${t.periodo && DATOS && DATOS.periodo && String(t.periodo) < String(DATOS.periodo) ? ' <span class="ins off">pendiente de un periodo anterior</span>' : ''}</td><td data-l="Formato">${esc(nombreDe(t.formato))}</td><td data-l="Periodo">${esc(t.periodo)}</td><td data-l="Vence">${esc(t.vence || '–')}</td></tr>`).join('') + '</tbody></table>' : '<p class="nota">No hay tareas pendientes.</p>';
   }
   // ---- lista de entrega por responsable
   function pintarEntrega() {
@@ -832,9 +870,10 @@ function mesesQueFaltan(matriz) {
     const act = etiquetasActivas(E);
     $('fActivos').innerHTML = act.length ? act.map((t, i) => `<span class="etiqueta">${esc(t.texto)}<button type="button" data-quitar="${i}" aria-label="Quitar filtro ${esc(t.texto)}">×</button></span>`).join('') : '<span class="nota">Sin filtros: se muestran todos los formatos del mes.</span>';
     const visibles = ordenar(aplicarFiltros(DATOS.filas, E), E.orden, E.dir);
-    $('fCuenta').textContent = visibles.length + ' de ' + DATOS.filas.length + ' formatos coinciden con los filtros';
-    $('fContadores').textContent = 'Resultado filtrado: ' + visibles.length + '. Total del mes (formatos exigibles, sin filtrar): ' + c.total + ' · listos ' + c.listos + ' · vencidos ' + c.vencidos + '. Los conteos entre paréntesis de cada filtro son lo que quedaría al marcarlo. Las categorías se superponen: un formato puede estar listo y vencido a la vez.';
-    $('fCuerpo').innerHTML = visibles.map((f) => filaTabla(f)).join('') || '<tr><td colspan="8">Ningún formato coincide con estos filtros. Pruebe “Limpiar filtros”.</td></tr>';
+    $('fCuenta').textContent = visibles.length + ' de ' + DATOS.filas.length + ' reportes';
+    $('fContadores').textContent = 'Este mes: ' + c.listos + ' archivos listos y ' + c.vencidos + ' reportes vencidos. Un reporte puede estar listo y vencido al mismo tiempo.';
+    $('fCuerpo').innerHTML = visibles.map((f) => filaTabla(f)).join('') || '<tr><td colspan="6">No encontramos reportes con esa búsqueda. Borra el texto o pulsa “Limpiar filtros”.</td></tr>';
+    document.querySelectorAll('#fCuerpo .sel').forEach((x) => { x.checked = SEL_FORMATOS.has(x.value); });
     actualizarSeleccion();
     window.scrollTo(0, y);
     if (foco) { const el = [...document.querySelectorAll('#fGrupos input')].filter((x) => x.dataset.filtro === foco.k && x.value === foco.v)[0]; if (el) el.focus(); }
@@ -844,27 +883,34 @@ function mesesQueFaltan(matriz) {
     const dis = f.listoDescarga && exigible(f) ? '' : 'disabled title="Sin archivo descargable"';
     return `<tr>
       <td data-l="Elegir"><input type="checkbox" class="sel" value="${esc(f.id)}" aria-label="Elegir ${esc(f.nombre)}" ${dis}></td>
-      <td data-l="Formato"><b>${esc(f.nombre)}</b><div class="sub">${esc(f.servicio === 'Ambos' ? 'Comunes AA' : f.servicio)} · ${esc(f.codigo || f.id)} · ${esc(f.tema)} · ${esc(f.periodicidad)}${f.tipoObligacion !== 'periódica' ? ' · ' + esc(f.tipoObligacion) : ''}</div>
+      <td data-l="Reporte"><b>${esc(f.nombre)}</b><div class="sub">${esc(f.servicio === 'Ambos' ? 'Comunes AA' : f.servicio)} · ${esc(f.codigo || f.id)} · ${esc(f.tema)} · ${esc(f.periodicidad)}${f.tipoObligacion !== 'periódica' ? ' · ' + esc(f.tipoObligacion) : ''}</div>
         <div class="sub">${esc(f.tipoSalidaTxt)}${f.automatico ? '' : ' · <b>se diligencia a mano</b>'}</div>
         ${f.aplicabilidad !== 'aplica' ? `<div class="sub"><span class="ins ${f.aplicabilidad === 'por verificar' ? 'warn' : 'off'}">${esc(f.aplicabilidad)}</span> ${esc(f.aplicabilidadFundamento)}</div>` : ''}
         <div class="sub">${esc(f.mensaje || '')}</div></td>
-      <td data-l="Periodo reportado">${esc(f.periodoLegible || f.periodo)}${f.primeraPresentacion ? `<div class="sub">Primera presentación: ${esc(f.primeraPresentacion)}</div>` : ''}</td>
-      <td data-l="Vence">${f.limite ? '<b>' + esc(f.limite) + '</b>' : esc(f.limiteTexto)}<div class="sub">${f.vencido ? '' : esc(textoPlazo(f))}</div>${i.vencido ? `<span class="ins err">${esc(i.vencido[1])}</span>` : ''}</td>
-      <td data-l="Preparación"><span class="ins ${i.prep[0]}">${esc(i.prep[1])}</span>${f.preparacion === 'listo' ? `<div class="sub">${f.registros} registros evaluados${f.errores ? ' · ' + f.errores + ' errores' : ''}</div>` : (f.registros === 0 && f.automatico ? '<div class="sub">0 registros evaluados: no hay validación que mostrar</div>' : '')}${f.datosHasta ? `<div class="sub">Datos hasta ${esc(f.datosHasta)} ${f.alDia ? '(al día)' : '(incompleto)'}</div>` : ''}</td>
-      <td data-l="Aprobación"><span class="ins ${i.apr[0]}">${esc(i.apr[1])}</span></td>
-      <td data-l="Ante el SUI"><span class="ins ${i.sui[0]}">${esc(i.sui[1])}</span>${f.radicado ? `<div class="sub">${esc(f.radicado)}</div>` : ''}${f.descargado && f.estadoSUI === 'sin reportar' ? '<div class="sub">Descargado, pero no reportado: descargar no cumple la obligación</div>' : ''}</td>
-      <td data-l="Acción" class="acciones"><button class="btn peq ${a.clase === 'warn' ? '' : a.clase}" ${a.clase === 'warn' ? 'style="background:#7a4a00"' : ''} data-act="${a.codigo}" data-id="${esc(f.id)}" data-per="${esc(f.periodo)}" type="button">${esc(a.etiqueta)}</button>
+      <td data-l="Mes">${esc(f.periodoLegible || f.periodo)}${f.primeraPresentacion ? `<div class="sub">Primera presentación: ${esc(f.primeraPresentacion)}</div>` : ''}</td>
+      <td data-l="Fecha límite">${f.limite ? '<b>' + esc(f.limite) + '</b>' : esc(f.limiteTexto)}<div class="sub">${f.vencido ? '' : esc(textoPlazo(f))}</div>${i.vencido ? `<span class="ins err">${esc(i.vencido[1])}</span>` : ''}</td>
+      <td data-l="Estado"><span class="ins ${claseEstadoSimple(f)}">${esc(estadoSimple(f))}</span>${i.vencido ? `<div><span class="ins err">${esc(i.vencido[1])}</span></div>` : ''}
+        <details class="estado-detalle"><summary>Ver estado detallado</summary><div class="detalle-estados">
+          <div>Archivo: <span class="ins ${i.prep[0]}">${esc(i.prep[1])}</span>${f.preparacion === 'listo' ? `<p class="sub">${f.registros} registros evaluados${f.errores ? ' · ' + f.errores + ' errores' : ''}</p>` : (f.registros === 0 && f.automatico ? '<p class="sub">0 registros evaluados: no hay validación que mostrar</p>' : '')}${f.datosHasta ? `<p class="sub">Datos hasta ${esc(f.datosHasta)} ${f.alDia ? '(al día)' : '(incompleto)'}</p>` : ''}</div>
+          <div>Revisión: <span class="ins ${i.apr[0]}">${esc(i.apr[1])}</span></div>
+          <div>Entrega en SUI: <span class="ins ${i.sui[0]}">${esc(i.sui[1])}</span>${f.radicado ? `<div class="sub">${esc(f.radicado)}</div>` : ''}${f.descargado && f.estadoSUI === 'sin reportar' ? '<div class="sub">Descargado, pero no reportado: descargar no cumple la obligación</div>' : ''}</div>
+        </div></details></td>
+      <td data-l="Siguiente paso" class="acciones"><button class="btn peq ${a.clase === 'warn' ? '' : a.clase}" ${a.clase === 'warn' ? 'style="background:#7a4a00"' : ''} data-act="${a.codigo}" data-id="${esc(f.id)}" data-per="${esc(f.periodo)}" type="button">${esc(a.etiqueta)}</button>
         <details class="menu"><summary aria-label="Más acciones para ${esc(f.nombre)}">Más ▾</summary><div class="menu-lista">${sec.map((s) => `<button type="button" data-act="${s.codigo}" data-id="${esc(f.id)}" data-per="${esc(f.periodo)}">${esc(s.etiqueta)}</button>`).join('')}</div></details></td>
     </tr>`;
   }
   function actualizarSeleccion() {
-    const ids = [...document.querySelectorAll('.sel:checked')].map((x) => x.value);
+    const ids = [...SEL_FORMATOS];
     const box = $('fSeleccion');
+    const visiblesMarcados = [...document.querySelectorAll('#fCuerpo .sel:checked')].length;
+    const visiblesHabilitados = [...document.querySelectorAll('#fCuerpo .sel:not(:disabled)')];
+    $('selTodos').checked = visiblesHabilitados.length > 0 && visiblesHabilitados.every((x) => x.checked);
     if (!ids.length) { box.hidden = true; return; }
     const r = resumenSeleccion(DATOS.filas, ids);
     box.hidden = false;
-    box.innerHTML = `<b>${ids.length} seleccionado(s)</b>: el ZIP incluye <b>${r.incluidos.length}</b> archivo(s)${r.noCargables ? ` (${r.noCargables} son hojas de apoyo o formularios para digitar: no se cargan como archivo)` : ''}.` +
-      (r.excluidos.length ? `<details><summary>${r.excluidos.length} excluido(s)</summary><ul>${r.excluidos.map((x) => `<li>${esc(x.nombre)}: ${esc(x.motivo)}</li>`).join('')}</ul></details>` : '');
+    box.innerHTML = `<b>${ids.length} reporte(s) elegido(s)</b>${ids.length > visiblesMarcados ? ' (algunos están fuera de esta búsqueda)' : ''}. El ZIP incluirá <b>${r.incluidos.length}</b> archivo(s)${r.noCargables ? ` (${r.noCargables} son hojas de apoyo o formularios para llenar)` : ''}.` +
+      (r.excluidos.length ? `<details><summary>${r.excluidos.length} no se pueden descargar</summary><ul>${r.excluidos.map((x) => `<li>${esc(x.nombre)}: ${esc(x.motivo)}</li>`).join('')}</ul></details>` : '') +
+      ' <button type="button" class="btn sec peq" data-mostrar-acciones>Ver opciones de descarga</button> <button type="button" class="btn sec peq" data-limpiar-seleccion>Quitar selección</button>';
   }
 
   // eventos de filtros (delegación)
@@ -885,8 +931,12 @@ function mesesQueFaltan(matriz) {
   $('fOrden').onchange = () => { E.orden = $('fOrden').value; guardarEstado(E); pintarFormatos(); };
   $('fDir').onclick = () => { E.dir = -E.dir; guardarEstado(E); pintarFormatos(); };
   $('btnLimpiar').onclick = () => { E = ESTADO_INICIAL(); E.sel = {}; guardarEstado(E); pintarFormatos(); estado('Filtros limpiados: se ven todos los formatos del mes, incluidos los que no aplican.'); };
-  $('selTodos').onchange = (ev) => { document.querySelectorAll('.sel:not(:disabled)').forEach((x) => { x.checked = ev.target.checked; }); actualizarSeleccion(); };
-  $('fCuerpo').addEventListener('change', (ev) => { if (ev.target.classList.contains('sel')) actualizarSeleccion(); });
+  $('selTodos').onchange = (ev) => { document.querySelectorAll('#fCuerpo .sel:not(:disabled)').forEach((x) => { x.checked = ev.target.checked; if (x.checked) SEL_FORMATOS.add(x.value); else SEL_FORMATOS.delete(x.value); }); actualizarSeleccion(); };
+  $('fCuerpo').addEventListener('change', (ev) => { if (!ev.target.classList.contains('sel')) return; if (ev.target.checked) SEL_FORMATOS.add(ev.target.value); else SEL_FORMATOS.delete(ev.target.value); actualizarSeleccion(); });
+  $('fSeleccion').addEventListener('click', (ev) => {
+    if (ev.target.closest('[data-limpiar-seleccion]')) { SEL_FORMATOS.clear(); document.querySelectorAll('#fCuerpo .sel').forEach((x) => { x.checked = false; }); actualizarSeleccion(); return; }
+    if (ev.target.closest('[data-mostrar-acciones]')) { const d = document.querySelector('.acciones-varias'); d.open = true; d.scrollIntoView({ block: 'center' }); }
+  });
 
   // vistas rápidas desde Inicio
   document.addEventListener('click', (ev) => {
@@ -947,7 +997,7 @@ function mesesQueFaltan(matriz) {
     catch (e) { error(e, 'No se pudo descargar'); }
   }
   $('btnZipSel').onclick = async () => {
-    const ids = [...document.querySelectorAll('.sel:checked')].map((x) => x.value); if (!ids.length) { estado('Elija al menos un formato con archivo descargable.'); return; }
+    const ids = [...SEL_FORMATOS]; if (!ids.length) { estado('Elija al menos un formato con archivo descargable.'); return; }
     const r = resumenSeleccion(DATOS.filas, ids); if (!r.incluidos.length) { estado('Ninguno de los elegidos tiene archivo descargable (' + r.excluidos.length + ' excluidos).'); return; }
     if (r.excluidos.length && !confirm('Se descargarán ' + r.incluidos.length + ' archivos.\nQuedan excluidos ' + r.excluidos.length + ':\n- ' + r.excluidos.map((x) => x.nombre + ' (' + x.motivo + ')').slice(0, 12).join('\n- ') + '\n¿Continuar?')) return;
     ocupado(true, 'Armando ZIP de ' + r.incluidos.length + ' archivos…');

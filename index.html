@@ -43,6 +43,11 @@
     .paso { background:#fff; border:1px solid var(--linea); border-left:6px solid var(--info); border-radius:10px; padding:12px 14px; text-align:left; font:inherit; color:inherit; cursor:pointer; }
     .paso::before { counter-increment:paso; content:"Paso " counter(paso); font-size:14px; font-weight:bold; color:var(--info); display:block; }
     .paso b { display:block; margin:2px 0; } .paso .n { font-size:26px; font-weight:bold; }
+    .guia-secuencia { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:8px; margin:10px 0 14px; }
+    .guia-paso { display:flex; gap:10px; align-items:flex-start; min-height:74px; padding:10px 12px; background:#fff; border:1px solid var(--linea); border-left:4px solid var(--info); border-radius:8px; }
+    .guia-paso .numero { flex:0 0 30px; height:30px; display:grid; place-items:center; border-radius:50%; background:var(--infobg); color:var(--info); font-weight:bold; font-size:17px; }
+    .guia-paso strong { display:block; font-size:16px; line-height:1.3; }
+    .guia-paso p { margin:3px 0 0; font-size:14px; line-height:1.4; color:#374151; }
     .ahora { background:var(--infobg); border:1px solid #9db8ee; border-radius:10px; padding:16px 18px; margin-bottom:16px; font-size:18px; }
     .nota { font-size:15px; color:#374151; } .peq { font-size:14px; }
     .inicio-acciones { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin:12px 0 18px; }
@@ -226,6 +231,11 @@
   <section id="sec-formatos" role="tabpanel" aria-labelledby="t-formatos" hidden>
     <h2>Reportes del mes</h2>
     <p class="nota">Escribe una palabra para encontrar el reporte. Cada reporte indica cuál es el siguiente paso.</p>
+    <div class="guia-secuencia" aria-label="Pasos para preparar un reporte">
+      <div class="guia-paso"><span class="numero" aria-hidden="true">1</span><div><strong>Busca el reporte</strong><p>Escribe su nombre o tema, o elige una vista rápida.</p></div></div>
+      <div class="guia-paso"><span class="numero" aria-hidden="true">2</span><div><strong>Mira qué falta</strong><p>Lee el estado y la columna “Siguiente paso”.</p></div></div>
+      <div class="guia-paso"><span class="numero" aria-hidden="true">3</span><div><strong>Abre y sigue la indicación</strong><p>El archivo descargado todavía se debe cargar en el SUI.</p></div></div>
+    </div>
     <div class="barra-filtros">
       <div class="fila-busca">
         <input type="search" id="fTexto" placeholder="Escribe el nombre o tema del reporte" aria-label="Buscar reportes por nombre o tema">
@@ -270,7 +280,13 @@
   <!-- ============================ ALERTAS TEMPRANAS ============================ -->
   <section id="sec-alertas" role="tabpanel" aria-labelledby="t-alertas" hidden>
     <h2>Alertas tempranas en los datos a reportar</h2>
-    <p class="nota">Cada día el portal revisa los datos de las hojas fuente contra los límites de la norma. Cada alerta dice qué se registró, cuál es el margen permitido, cuánto se sale y si es un incumplimiento. <b>Incumplió la norma</b>: el dato real está fuera del límite; se reporta tal como es, se corrige la causa y se guarda el soporte. <b>Revisar el dato</b>: el valor parece mal digitado o en otra unidad; se corrige en la hoja fuente. <b>Plazo por vencer</b>: todavía está a tiempo. Al corregir el dato en la hoja, la alerta desaparece sola.</p>
+    <p class="nota">Aquí puedes encontrar datos que conviene revisar antes de preparar un reporte.</p>
+    <div class="guia-secuencia" aria-label="Pasos para revisar alertas">
+      <div class="guia-paso"><span class="numero" aria-hidden="true">1</span><div><strong>Elige qué alertas ver</strong><p>Al inicio se muestran las que están pendientes.</p></div></div>
+      <div class="guia-paso"><span class="numero" aria-hidden="true">2</span><div><strong>Lee el problema y dónde revisarlo</strong><p>La alerta explica el dato, el límite y la hoja fuente.</p></div></div>
+      <div class="guia-paso"><span class="numero" aria-hidden="true">3</span><div><strong>Corrige o deja una explicación</strong><p>Los cambios del dato se hacen en la hoja fuente.</p></div></div>
+    </div>
+    <details class="periodo-info"><summary>¿Qué significa cada tipo de alerta?</summary><p class="nota"><b>Incumplió la norma:</b> el dato real está fuera del límite; se reporta tal como es, se corrige la causa y se guarda el soporte. <b>Revisar el dato:</b> el valor parece mal digitado o en otra unidad; se revisa en la hoja fuente. <b>Plazo por vencer:</b> todavía está a tiempo. Al corregir el dato en la hoja, la alerta desaparece sola.</p></details>
     <div class="fila-busca no-imprimir" style="margin-bottom:8px">
       <label for="alTema">Tema</label><select id="alTema" aria-label="Tema de la alerta"><option value="">Todos</option></select>
       <label for="alClase">Tipo</label><select id="alClase" aria-label="Tipo de alerta"><option value="">Todos</option><option value="incumplimiento">Incumplimiento</option><option value="plazo">Plazo por vencer</option><option value="verificar">Posible error de digitación</option></select>
@@ -303,6 +319,11 @@
   <!-- ============================ FUENTES Y DATOS FALTANTES ============================ -->
   <section id="sec-fuentes" role="tabpanel" aria-labelledby="t-fuentes" hidden>
     <h2>Datos de la empresa y datos faltantes</h2>
+    <div class="guia-secuencia" aria-label="Pasos para completar datos">
+      <div class="guia-paso"><span class="numero" aria-hidden="true">1</span><div><strong>Completa los datos básicos</strong><p>Son datos de la empresa que cambian poco.</p></div></div>
+      <div class="guia-paso"><span class="numero" aria-hidden="true">2</span><div><strong>Busca lo que falta</strong><p>Elige un problema o servicio para encontrarlo más rápido.</p></div></div>
+      <div class="guia-paso"><span class="numero" aria-hidden="true">3</span><div><strong>Corrige donde se indica</strong><p>El portal te dice qué dato falta y en qué fuente revisarlo.</p></div></div>
+    </div>
     <div class="tarjeta" style="margin-bottom:14px">
       <h3 style="margin-top:0">Información básica de la empresa (se guarda una vez)</h3>
       <p class="nota">Aquí se escriben datos que cambian poco, como identificadores, placas y frecuencias. Si no conoces un dato, déjalo vacío y pide ayuda: el portal no lo inventa.</p>
@@ -333,6 +354,11 @@
       <label><input type="checkbox" id="calSoloPend" checked> Ocultar lo ya certificado</label>
     </div>
     <p class="nota">Cada tarjeta es una fecha máxima de cargue y trae su estado en palabras: <b>[Listo]</b>, <b>[Pendiente]</b>, <b>[Vencido]</b>. Solo aparecen los formatos con una regla de fecha confirmada; los demás están en la lista “Sin fecha confirmada”. Es la misma información de la tabla de Formatos.</p>
+    <div class="guia-secuencia" aria-label="Pasos para usar el calendario">
+      <div class="guia-paso"><span class="numero" aria-hidden="true">1</span><div><strong>Elige el mes</strong><p>Usa los botones para ir al mes anterior o siguiente.</p></div></div>
+      <div class="guia-paso"><span class="numero" aria-hidden="true">2</span><div><strong>Busca una fecha o reporte</strong><p>Filtra por servicio o revisa la lista del mes.</p></div></div>
+      <div class="guia-paso"><span class="numero" aria-hidden="true">3</span><div><strong>Pulsa “Ver tarea”</strong><p>El portal explica qué hacer con ese reporte.</p></div></div>
+    </div>
     <div class="cab7" aria-hidden="true"><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div></div>
     <div class="cal" id="cal"></div>
     <h3>Lista de vencimientos del mes <span class="nota" id="calCuenta"></span></h3>
@@ -346,6 +372,11 @@
   <section id="sec-barrido" role="tabpanel" aria-labelledby="t-barrido" hidden>
     <h2>Operación de barrido</h2>
     <p class="nota">Seguimiento del barrido y la limpieza urbana con los datos de la app AppSheet “Aseo Operativo Anorí”. Un mes o una microrruta sin registro aparece como <b>sin dato</b>, nunca como cero. Es un seguimiento interno: no es un reporte al SUI.</p>
+    <div class="guia-secuencia" aria-label="Pasos para revisar el barrido">
+      <div class="guia-paso"><span class="numero" aria-hidden="true">1</span><div><strong>Elige año, mes y microrruta</strong><p>Deja “Todas” para ver toda la operación.</p></div></div>
+      <div class="guia-paso"><span class="numero" aria-hidden="true">2</span><div><strong>Pulsa “Actualizar”</strong><p>Revisa los totales, registros y fotos del mes.</p></div></div>
+      <div class="guia-paso"><span class="numero" aria-hidden="true">3</span><div><strong>Genera el informe si lo necesitas</strong><p>El informe resume la operación seleccionada.</p></div></div>
+    </div>
     <div class="fila-busca" style="margin-bottom:8px">
       <label for="bAnio">Año</label><select id="bAnio" aria-label="Año"></select>
       <label for="bPeriodo">Mes</label><select id="bPeriodo" aria-label="Mes"></select>
@@ -381,6 +412,12 @@
   <!-- ============================ HISTORIAL Y EVIDENCIAS ============================ -->
   <section id="sec-historial" role="tabpanel" aria-labelledby="t-historial" hidden>
     <h2>Historial y evidencias</h2>
+    <p class="nota">Busca registros de cargue, certificación, descargas y cambios anteriores.</p>
+    <div class="guia-secuencia" aria-label="Pasos para consultar el historial">
+      <div class="guia-paso"><span class="numero" aria-hidden="true">1</span><div><strong>Escribe qué buscas</strong><p>También puedes ver solo el mes de trabajo.</p></div></div>
+      <div class="guia-paso"><span class="numero" aria-hidden="true">2</span><div><strong>Revisa el resultado</strong><p>El historial se filtra mientras escribes.</p></div></div>
+      <div class="guia-paso"><span class="numero" aria-hidden="true">3</span><div><strong>Abre el soporte</strong><p>Si hay un enlace, pulsa “abrir” en la fila.</p></div></div>
+    </div>
     <div class="fila-busca" style="margin-bottom:8px">
       <label><input type="checkbox" id="hSoloMes"> Solo el mes de trabajo</label>
       <input type="search" id="hTexto" placeholder="Buscar en el historial…" aria-label="Buscar en el historial">
@@ -392,6 +429,12 @@
   <!-- ============================ CONFIGURACIÓN ============================ -->
   <section id="sec-config" role="tabpanel" aria-labelledby="t-config" hidden>
     <h2>Configuración</h2>
+    <p class="nota">Esta sección sirve para consultar cómo está funcionando el portal. Para corregir datos de la empresa, usa “Datos”.</p>
+    <div class="guia-secuencia" aria-label="Cómo usar configuración">
+      <div class="guia-paso"><span class="numero" aria-hidden="true">1</span><div><strong>Consulta el estado</strong><p>La versión y las tareas automáticas aparecen primero.</p></div></div>
+      <div class="guia-paso"><span class="numero" aria-hidden="true">2</span><div><strong>Revisa los valores y sus fuentes</strong><p>La pantalla explica de dónde sale cada dato.</p></div></div>
+      <div class="guia-paso"><span class="numero" aria-hidden="true">3</span><div><strong>Necesitas cambiar un dato</strong><p>Ve a “Datos” o pide apoyo a la persona administradora.</p></div></div>
+    </div>
     <div id="cCuerpo"><p class="nota">Cargando…</p></div>
   </section>
 </main>
